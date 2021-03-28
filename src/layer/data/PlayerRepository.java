@@ -36,7 +36,7 @@ public class PlayerRepository {
         //read corresponding data from database to given username
 
         String fullname = "";
-        String password = "";
+        String password = "abc";
         //create PlayerRepository with data
 
         //throw error if player not found

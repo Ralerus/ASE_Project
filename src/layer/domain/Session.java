@@ -4,7 +4,7 @@ import layer.data.Player;
 import layer.data.PlayerRepository;
 
 public class Session {
-    private Player loggedInPlayer;
+    private Player loggedInPlayer = new Player("","");
 
     public boolean login(String username, String password){
         PlayerRepository p = PlayerRepository.getPlayerRepository(username);

@@ -9,9 +9,6 @@ import java.util.List;
 
 public class Competition extends Game{
 
-    public Competition(Text text, List<Player> players, Rules rule) {
-        super(text, players, rule);
-    }
     public Competition(){
         super();
     }
