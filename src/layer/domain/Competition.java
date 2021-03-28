@@ -13,9 +13,9 @@ public class Competition extends Game{
         super();
     }
     public void addPlayer(String username){
-        this.players.add(PlayerRepository.getPlayerRepository(username).getPlayer());
+        this.playersLeft.add(PlayerRepository.getPlayerRepository(username).getPlayer());
     }
     public void removePlayer(String username){
-        this.players.remove(PlayerRepository.getPlayerRepository(username).getPlayer());
+        this.playersLeft.remove(PlayerRepository.getPlayerRepository(username).getPlayer());
     }
 }

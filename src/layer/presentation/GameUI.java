@@ -13,8 +13,11 @@ public class GameUI {
 		
 	}
 	
-	public static void drawResults(Map<Player, Double> resulst) {
-		
+	public static void drawResults(Map<Player, Double> results) {
+		System.out.println("Game over");
+		for(Player p: results.keySet()){
+			System.out.println("Player "+p.getUsername()+" has "+results.get(p)+" seconds.");
+		}
 	}
 	
 }

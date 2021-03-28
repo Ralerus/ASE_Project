@@ -1,25 +1,17 @@
 package layer.domain;
 
-import layer.Application;
 import layer.data.Player;
 import layer.data.Rules;
-import layer.data.StatsRepository;
 import layer.data.Text;
 import layer.presentation.GameUI;
 import layer.presentation.LoginUI;
-import layer.presentation.RoundUI;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class Game implements MyListener {
+public class Game implements GameListener {
     protected Text text;
-    protected List<Player> players;
+    protected Map<Player, Double> results;
+    protected List<Player> playersLeft;
     protected Rules rule;
     protected Round currentRound;
     
@@ -28,15 +20,17 @@ public class Game implements MyListener {
     public Game(){
         this.text = new Text();
         List<Player> players = new ArrayList<>();
-        players.add(Application.getSession().getLoggedInPlayer());
-        this.players = players;
+        //players.add(Application.getSession().getLoggedInPlayer());
+        this.playersLeft = players;
+        this.results = new HashMap<>();
+
         this.rule = new Rules();
         this.currentRound = null;
         this.loginUI = new LoginUI();
-        loginUI.addListener(this);
+        loginUI.setListener(this);
     }
 
-    public void start(){
+    /*public void start(){
         Collections.shuffle(players);
         for(Player p : players){
         	System.out.println("draw ui");
@@ -54,30 +48,36 @@ public class Game implements MyListener {
         }
         GameUI.drawResults(this.prepareResults());
         this.addGameToStats();
+    }*/
+
+    public void start(){
+        Collections.shuffle(playersLeft);
+        loginUI.drawLoginUIFor(playersLeft.remove(0));
     }
 
-    public Round getCurrentRound() {
-        return currentRound;
-    }
-    
-    private Map<Player, Double> prepareResults(){
-    	Map<Player, Double> results = new HashMap<>();
-    	for(Player p: players) {
-    		double timeInSeconds = (double) Math.round((p.getCurrentResult() / 1000)*100)/100.0d;
-    		results.put(p, timeInSeconds);
-    	}
-    	return results;
-    }
-    
-    private void addGameToStats() {
+    /*private void addGameToStats() {
     	//check if Competition or Training was startet
     	StatsRepository.incrementCompetitionCounter();
     	StatsRepository.writeRoundTimesToPlayerStats(this.prepareResults(), new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
-    }
+    }*/
     
     @Override
-    public void loggedIn() {
-    	System.out.println("logged in!!");
-    	
+    public void startRoundFor(Player p) {
+        this.currentRound = new Round(this.text, p);
+        currentRound.setListener(this);
+        currentRound.startRound();
+    }
+    private void gotoNextPlayer() {
+        if(playersLeft.isEmpty()){
+            GameUI.drawResults(results);
+        }else {
+            this.loginUI.drawLoginUIFor(playersLeft.remove(0));
+        }
+    }
+
+    @Override
+    public void endRoundFor(Player p, double duration) {
+        this.results.put(p,duration);
+        this.gotoNextPlayer();
     }
 }

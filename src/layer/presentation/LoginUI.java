@@ -3,11 +3,8 @@ package layer.presentation;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,14 +14,14 @@ import javax.swing.JTextField;
 
 import layer.Application;
 import layer.data.Player;
-import layer.domain.MyListener;
+import layer.domain.GameListener;
 
 public class LoginUI {
 	private static JFrame jframe;
-	private List<MyListener> listeners = new ArrayList<>();
+	private GameListener listener;
 
-    public void addListener(MyListener listener) {
-    	listeners.add(listener);
+    public void setListener(GameListener listener) {
+    	this.listener = listener;
     }
 
     public LoginUI(){
@@ -55,12 +52,10 @@ public class LoginUI {
             	if(Application.getSession().login(username.getText(),new String(password.getPassword()))){
                     System.out.println("Succesfully logged in");
                     jframe.setVisible(false);
-                    
-                    for(MyListener listener: listeners) {
-                    	listener.loggedIn();
-                    }
+                    	listener.startRoundFor(Application.getSession().getLoggedInPlayer());
                 }else{
                     JOptionPane.showMessageDialog(jframe,"Benutzername oder Passwort inkorrekt!","Login fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                    password.setText("");
                 }
             }
         });

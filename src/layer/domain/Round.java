@@ -2,25 +2,33 @@ package layer.domain;
 
 import layer.data.Player;
 import layer.data.Text;
+import layer.presentation.RoundUI;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Round {
-    private List<Character> textLeft = new ArrayList<>();
-    private long duration;
+public class Round implements RoundListener{
+    private List<Character> textLeft;
     private Player p;
-    private Instant starttime;
-    private Instant endtime;
+    private Instant startTime;
+    private Instant endTime;
+    private GameListener listener;
+    private RoundUI roundUI;
+
+    public void setListener(GameListener listener) {
+        this.listener = listener;
+    }
 
     public Round(Text text, Player p) {
         this.textLeft = text.getText().chars().mapToObj(c -> (char) c).collect(Collectors.toList());
-        this.duration = 0;
         this.p = p;
-    }
+        this.roundUI = new RoundUI();
+        roundUI.setListener(this);
 
+    }
+    @Override
     public boolean checkCurrentInputChar(char c){
         if(c == textLeft.get(0)){
             textLeft.remove(0);
@@ -28,7 +36,7 @@ public class Round {
         }
         return false;
     }
-
+    @Override
     public String getTextLeft() {
         StringBuilder sb = new StringBuilder();
         for (Character c : textLeft) {
@@ -40,30 +48,18 @@ public class Round {
         }
         return sb.toString();
     }
-
-    public long getDuration() {
-        return duration;
+    
+    public void startRound() {
+        this.setStartTime();
+        RoundUI.displayRoundFor(p, this.getTextLeft());
     }
     
-    public long playRound() {
-        Instant start = Instant.now();
-    	while(!this.textLeft.isEmpty()) {
-         	//UI calls method check currentinputchar
-    		//refresh string displayed on ui
-    	}
-    	Instant finish = Instant.now();
-    	return Duration.between(start, finish).toMillis();
+    private void setStartTime() {
+    	this.startTime = Instant.now();
     }
-    
-    public void setStartTime() {
-    	this.starttime = Instant.now();
+    private void setEndTime() {
+    	this.endTime = Instant.now();
+        double duration = (double) Duration.between(startTime, endTime).toMillis() / 1000;
+        this.listener.endRoundFor(p,duration);
     }
-    public void setEndTime() {
-    	this.endtime = Instant.now();
-    	//compute time, send time to Game
-    }
-    
-    
-    
-    //start & end time variable auf Klassenebene, bei playRound starten, Duration später berechnen
 }

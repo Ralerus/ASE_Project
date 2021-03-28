@@ -5,12 +5,10 @@ import java.util.Objects;
 public class Player {
     private String username;
     private String fullname;
-    private long currentResult;
 
     public Player(String username, String fullname) {
         this.username = username;
         this.fullname = fullname;
-        this.currentResult = 0;
     }
 
     public String getUsername() {
@@ -19,14 +17,6 @@ public class Player {
 
     public String getFullname() {
         return fullname;
-    }
-
-    public long getCurrentResult() {
-        return currentResult;
-    }
-
-    public void setCurrentResult(long currentResult) {
-        this.currentResult = currentResult;
     }
 
     @Override
