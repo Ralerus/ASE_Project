@@ -1,7 +1,7 @@
 package layer.data;
 
 public class TextRepository {
-    public static boolean createText(String text, Difficulty difficulty){
+    public static boolean createText(String title, String text, Difficulty difficulty){
         //DB create text
         return true;
     }

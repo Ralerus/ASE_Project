@@ -20,14 +20,14 @@ public class ApplicationUI extends JFrame implements UIListener {
         JTabbedPane tabbedpane = new JTabbedPane();
 
         GameUI gameUI = new GameUI();
+        SettingsUI settingsUI = new SettingsUI();
 
         JPanel statsPanel = new JPanel();
-        JPanel settingsPanel = new JPanel();
 
         tabbedpane.addTab("Wettkampf", gameUI.getCompetitionUI());
         tabbedpane.addTab("Training", gameUI.getTrainingUI());
         tabbedpane.addTab("Statistik", statsPanel);
-        tabbedpane.addTab("Einstellungen", settingsPanel);
+        tabbedpane.addTab("Einstellungen", settingsUI.getSettingsUI());
 
         this.add(tabbedpane);
         this.setSize(1000,800);

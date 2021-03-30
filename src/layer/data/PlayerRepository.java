@@ -13,12 +13,9 @@ public class PlayerRepository {
         //DB set new username
         return true;
     }
-    public boolean changePassword(String oldPassword, String newPassword){
-        if(this.isPasswordCorrect(oldPassword)){
-            //DB set new password
-            return true;
-        }
-        return false;
+    public boolean changePassword(String newPassword){
+        //DB set new password
+        return true;
     }
     public boolean changeFullname(String newFullname){
         //DB set new fullname
@@ -44,6 +41,10 @@ public class PlayerRepository {
         }
 
         return new PlayerRepository(username, fullname, password);
+    }
+
+    public static PlayerRepository getPlayerRepository(Player p) throws PlayerNotFoundException{
+        return PlayerRepository.getPlayerRepository(p.getUsername());
     }
 
     public static boolean createPlayer(Player p, String password){

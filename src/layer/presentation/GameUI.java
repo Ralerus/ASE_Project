@@ -123,9 +123,9 @@ public class GameUI {
 		difficultyRadiosPanel.setLayout(new GridLayout(3, 1));
 
 		ButtonGroup difficultyRadios = new ButtonGroup();
-		radioEasy = new JRadioButton("Easy");
-		radioMedium = new JRadioButton("Medium");
-		radioHard = new JRadioButton("Hard");
+		radioEasy = new JRadioButton("Einfach");
+		radioMedium = new JRadioButton("Mittel");
+		radioHard = new JRadioButton("Schwer");
 		difficultyRadios.add(radioEasy);
 		difficultyRadios.add(radioMedium);
 		difficultyRadios.add(radioHard);
