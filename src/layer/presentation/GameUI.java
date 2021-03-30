@@ -79,22 +79,25 @@ public class GameUI {
 		return trainingPanel;
 	}
 	public static void drawResults(Map<Player, Double> results) {
-		JFrame jframe = new JFrame("Ergebnisse");
+		JDialog jDialog = new JDialog(Application.getUi(), "Ergebnisse", true);
 		JPanel resultsPanel = new JPanel();
 		resultsPanel.setLayout(new GridLayout(results.keySet().size(),3));
 		System.out.println("Game over");
 		int counter = 1;
 		for(Player p: results.keySet()){
+			if(counter == 1){
+				JOptionPane.showMessageDialog(jDialog,p.getUsername()+" hat gewonnen!", "Gewinner ermittelt", JOptionPane.INFORMATION_MESSAGE);
+			}
 			System.out.println("Player "+p.getUsername()+" has "+results.get(p)+" seconds.");
 			resultsPanel.add(new JLabel(counter+"."));
 			resultsPanel.add(new JLabel(p.getUsername()));
 			resultsPanel.add(new JLabel(results.get(p)+" Sekunden"));
 			counter++;
 		}
-		jframe.add(resultsPanel);
-		jframe.setSize(500,400);
-		jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		jframe.setVisible(true);
+		jDialog.add(resultsPanel);
+		jDialog.setSize(500,400);
+		jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		jDialog.setVisible(true);
 	}
 
 	private JPanel setUpConfigurationPanel() {

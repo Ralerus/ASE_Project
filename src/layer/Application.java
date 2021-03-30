@@ -14,4 +14,8 @@ public class Application {
     public static Session getSession() {
         return session;
     }
+
+    public static ApplicationUI getUi() {
+        return ui;
+    }
 }
