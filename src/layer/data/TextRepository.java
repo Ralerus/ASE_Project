@@ -8,8 +8,8 @@ public class TextRepository {
 
     public static Text getRandomTextBasedOn(Rules rules){
         //select text from DB where values = rules
-        String text = "";
-        Difficulty difficulty = Difficulty.Easy;
+        String text = "Dies ist ein beispielhafter Beispieltext!";
+        Difficulty difficulty = rules.getDifficulty();
 
         return new Text(text,difficulty,text.length());
     }

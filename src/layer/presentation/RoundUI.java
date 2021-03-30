@@ -16,7 +16,7 @@ public class RoundUI {
         this.listener = listener;
     }
 
-    public static void displayRoundFor(Player p, String text){
+    public void displayRoundFor(Player p, String text){
         System.out.println(p.getUsername()+" plays round");
         jframe = new JFrame("Round of "+p.getUsername());
         jframe.setLayout(new GridLayout(8,1));
@@ -45,7 +45,12 @@ public class RoundUI {
         jframe.add(jpanel);
 
         jframe.setSize(1000,800);
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         jframe.setVisible(true);
+    }
+
+    public void closeRound(){
+        jframe.setVisible(false);
+        jframe.dispose();
     }
 }

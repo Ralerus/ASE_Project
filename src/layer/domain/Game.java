@@ -3,6 +3,7 @@ package layer.domain;
 import layer.data.Player;
 import layer.data.Rules;
 import layer.data.Text;
+import layer.data.TextRepository;
 import layer.presentation.GameUI;
 import layer.presentation.LoginUI;
 
@@ -30,6 +31,15 @@ public class Game implements GameListener {
         loginUI.setListener(this);
     }
 
+    public Game(List<Player> playersLeft, Rules rule) {
+        this.text = TextRepository.getRandomTextBasedOn(rule);
+        this.results = new HashMap<>();
+        this.playersLeft = playersLeft;
+        this.rule = rule;
+        this.currentRound = null;
+        this.loginUI = new LoginUI();
+        loginUI.setListener(this);
+    }
     /*public void start(){
         Collections.shuffle(players);
         for(Player p : players){
@@ -69,7 +79,7 @@ public class Game implements GameListener {
     }
     private void gotoNextPlayer() {
         if(playersLeft.isEmpty()){
-            GameUI.drawResults(results);
+            GameUI.drawResults(sortMapByValue(results));
         }else {
             this.loginUI.drawLoginUIFor(playersLeft.remove(0));
         }
@@ -79,5 +89,16 @@ public class Game implements GameListener {
     public void endRoundFor(Player p, double duration) {
         this.results.put(p,duration);
         this.gotoNextPlayer();
+    }
+
+    private Map<Player, Double> sortMapByValue(Map<Player,Double> map){
+        List<Map.Entry<Player,Double>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+
+        Map<Player, Double> result = new LinkedHashMap<>();
+        for (Map.Entry<Player,Double> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
     }
 }

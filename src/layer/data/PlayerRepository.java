@@ -32,14 +32,16 @@ public class PlayerRepository {
         return this.player;
     }
 
-    public static PlayerRepository getPlayerRepository(String username){
+    public static PlayerRepository getPlayerRepository(String username) throws PlayerNotFoundException{
         //read corresponding data from database to given username
 
         String fullname = "";
         String password = "abc";
         //create PlayerRepository with data
 
-        //throw error if player not found
+        if(false){
+            throw new PlayerNotFoundException("Spieler "+username+" existiert nicht");
+        }
 
         return new PlayerRepository(username, fullname, password);
     }

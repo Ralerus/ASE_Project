@@ -14,31 +14,34 @@ import javax.swing.JTextField;
 
 import layer.Application;
 import layer.data.Player;
+import layer.data.PlayerNotFoundException;
 import layer.domain.GameListener;
+import layer.domain.WrongPasswordException;
 
 public class LoginUI {
 	private static JFrame jframe;
 	private GameListener listener;
+	private UIListener uiListener;
 
     public void setListener(GameListener listener) {
     	this.listener = listener;
     }
+    public void setUiListener(UIListener listener) { this.uiListener = listener;}
 
-    public LoginUI(){
-    	
-    }
-    
     public void drawLoginUIFor(Player p) {
-    
     	jframe = new JFrame("Login");
     	JPanel loginPanel = new JPanel();
         loginPanel.setLayout(new GridLayout(3,2,6,3));
         loginPanel.add(new JLabel("Benutzername:"));
         JTextField username = new JTextField();
 
+        boolean gameLogin;
         if(p!=null){
             username.setText(p.getUsername());
             username.setEditable(false);
+            gameLogin = true;
+        }else{
+            gameLogin = false;
         }
 
         loginPanel.add(username);
@@ -49,16 +52,22 @@ public class LoginUI {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	if(Application.getSession().login(username.getText(),new String(password.getPassword()))){
+                try {
+                    Application.getSession().login(username.getText(), new String(password.getPassword()));//TODO return boolean needed? use exceptions
                     System.out.println("Succesfully logged in");
                     jframe.setVisible(false);
-                    	listener.startRoundFor(Application.getSession().getLoggedInPlayer());
-                }else{
-                    JOptionPane.showMessageDialog(jframe,"Benutzername oder Passwort inkorrekt!","Login fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                    //replace if with polymorphism?
+                    if (gameLogin) {
+                        listener.startRoundFor(Application.getSession().getLoggedInPlayer());
+                    } else {
+                        uiListener.drawUI();
+                    }
+                } catch (PlayerNotFoundException|WrongPasswordException ex) {
+                    JOptionPane.showMessageDialog(jframe, "Benutzername oder Passwort inkorrekt!", "Login fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                     password.setText("");
                 }
             }
-        });
+            });
         loginPanel.add(loginButton);
         jframe.add(loginPanel);
         jframe.setSize(250,150);

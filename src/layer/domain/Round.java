@@ -24,9 +24,6 @@ public class Round implements RoundListener{
     public Round(Text text, Player p) {
         this.textLeft = text.getText().chars().mapToObj(c -> (char) c).collect(Collectors.toList());
         this.p = p;
-        this.roundUI = new RoundUI();
-        roundUI.setListener(this);
-
     }
     @Override
     public boolean checkCurrentInputChar(char c){
@@ -51,7 +48,9 @@ public class Round implements RoundListener{
     
     public void startRound() {
         this.setStartTime();
-        RoundUI.displayRoundFor(p, this.getTextLeft());
+        this.roundUI = new RoundUI();
+        roundUI.setListener(this);
+        roundUI.displayRoundFor(p, this.getTextLeft());
     }
     
     private void setStartTime() {
@@ -60,6 +59,7 @@ public class Round implements RoundListener{
     private void setEndTime() {
     	this.endTime = Instant.now();
         double duration = (double) Duration.between(startTime, endTime).toMillis() / 1000;
+        roundUI.closeRound();
         this.listener.endRoundFor(p,duration);
     }
 }

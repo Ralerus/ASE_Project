@@ -1,18 +1,19 @@
 package layer.domain;
 
 import layer.data.Player;
+import layer.data.PlayerNotFoundException;
 import layer.data.PlayerRepository;
 
 public class Session {
     private Player loggedInPlayer = new Player("","");
 
-    public boolean login(String username, String password){
+    public void login(String username, String password) throws PlayerNotFoundException, WrongPasswordException {
         PlayerRepository p = PlayerRepository.getPlayerRepository(username);
         if(p.isPasswordCorrect(password)){
             this.loggedInPlayer = p.getPlayer();
-            return true;
+        }else{
+            throw new WrongPasswordException();
         }
-        return false;
     }
 
     public boolean logoff(Player p){
