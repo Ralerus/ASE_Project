@@ -95,9 +95,20 @@ public class GameUI {
 			counter++;
 		}
 		jDialog.add(resultsPanel);
+
+		JButton playAgain = new JButton("Nochmal");
+		playAgain.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		jDialog.add(playAgain);
+
 		jDialog.setSize(500,400);
 		jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		jDialog.setVisible(true);
+
 	}
 
 	private JPanel setUpConfigurationPanel() {
@@ -160,9 +171,18 @@ public class GameUI {
 			}
 		});
 		addUserInputField.add(addUser);
+		JButton newUser = new JButton("Neuen Nutzer anlegen");
+		newUser.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UserUI userUI = new UserUI();
+				userUI.drawRegisterUI();
+			}
+		});
 		addUserPanel.add(addUserInputField);
+		addUserPanel.add(newUser);
 		players.add(Application.getSession().getLoggedInPlayer());
-		addUserPanel.add(new JLabel((Application.getSession().getLoggedInPlayer().getUsername())));
+		addUserPanel.add(new JLabel(Application.getSession().getLoggedInPlayer().getUsername()));
 		return addUserPanel;
 	}
 }

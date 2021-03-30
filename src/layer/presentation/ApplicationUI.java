@@ -9,14 +9,14 @@ import java.awt.event.ActionListener;
 
 public class ApplicationUI extends JFrame implements UIListener {
     public ApplicationUI(){
-        LoginUI login = new LoginUI();
-        login.setUiListener(this);
-        login.drawLoginUIFor(null);
+        UserUI userUI = new UserUI();
+        userUI.setUiListener(this);
+        userUI.drawLoginUIFor(null);
     }
 
     @Override
     public void drawUI() {
-        this.setTitle("Tippduell - "+ Application.getSession().getLoggedInPlayer().getUsername()+" ist angemeldet");
+        this.setTitle("Tippduell - "+Application.getSession().getLoggedInPlayer().getUsername()+" angemeldet");
         JTabbedPane tabbedpane = new JTabbedPane();
 
         GameUI gameUI = new GameUI();

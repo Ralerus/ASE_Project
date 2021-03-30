@@ -1,11 +1,12 @@
 package layer.domain;
 
+import layer.Application;
 import layer.data.Player;
 import layer.data.Rules;
 import layer.data.Text;
 import layer.data.TextRepository;
 import layer.presentation.GameUI;
-import layer.presentation.LoginUI;
+import layer.presentation.UserUI;
 
 import java.util.*;
 
@@ -16,7 +17,7 @@ public class Game implements GameListener {
     protected Rules rule;
     protected Round currentRound;
     
-    private LoginUI loginUI;
+    private UserUI userUI;
 
     public Game(){
         this.text = new Text();
@@ -27,8 +28,8 @@ public class Game implements GameListener {
 
         this.rule = new Rules();
         this.currentRound = null;
-        this.loginUI = new LoginUI();
-        loginUI.setListener(this);
+        this.userUI = new UserUI();
+        userUI.setListener(this);
     }
 
     public Game(List<Player> playersLeft, Rules rule) {
@@ -37,8 +38,8 @@ public class Game implements GameListener {
         this.playersLeft = playersLeft;
         this.rule = rule;
         this.currentRound = null;
-        this.loginUI = new LoginUI();
-        loginUI.setListener(this);
+        this.userUI = new UserUI();
+        userUI.setListener(this);
     }
     /*public void start(){
         Collections.shuffle(players);
@@ -62,7 +63,7 @@ public class Game implements GameListener {
 
     public void start(){
         Collections.shuffle(playersLeft);
-        loginUI.drawLoginUIFor(playersLeft.remove(0));
+        this.gotoNextPlayer();
     }
 
     /*private void addGameToStats() {
@@ -81,7 +82,12 @@ public class Game implements GameListener {
         if(playersLeft.isEmpty()){
             GameUI.drawResults(sortMapByValue(results));
         }else {
-            this.loginUI.drawLoginUIFor(playersLeft.remove(0));
+            Player nextPlayer = playersLeft.remove(0);
+            if(!nextPlayer.equals(Application.getSession().getLoggedInPlayer())){
+                this.userUI.drawLoginUIFor(nextPlayer);
+            }else{
+                this.startRoundFor(nextPlayer);
+            }
         }
     }
 
