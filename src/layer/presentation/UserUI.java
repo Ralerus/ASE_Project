@@ -3,6 +3,7 @@ package layer.presentation;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.MessageDigest;
 
 import javax.swing.*;
 
@@ -10,6 +11,7 @@ import layer.Application;
 import layer.data.Player;
 import layer.data.PlayerNotFoundException;
 import layer.data.PlayerRepository;
+import layer.data.Security;
 import layer.domain.GameListener;
 import layer.domain.WrongPasswordException;
 
@@ -60,7 +62,8 @@ public class UserUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Application.getSession().login(username.getText(), new String(password.getPassword()));//TODO return boolean needed? use exceptions
+                    String passwordHash = Security.getSecureHash(new String(password.getPassword()));
+                    Application.getSession().login(username.getText(), passwordHash);//TODO return boolean needed? use exceptions
                     System.out.println("Succesfully logged in");
                     loginDialog.setVisible(false);
                     loginDialog.dispose();
@@ -100,7 +103,8 @@ public class UserUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    PlayerRepository.createPlayer(new Player(username.getText(), fullname.getText()),new String(password.getPassword()));
+                    String passwordHash = Security.getSecureHash(new String(password.getPassword()));
+                    PlayerRepository.createPlayer(new Player(username.getText(), fullname.getText()),passwordHash);
                     System.out.println("User succesfully created");
                     registerDialog.setVisible(false);
                     registerDialog.dispose();

@@ -1,5 +1,8 @@
 package layer.data;
 
+import javax.swing.plaf.nimbus.State;
+import java.sql.*;
+
 public class PlayerRepository {
     private Player player;
     private String password;
@@ -10,15 +13,27 @@ public class PlayerRepository {
     }
 
     public boolean changeUserName(String newUsername){
-        //DB set new username
+        try{
+            Database.updateEntry("UPDATE player SET username = ? WHERE username = ?",this.player.getUsername(),newUsername);
+        } catch (SQLException e){
+            return false;
+        }
         return true;
     }
     public boolean changePassword(String newPassword){
-        //DB set new password
+        try{
+            Database.updateEntry("UPDATE player SET password = ? WHERE username = ?",this.player.getUsername(),newPassword);
+        } catch (SQLException e){
+            return false;
+        }
         return true;
     }
     public boolean changeFullname(String newFullname){
-        //DB set new fullname
+        try{
+            Database.updateEntry("UPDATE player SET fullname = ? WHERE username = ?",this.player.getUsername(),newFullname);
+        } catch (SQLException e){
+            return false;
+        }
         return true;
     }
     public boolean isPasswordCorrect(String password){
@@ -30,14 +45,24 @@ public class PlayerRepository {
     }
 
     public static PlayerRepository getPlayerRepository(String username) throws PlayerNotFoundException{
-        //read corresponding data from database to given username
+        String sql = "SELECT username, password, fullname FROM player WHERE username = ?";
+        String fullname=null;
+        String password=null;
+        try(Connection conn = Database.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ){
+            pstmt.setString(1,username);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                fullname = rs.getString("fullname");
+                password = rs.getString("password");
+            }
 
-        String fullname = "";
-        String password = "abc";
-        //create PlayerRepository with data
-
-        if(false){
+        } catch (SQLException e){
             throw new PlayerNotFoundException("Spieler "+username+" existiert nicht");
+        }
+        if(fullname==null || password == null){
+            throw new PlayerNotFoundException();
         }
 
         return new PlayerRepository(username, fullname, password);
@@ -48,7 +73,15 @@ public class PlayerRepository {
     }
 
     public static boolean createPlayer(Player p, String password){
-        //create Player in DB
+        String sql = "INSERT INTO player(username, password, fullname) VALUES (?,?,?)";
+        try(Connection conn = Database.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setString(1,p.getUsername());
+            pstmt.setString(2,password);
+            pstmt.setString(3,p.getFullname());
+            pstmt.executeUpdate();
+        } catch (SQLException e){
+            return false;
+        }
         return true;
     }
 }

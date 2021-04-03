@@ -31,4 +31,8 @@ public class Session {
     public Player getLoggedInPlayer() {
         return loggedInPlayer;
     }
+
+    public void setLoggedInPlayer(Player loggedInPlayer) {
+        this.loggedInPlayer = loggedInPlayer;
+    }
 }

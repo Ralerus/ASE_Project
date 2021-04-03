@@ -1,10 +1,7 @@
 package layer.presentation;
 
 import layer.Application;
-import layer.data.Difficulty;
-import layer.data.PlayerNotFoundException;
-import layer.data.PlayerRepository;
-import layer.data.TextRepository;
+import layer.data.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,19 +50,39 @@ public class SettingsUI {
                 }
                 if(!username.getText().isEmpty()){
                     if(player!=null){
-                        player.changeUserName(username.getText());
+                        if(player.changeUserName(username.getText())){
+                            JOptionPane.showMessageDialog(Application.getUi(),"Nutzername erfolgreich geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                            Application.getSession().setLoggedInPlayer(new Player(username.getText(), Application.getSession().getLoggedInPlayer().getFullname()));
+                            Application.getUi().setTitle("Tippduell - "+username.getText()+" angemeldet");
+                            username.setText("");
+                        }else {
+                            JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des Nutzernames", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
                 if(!fullname.getText().isEmpty()){
                     if(player!=null){
-                        player.changeFullname(fullname.getText());
+                        if(player.changeFullname(fullname.getText())){
+                            JOptionPane.showMessageDialog(Application.getUi(),"Vollständiger Name erfolgreich geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                            Application.getSession().setLoggedInPlayer(new Player(Application.getSession().getLoggedInPlayer().getUsername(),fullname.getText()));
+                            fullname.setText("");
+                        }else {
+                            JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des vollständigen Namens", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
                 if(password.getPassword().length > 0 && password_repetition.getPassword().length > 0){
                     String newPasswordString = new String(password_repetition.getPassword());
                     String passwordString = new String(password.getPassword());
                     if(newPasswordString.equals(passwordString) && player !=null){
-                        player.changePassword(newPasswordString);
+                        String passwordHash = Security.getSecureHash(passwordString);
+                        if(player.changePassword(passwordHash)){
+                            JOptionPane.showMessageDialog(Application.getUi(),"Password erfolgreich geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                            password.setText("");
+                            password_repetition.setText("");
+                        }else {
+                            JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des Passworts", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
             }
