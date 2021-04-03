@@ -152,6 +152,11 @@ public class SettingsUI {
                 }
                 if(TextRepository.createText(title.getText(), text.getText(), difficulty)){
                     JOptionPane.showMessageDialog(Application.getUi(),title.getText()+" erfolgreich hinzugefügt.", "Text erfolgreich hinzugefügt", JOptionPane.INFORMATION_MESSAGE);
+                    title.setText("");
+                    text.setText("");
+                    radioEasy.setSelected(false);
+                    radioMedium.setSelected(false);
+                    radioHard.setSelected(false);
                 }else{
                     JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Hinzufügen des Textes", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }

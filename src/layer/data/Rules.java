@@ -5,14 +5,14 @@ public class Rules {
     private int maxLengthOfText;
     private int minLengthOfText;
 
-    public Rules(Difficulty difficulty, int maxLengthOfText, int minLengthOfText) {
+    public Rules(Difficulty difficulty,int minLengthOfText, int maxLengthOfText) {
         this.difficulty = difficulty;
         this.maxLengthOfText = maxLengthOfText;
         this.minLengthOfText = minLengthOfText;
     }
 
     public Rules(){
-        this(Difficulty.Medium, 500,200);
+        this(Difficulty.Medium, 200,500);
     }
 
     public Difficulty getDifficulty() {

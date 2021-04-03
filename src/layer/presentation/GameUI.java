@@ -18,7 +18,8 @@ public class GameUI {
 	private JRadioButton radioEasy;
 	private JRadioButton radioMedium;
 	private JRadioButton radioHard;
-	private JSlider textLengthSlider;
+	private JSlider textLengthSliderMin;
+	private JSlider textLengthSliderMax;
 	private List<Player> players = new ArrayList<>();
 
 	public JPanel getCompetitionUI() {
@@ -40,9 +41,14 @@ public class GameUI {
 				}else if(radioHard.isSelected()){
 					difficulty = Difficulty.Hard;
 				}
-				Rules rules = new Rules(difficulty, textLengthSlider.getValue(),50); //TODO set min text length
-				Game game = new Game(players,rules); //TODO builder pattern?
-				game.start();
+				Rules rules = new Rules(difficulty, textLengthSliderMin.getValue(),textLengthSliderMax.getValue());
+				Game game = null; //TODO builder pattern?
+				try {
+					game = new Game(players,rules);
+					game.start();
+				} catch (TextRepository.TextNotFoundException ex) {
+					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		competitionPanel.add(startButton, BorderLayout.SOUTH);
@@ -68,11 +74,16 @@ public class GameUI {
 				}else if(radioHard.isSelected()){
 					difficulty = Difficulty.Hard;
 				}
-				Rules rules = new Rules(difficulty, textLengthSlider.getValue(),50); //TODO set min text length
+				Rules rules = new Rules(difficulty, textLengthSliderMin.getValue(),textLengthSliderMax.getValue());
 				List<Player> singleplayer = new ArrayList<>();
 				singleplayer.add(Application.getSession().getLoggedInPlayer());
-				Game game = new Game(singleplayer,rules); //TODO builder pattern?
-				game.start();
+				Game game = null; //TODO builder pattern?
+				try {
+					game = new Game(singleplayer,rules);
+					game.start();
+				} catch (TextRepository.TextNotFoundException ex) {
+					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		trainingPanel.add(startButton, BorderLayout.SOUTH);
@@ -116,7 +127,7 @@ public class GameUI {
 		configurationPanel.setLayout(new BorderLayout());
 		configurationPanel.add(new JLabel("Konfiguration"), BorderLayout.NORTH);
 		JPanel configurationOptions = new JPanel();
-		configurationOptions.setLayout(new GridLayout(2, 2));
+		configurationOptions.setLayout(new GridLayout(3, 2));
 		configurationOptions.add(new JLabel("Schwierigkeitsgrad:"));
 
 		JPanel difficultyRadiosPanel = new JPanel();
@@ -135,13 +146,20 @@ public class GameUI {
 
 		configurationOptions.add(difficultyRadiosPanel);
 
-		configurationOptions.add(new JLabel("Textlänge:"));
-		textLengthSlider = new JSlider(JSlider.HORIZONTAL, 50, 500, 250);
-		textLengthSlider.setMinorTickSpacing(25);
-		textLengthSlider.setMajorTickSpacing(100);
-		textLengthSlider.setPaintTicks(true);
-		textLengthSlider.setPaintLabels(true);
-		configurationOptions.add(textLengthSlider);
+		configurationOptions.add(new JLabel("Textlänge maximal:"));
+		textLengthSliderMax = new JSlider(JSlider.HORIZONTAL, 50, 500, 250);
+		textLengthSliderMax.setMinorTickSpacing(25);
+		textLengthSliderMax.setMajorTickSpacing(100);
+		textLengthSliderMax.setPaintTicks(true);
+		textLengthSliderMax.setPaintLabels(true);
+		configurationOptions.add(textLengthSliderMax);
+		configurationOptions.add(new JLabel("Textlänge minimal:"));
+		textLengthSliderMin = new JSlider(JSlider.HORIZONTAL, 0, 500, 0);
+		textLengthSliderMin.setMinorTickSpacing(25);
+		textLengthSliderMin.setMajorTickSpacing(100);
+		textLengthSliderMin.setPaintTicks(true);
+		textLengthSliderMin.setPaintLabels(true);
+		configurationOptions.add(textLengthSliderMin);
 		configurationPanel.add(configurationOptions, BorderLayout.CENTER);
 
 		return configurationPanel;

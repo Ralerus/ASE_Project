@@ -64,7 +64,6 @@ public class UserUI {
                 try {
                     String passwordHash = Security.getSecureHash(new String(password.getPassword()));
                     Application.getSession().login(username.getText(), passwordHash);//TODO return boolean needed? use exceptions
-                    System.out.println("Succesfully logged in");
                     loginDialog.setVisible(false);
                     loginDialog.dispose();
                     if (gameLogin) {
@@ -81,7 +80,7 @@ public class UserUI {
         loginPanel.add(loginButton);
         loginDialog.add(loginPanel);
         loginDialog.setSize(300,150);
-        loginDialog.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        loginDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         loginDialog.setVisible(true);
     }
 

@@ -28,8 +28,15 @@ public class DatabaseSetup {
                 + "	password text NOT NULL,\n"
                 + "	fullname text\n"
                 + ");";
+        String createTextTable = "CREATE TABLE IF NOT EXISTS text (\n"
+                + "	title text PRIMARY KEY,\n"
+                + "	text text NOT NULL,\n"
+                + "	difficulty integer NOT NULL,\n"
+                + " length integer NOT NULL \n"
+                + ");";
         try(Connection conn = DriverManager.getConnection(url); Statement stmt = conn.createStatement()){
             stmt.execute(createPlayerTable);
+            stmt.execute(createTextTable);
             System.out.println("Table created");
         } catch (SQLException e){
             System.err.println(e.getMessage());

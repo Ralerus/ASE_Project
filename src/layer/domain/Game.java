@@ -22,7 +22,6 @@ public class Game implements GameListener {
     public Game(){
         this.text = new Text();
         List<Player> players = new ArrayList<>();
-        //players.add(Application.getSession().getLoggedInPlayer());
         this.playersLeft = players;
         this.results = new HashMap<>();
 
@@ -32,7 +31,7 @@ public class Game implements GameListener {
         userUI.setListener(this);
     }
 
-    public Game(List<Player> playersLeft, Rules rule) {
+    public Game(List<Player> playersLeft, Rules rule) throws TextRepository.TextNotFoundException {
         this.text = TextRepository.getRandomTextBasedOn(rule);
         this.results = new HashMap<>();
         this.playersLeft = playersLeft;
