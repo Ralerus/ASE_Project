@@ -87,8 +87,25 @@ public class SettingsUI {
                 }
             }
         });
-
         userManagement.add(changeData);
+        JButton deleteUser = new JButton("Nutzer löschen");
+        deleteUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    PlayerRepository player = PlayerRepository.getPlayerRepository(Application.getSession().getLoggedInPlayer());
+                    if(player.deleteUser()){
+                        JOptionPane.showMessageDialog(Application.getUi(),"Nutzer erfolgreich gelöscht, sie werden nun ausgeloggt.", "Löschen erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                        Application.getSession().logoff();
+                    }else{
+                        JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Löschen des Nutzers", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (PlayerNotFoundException playerNotFoundException) {
+                    playerNotFoundException.printStackTrace();
+                }
+            }
+        });
+        userManagement.add(deleteUser);
         return userManagement;
     }
 

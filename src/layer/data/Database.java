@@ -17,11 +17,13 @@ public class Database {
         return conn;
     }
 
-    public static void updateEntry(String sql, String identifier, String newValue) throws SQLException{
+    public static void updateEntry(String sql, String value1, String value2) throws SQLException{
         try(Connection conn = Database.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
-            pstmt.setString(1,newValue);
-            pstmt.setString(2, identifier);
+            pstmt.setString(1,value1);
+            if(value2!=""){
+                pstmt.setString(2, value2);
+            }
             pstmt.executeUpdate();
         }catch (SQLException ex){
             throw ex;

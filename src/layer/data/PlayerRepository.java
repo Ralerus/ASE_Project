@@ -14,7 +14,7 @@ public class PlayerRepository {
 
     public boolean changeUserName(String newUsername){
         try{
-            Database.updateEntry("UPDATE player SET username = ? WHERE username = ?",this.player.getUsername(),newUsername);
+            Database.updateEntry("UPDATE player SET username = ? WHERE username = ?",newUsername,this.player.getUsername());
         } catch (SQLException e){
             return false;
         }
@@ -22,7 +22,7 @@ public class PlayerRepository {
     }
     public boolean changePassword(String newPassword){
         try{
-            Database.updateEntry("UPDATE player SET password = ? WHERE username = ?",this.player.getUsername(),newPassword);
+            Database.updateEntry("UPDATE player SET password = ? WHERE username = ?",newPassword,this.player.getUsername());
         } catch (SQLException e){
             return false;
         }
@@ -30,7 +30,7 @@ public class PlayerRepository {
     }
     public boolean changeFullname(String newFullname){
         try{
-            Database.updateEntry("UPDATE player SET fullname = ? WHERE username = ?",this.player.getUsername(),newFullname);
+            Database.updateEntry("UPDATE player SET fullname = ? WHERE username = ?",newFullname,this.player.getUsername());
         } catch (SQLException e){
             return false;
         }
@@ -79,6 +79,15 @@ public class PlayerRepository {
             pstmt.setString(2,password);
             pstmt.setString(3,p.getFullname());
             pstmt.executeUpdate();
+        } catch (SQLException e){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteUser(){
+        try{
+            Database.updateEntry("DELETE FROM player WHERE username = ?",this.player.getUsername(),"");
         } catch (SQLException e){
             return false;
         }

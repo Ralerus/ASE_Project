@@ -18,4 +18,7 @@ public class Application {
     public static ApplicationUI getUi() {
         return ui;
     }
+    public static void setUi(ApplicationUI ui) {
+        Application.ui = ui;
+    }
 }

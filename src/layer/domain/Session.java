@@ -1,8 +1,10 @@
 package layer.domain;
 
+import layer.Application;
 import layer.data.Player;
 import layer.data.PlayerNotFoundException;
 import layer.data.PlayerRepository;
+import layer.presentation.ApplicationUI;
 
 public class Session {
     private Player loggedInPlayer = new Player("","");
@@ -16,12 +18,10 @@ public class Session {
         }
     }
 
-    public boolean logoff(Player p){
-        if(loggedInPlayer.equals(p)){
-            loggedInPlayer = null;
-            return true;
-        }
-        return false;
+    public void logoff(){
+        this.loggedInPlayer = null;
+        Application.getUi().dispose();
+        Application.setUi(new ApplicationUI());
     }
 
     public boolean isLoggedIn(Player p){
