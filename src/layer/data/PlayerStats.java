@@ -1,9 +1,16 @@
 package layer.data;
 
-public class PlayerStats extends Stats{
-    //letzte Ergebnisse, Historie
+import java.util.List;
 
-    public PlayerStats(int numberOfCompetitons, int numberOfTrainings) {
+public class PlayerStats extends Stats{
+    private List<HistoryEntry> history;
+
+    public PlayerStats(int numberOfCompetitons, int numberOfTrainings, List<HistoryEntry> history) {
         super(numberOfCompetitons, numberOfTrainings);
+        this.history = history;
+    }
+
+    public List<HistoryEntry> getHistory() {
+        return history;
     }
 }

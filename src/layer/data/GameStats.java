@@ -1,18 +1,22 @@
 package layer.data;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GameStats extends Stats {
     private int numberOfPlayers;
-    private Map<String, Double> highscore;
+    private List<HistoryEntry> highscore;
 
-    public GameStats(int numberOfCompetitons, int numberOfTrainings, int numberOfPlayers) {
+    public GameStats(int numberOfCompetitons, int numberOfTrainings, int numberOfPlayers, List<HistoryEntry> highscore) {
         super(numberOfCompetitons,numberOfTrainings);
         this.numberOfPlayers = numberOfPlayers;
-        this.highscore = new HashMap<>();
+        this.highscore = highscore;
     }
     public int getNumberOfPlayers() {
         return numberOfPlayers;
+    }
+
+    public List<HistoryEntry> getHighscore() {
+        return highscore;
     }
 }

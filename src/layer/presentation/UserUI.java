@@ -104,7 +104,6 @@ public class UserUI {
                 try {
                     String passwordHash = Security.getSecureHash(new String(password.getPassword()));
                     PlayerRepository.createPlayer(new Player(username.getText(), fullname.getText()),passwordHash);
-                    System.out.println("User succesfully created");
                     registerDialog.setVisible(false);
                     registerDialog.dispose();
 
