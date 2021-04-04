@@ -20,7 +20,7 @@ public class SettingsUI {
 
     private JPanel getUserMananagementUI(){
         JPanel userManagement = new JPanel();
-        userManagement.setLayout(new GridLayout(7,1));
+        userManagement.setLayout(new GridLayout(8,1));
         userManagement.add(new JLabel("Nutzerverwaltung"));
         JPanel userInputFields = new JPanel();
         userInputFields.setLayout(new GridLayout(4,2 ));
@@ -106,6 +106,14 @@ public class SettingsUI {
             }
         });
         userManagement.add(deleteUser);
+        JButton logoff = new JButton("Abmelden");
+        logoff.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Application.getSession().logoff();
+            }
+        });
+        userManagement.add(logoff);
         return userManagement;
     }
 
