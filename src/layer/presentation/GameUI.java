@@ -44,7 +44,7 @@ public class GameUI {
 				Rules rules = new Rules(difficulty, textLengthSliderMin.getValue(),textLengthSliderMax.getValue());
 				Game game = null; //TODO builder pattern?
 				try {
-					game = new Game(players,rules);
+					game = new Game(players,rules,true);
 					game.start();
 				} catch (TextRepository.TextNotFoundException ex) {
 					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -79,7 +79,7 @@ public class GameUI {
 				singleplayer.add(Application.getSession().getLoggedInPlayer());
 				Game game = null; //TODO builder pattern?
 				try {
-					game = new Game(singleplayer,rules);
+					game = new Game(singleplayer,rules,false);
 					game.start();
 				} catch (TextRepository.TextNotFoundException ex) {
 					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);

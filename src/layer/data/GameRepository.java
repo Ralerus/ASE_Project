@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class GameRepository {
 	//TODO: Besserer Stil Try-Catch nur auf oberster Ebene?
-	public static boolean writeGameToStats(String textTitle, Map<String, Double> results, Instant date) throws SQLException{ //TODO kein Game übergeben, damit keine Abhängigkeiten nach Außen?
+	public static void writeCompetitionToStats(String textTitle, Map<String, Double> results, Instant date) throws SQLException{ //TODO kein Game übergeben, damit keine Abhängigkeiten nach Außen?
 		String sql = "INSERT INTO game (date, textTitle) VALUES (?,?)";
 		Connection conn = Database.connect();
 		PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -33,6 +33,16 @@ public class GameRepository {
 			pstmt.executeUpdate();
 		}
 		conn.close();
-		return true;
+	}
+	public static void writeTrainingToStats(String textTitle, String username, Double duration, Instant date) throws SQLException{ //TODO kein Game übergeben, damit keine Abhängigkeiten nach Außen?
+		String sql = "INSERT INTO training (username, duration, textTitle, date) VALUES (?,?,?,?)";
+		Connection conn = Database.connect();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1,username);
+		pstmt.setDouble(2,duration);
+		pstmt.setString(3,textTitle);
+		pstmt.setString(4,date.toString());
+		pstmt.executeUpdate();
+		conn.close();
 	}
 }
