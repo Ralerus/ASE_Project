@@ -1,18 +1,20 @@
 package layer.data;
 
 public class Text {
+    private String title;
     private String text;
     private Difficulty difficulty;
     private int length;
 
-    public Text(String text, Difficulty difficulty, int length) {
+    public Text(String title, String text, Difficulty difficulty, int length) {
         this.text = text;
         this.difficulty = difficulty;
         this.length = length;
+        this.title = title;
     }
 
     public Text(){
-        this("no text set", Difficulty.Easy, 11);
+        this("no title", "no text set", Difficulty.Easy, 11);
     }
 
     public String getText() {
@@ -37,5 +39,9 @@ public class Text {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

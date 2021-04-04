@@ -91,6 +91,8 @@ public class GameUI {
 	}
 	public static void drawResults(Map<Player, Double> results) {
 		JDialog jDialog = new JDialog(Application.getUi(), "Ergebnisse", true);
+		JPanel resultsPanelWithButton = new JPanel();
+		resultsPanelWithButton.setLayout(new BoxLayout(resultsPanelWithButton, BoxLayout.PAGE_AXIS));
 		JPanel resultsPanel = new JPanel();
 		resultsPanel.setLayout(new GridLayout(results.keySet().size(),3));
 		System.out.println("Game over");
@@ -105,7 +107,7 @@ public class GameUI {
 			resultsPanel.add(new JLabel(results.get(p)+" Sekunden"));
 			counter++;
 		}
-		jDialog.add(resultsPanel);
+		resultsPanelWithButton.add(resultsPanel);
 
 		JButton playAgain = new JButton("Nochmal");
 		playAgain.addActionListener(new ActionListener() {
@@ -114,7 +116,8 @@ public class GameUI {
 
 			}
 		});
-		jDialog.add(playAgain);
+		resultsPanelWithButton.add(playAgain);
+		jDialog.add(resultsPanelWithButton);
 
 		jDialog.setSize(500,400);
 		jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

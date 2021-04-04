@@ -25,6 +25,7 @@ public class TextRepository {
     public static Text getRandomTextBasedOn(Rules rules) throws TextNotFoundException{
         String sql = "SELECT title, text, difficulty FROM text WHERE difficulty = ? AND length >= ? AND length <= ?";
         String text = null;
+        String title = null;
         Difficulty difficulty = null;
 
         try(Connection conn = Database.connect();
@@ -35,6 +36,7 @@ public class TextRepository {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()){
                 text = rs.getString("text");
+                title = rs.getString("title");
                 int difficultyInt = rs.getInt("difficulty");
                 switch(difficultyInt){
                     case 0:
@@ -58,7 +60,7 @@ public class TextRepository {
             throw new TextNotFoundException("Kein Text für Regeln gefunden!!");
         }
 
-        return new Text(text,difficulty,text.length()); //TODO für was wird difficulty im frontend gebraucht?
+        return new Text(title,text,difficulty,text.length()); //TODO für was wird difficulty im frontend gebraucht?
     }
 
     public static class TextNotFoundException extends Exception {
