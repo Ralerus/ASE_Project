@@ -1,13 +1,12 @@
 package layer.domain;
 
 import layer.Application;
-import layer.data.Player;
-import layer.data.Rules;
-import layer.data.Text;
-import layer.data.TextRepository;
+import layer.data.*;
 import layer.presentation.GameUI;
 import layer.presentation.UserUI;
 
+import java.sql.SQLException;
+import java.time.Instant;
 import java.util.*;
 
 public class Game implements GameListener {
@@ -79,6 +78,7 @@ public class Game implements GameListener {
     }
     private void gotoNextPlayer() {
         if(playersLeft.isEmpty()){
+            this.writeGameToStats();
             GameUI.drawResults(sortMapByValue(results));
         }else {
             Player nextPlayer = playersLeft.remove(0);
@@ -105,5 +105,17 @@ public class Game implements GameListener {
             result.put(entry.getKey(), entry.getValue());
         }
         return result;
+    }
+
+    private void writeGameToStats(){
+        Map<String, Double> resultsWithUsername = new HashMap<>();
+        for(Player p : results.keySet()) {
+            resultsWithUsername.put(p.getUsername(), results.get(p));
+        }
+        try {
+            GameRepository.writeGameToStats(text.getTitle(), resultsWithUsername, Instant.now());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
