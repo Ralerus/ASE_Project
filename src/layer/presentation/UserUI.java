@@ -106,7 +106,6 @@ public class UserUI {
                     PlayerRepository.createPlayer(new Player(username.getText(), fullname.getText()),passwordHash);
                     registerDialog.setVisible(false);
                     registerDialog.dispose();
-
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(registerDialog, "Fehler beim Anlegen des Nutzers", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }

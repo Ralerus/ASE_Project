@@ -19,6 +19,7 @@ public class RoundUI {
 
     public void displayRoundFor(Player p, String text){
         System.out.println(p.getUsername()+" plays round");
+        JOptionPane.showConfirmDialog(Application.getUi(),  "Bist du bereit, "+p.getUsername()+"?", "Bereit?", JOptionPane.DEFAULT_OPTION);
         jDialog = new JDialog(Application.getUi(),"Runde von "+p.getUsername(), true);
         jDialog.setLayout(new GridLayout(8,1));
         JPanel jpanel = new JPanel();
@@ -43,6 +44,7 @@ public class RoundUI {
         jpanel.add(textArea);
         jpanel.add(userInput);
         jpanel.add(new JLabel("Wettkampf läuft ..."));
+        listener.setStartTime();
         jDialog.add(jpanel);
 
         jDialog.setSize(1000,800);

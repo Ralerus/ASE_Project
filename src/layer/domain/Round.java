@@ -47,13 +47,13 @@ public class Round implements RoundListener{
     }
     
     public void startRound() {
-        this.setStartTime();
         this.roundUI = new RoundUI();
-        roundUI.setListener(this);
+        roundUI.setListener(this);;
         roundUI.displayRoundFor(p, this.getTextLeft());
     }
-    
-    private void setStartTime() {
+
+    @Override
+    public void setStartTime() {
     	this.startTime = Instant.now();
     }
     private void setEndTime() {

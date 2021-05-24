@@ -13,6 +13,8 @@ import layer.data.*;
 import layer.domain.Game;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class GameUI {
 	private JRadioButton radioEasy;
@@ -21,6 +23,8 @@ public class GameUI {
 	private JSlider textLengthSliderMin;
 	private JSlider textLengthSliderMax;
 	private List<Player> players = new ArrayList<>();
+	//private int maxLength;
+	//private int minLength;
 
 	public JPanel getCompetitionUI() {
 		JPanel competitionPanel = new JPanel();
@@ -41,7 +45,7 @@ public class GameUI {
 				}else if(radioHard.isSelected()){
 					difficulty = Difficulty.Hard;
 				}
-				Rules rules = new Rules(difficulty, textLengthSliderMin.getValue(),textLengthSliderMax.getValue());
+				Rules rules = new Rules(difficulty,  textLengthSliderMin.getValue(),textLengthSliderMax.getValue());
 				Game game = null; //TODO builder pattern?
 				try {
 					game = new Game(players,rules,true);
@@ -156,6 +160,12 @@ public class GameUI {
 		textLengthSliderMax.setPaintTicks(true);
 		textLengthSliderMax.setPaintLabels(true);
 		configurationOptions.add(textLengthSliderMax);
+		/*textLengthSliderMax.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				maxLength = textLengthSliderMax.getValue();
+			}
+		});*/
 		configurationOptions.add(new JLabel("Textlänge minimal:"));
 		textLengthSliderMin = new JSlider(JSlider.HORIZONTAL, 0, 500, 0);
 		textLengthSliderMin.setMinorTickSpacing(25);
@@ -163,6 +173,12 @@ public class GameUI {
 		textLengthSliderMin.setPaintTicks(true);
 		textLengthSliderMin.setPaintLabels(true);
 		configurationOptions.add(textLengthSliderMin);
+		/*textLengthSliderMin.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				minLength = textLengthSliderMin.getValue();
+			}
+		});*/
 		configurationPanel.add(configurationOptions, BorderLayout.CENTER);
 
 		return configurationPanel;
