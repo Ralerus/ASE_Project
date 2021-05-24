@@ -23,6 +23,7 @@ public class GameUI {
 	private JSlider textLengthSliderMin;
 	private JSlider textLengthSliderMax;
 	private List<Player> players = new ArrayList<>();
+	private static Game lastGame;
 	//private int maxLength;
 	//private int minLength;
 
@@ -49,6 +50,7 @@ public class GameUI {
 				Game game = null; //TODO builder pattern?
 				try {
 					game = new Game(players,rules,true);
+					lastGame = game;
 					game.start();
 				} catch (TextRepository.TextNotFoundException ex) {
 					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -84,6 +86,7 @@ public class GameUI {
 				Game game = null; //TODO builder pattern?
 				try {
 					game = new Game(singleplayer,rules,false);
+					lastGame = game;
 					game.start();
 				} catch (TextRepository.TextNotFoundException ex) {
 					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -103,7 +106,7 @@ public class GameUI {
 		int counter = 1;
 		for(Player p: results.keySet()){
 			if(counter == 1){
-				JOptionPane.showMessageDialog(jDialog,p.getUsername()+" hat gewonnen!", "Gewinner ermittelt", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(Application.getUi(),p.getUsername()+" hat gewonnen!", "Gewinner ermittelt", JOptionPane.INFORMATION_MESSAGE);
 			}
 			System.out.println("Player "+p.getUsername()+" has "+results.get(p)+" seconds.");
 			resultsPanel.add(new JLabel(counter+"."));
@@ -117,7 +120,8 @@ public class GameUI {
 		playAgain.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				jDialog.dispose();
+				lastGame.playAgain();
 			}
 		});
 		resultsPanelWithButton.add(playAgain);

@@ -13,6 +13,7 @@ public class Game implements GameListener {
     private Text text;
     private Map<Player, Double> results;
     private List<Player> playersLeft;
+    private List<Player> allPlayers;
     private Rules rule;
     private Round currentRound;
     private UserUI userUI;
@@ -22,6 +23,7 @@ public class Game implements GameListener {
         this.text = TextRepository.getRandomTextBasedOn(rule);
         this.results = new HashMap<>();
         this.playersLeft = playersLeft;
+        this.allPlayers = new ArrayList<>(playersLeft);
         this.rule = rule;
         this.currentRound = null;
         this.isCompetition = isCompetition;
@@ -32,6 +34,13 @@ public class Game implements GameListener {
     public void start(){
         Collections.shuffle(playersLeft);
         this.gotoNextPlayer();
+    }
+
+    @Override
+    public void playAgain() {
+        this.playersLeft.addAll(allPlayers);
+        this.results.clear();
+        this.start();
     }
 
     @Override
