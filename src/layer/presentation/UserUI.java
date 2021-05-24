@@ -39,6 +39,7 @@ public class UserUI {
         if(p!=null){
             username.setText(p.getUsername());
             username.setEditable(false);
+            username.setFocusable(false);
             gameLogin = true;
         }else{
             gameLogin = false;

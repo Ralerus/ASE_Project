@@ -25,6 +25,7 @@ public class RoundUI {
         JPanel jpanel = new JPanel();
         textArea = new JTextArea(text,3,50);
         textArea.setEditable(false);
+        textArea.setFocusable(false);
         JTextArea userInput = new JTextArea(4,50);
         userInput.addKeyListener(new KeyListener() {
             @Override
