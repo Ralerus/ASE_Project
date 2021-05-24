@@ -22,7 +22,7 @@ public class GameUI implements GameUIListener {
 	private JRadioButton radioHard;
 	private JSlider textLengthSliderMin;
 	private JSlider textLengthSliderMax;
-	private List<Player> players = new ArrayList<>();
+	private List<Player> players = new ArrayList<>(); //TODO keine Logik im UI
 	private static Game lastGame;
 	private JPanel playersList;
 	//private int maxLength;
@@ -39,23 +39,28 @@ public class GameUI implements GameUIListener {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Difficulty difficulty = Difficulty.Easy;
-				if(radioEasy.isSelected()){
-					difficulty = Difficulty.Easy;
-				}else if(radioMedium.isSelected()){
-					difficulty = Difficulty.Medium;
-				}else if(radioHard.isSelected()){
-					difficulty = Difficulty.Hard;
+				if(!players.isEmpty()){
+					Difficulty difficulty = Difficulty.Easy;
+					if(radioEasy.isSelected()){
+						difficulty = Difficulty.Easy;
+					}else if(radioMedium.isSelected()){
+						difficulty = Difficulty.Medium;
+					}else if(radioHard.isSelected()){
+						difficulty = Difficulty.Hard;
+					}
+					Rules rules = new Rules(difficulty,  textLengthSliderMin.getValue(),textLengthSliderMax.getValue());
+					Game game = null; //TODO builder pattern?
+					try {
+						game = new Game(players,rules,true);
+						lastGame = game;
+						game.start();
+					} catch (TextRepository.TextNotFoundException ex) {
+						JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+					}
+				}else{
+					JOptionPane.showMessageDialog(Application.getUi(), "Bitte füge zuerst Spieler hinzu, bevor du ein Spiel startest!", "Keine Spieler", JOptionPane.ERROR_MESSAGE);
 				}
-				Rules rules = new Rules(difficulty,  textLengthSliderMin.getValue(),textLengthSliderMax.getValue());
-				Game game = null; //TODO builder pattern?
-				try {
-					game = new Game(players,rules,true);
-					lastGame = game;
-					game.start();
-				} catch (TextRepository.TextNotFoundException ex) {
-					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
-				}
+
 			}
 		});
 		competitionPanel.add(startButton, BorderLayout.SOUTH);
@@ -208,8 +213,13 @@ public class GameUI implements GameUIListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					players.add(PlayerRepository.getPlayerRepository(username.getText()).getPlayer());
-					refreshPlayersList();
+					Player p = PlayerRepository.getPlayerRepository(username.getText()).getPlayer();
+					if(!players.contains(p)) {
+						players.add(p);
+						refreshPlayersList();
+					}else{
+						JOptionPane.showMessageDialog(Application.getUi(), "Du hast diesen Spieler bereits hinzugefügt.", "Fehler", JOptionPane.ERROR_MESSAGE);
+					}
 					username.setText("");
 				}catch (PlayerNotFoundException ex){
 					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Spieler nicht gefunden", JOptionPane.ERROR_MESSAGE);
