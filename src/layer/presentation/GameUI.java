@@ -19,16 +19,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class GameUI implements GameUIListener {
-	private JRadioButton radioEasy;
-	private JRadioButton radioMedium;
-	private JRadioButton radioHard;
-	private JSlider textLengthSliderMin;
-	private JSlider textLengthSliderMax;
 	private List<Player> players = new ArrayList<>(); //TODO keine Logik im UI
 	private static Game lastGame;
 	private JPanel playersList;
-	//private int maxLength;
-	//private int minLength;
+	Difficulty difficulty;
+	private int maxLength;
+	private int minLength;
 
 	public JPanel getCompetitionUI() {
 		JPanel competitionPanel = new JPanel();
@@ -42,15 +38,7 @@ public class GameUI implements GameUIListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!players.isEmpty()){
-					Difficulty difficulty = Difficulty.Easy;
-					if(radioEasy.isSelected()){
-						difficulty = Difficulty.Easy;
-					}else if(radioMedium.isSelected()){
-						difficulty = Difficulty.Medium;
-					}else if(radioHard.isSelected()){
-						difficulty = Difficulty.Hard;
-					}
-					Rules rules = new Rules(difficulty,  textLengthSliderMin.getValue(),textLengthSliderMax.getValue());
+					Rules rules = new Rules(difficulty,minLength,maxLength);
 					Game game = null; //TODO builder pattern?
 					try {
 						game = new Game(players,rules,true);
@@ -81,16 +69,7 @@ public class GameUI implements GameUIListener {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO listens to same radios as competition ui?
-				Difficulty difficulty = Difficulty.Easy;
-				if(radioEasy.isSelected()){
-					difficulty = Difficulty.Easy;
-				}else if(radioMedium.isSelected()){
-					difficulty = Difficulty.Medium;
-				}else if(radioHard.isSelected()){
-					difficulty = Difficulty.Hard;
-				}
-				Rules rules = new Rules(difficulty, textLengthSliderMin.getValue(),textLengthSliderMax.getValue());
+				Rules rules = new Rules(difficulty,minLength,maxLength);
 				List<Player> singleplayer = new ArrayList<>();
 				singleplayer.add(Application.getSession().getLoggedInPlayer());
 				Game game = null; //TODO builder pattern?
@@ -155,9 +134,10 @@ public class GameUI implements GameUIListener {
 		difficultyRadiosPanel.setLayout(new GridLayout(3, 1));
 
 		ButtonGroup difficultyRadios = new ButtonGroup();
-		radioEasy = new JRadioButton("Einfach");
-		radioMedium = new JRadioButton("Mittel");
-		radioHard = new JRadioButton("Schwer");
+		JRadioButton radioEasy = new JRadioButton("Einfach");
+		radioEasy.setSelected(true);
+		JRadioButton radioMedium = new JRadioButton("Mittel");
+		JRadioButton radioHard = new JRadioButton("Schwer");
 		difficultyRadios.add(radioEasy);
 		difficultyRadios.add(radioMedium);
 		difficultyRadios.add(radioHard);
@@ -165,34 +145,53 @@ public class GameUI implements GameUIListener {
 		difficultyRadiosPanel.add(radioMedium);
 		difficultyRadiosPanel.add(radioHard);
 
+		ActionListener selectedRadio = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(difficultyRadios.getSelection().equals(radioEasy.getModel())){
+					difficulty = Difficulty.Easy;
+				}else if(difficultyRadios.getSelection().equals(radioMedium.getModel())){
+					difficulty = Difficulty.Medium;
+				}else if(difficultyRadios.getSelection().equals(radioHard.getModel())) {
+					difficulty = Difficulty.Hard;
+				}
+			}
+		};
+		difficulty = Difficulty.Easy;
+		radioMedium.addActionListener(selectedRadio);
+		radioEasy.addActionListener(selectedRadio);
+		radioHard.addActionListener(selectedRadio);
+
 		configurationOptions.add(difficultyRadiosPanel);
 
 		configurationOptions.add(new JLabel("Textlänge maximal:"));
-		textLengthSliderMax = new JSlider(JSlider.HORIZONTAL, 50, 500, 250);
+		JSlider textLengthSliderMax = new JSlider(JSlider.HORIZONTAL, 0, 500, 250);
 		textLengthSliderMax.setMinorTickSpacing(25);
 		textLengthSliderMax.setMajorTickSpacing(100);
 		textLengthSliderMax.setPaintTicks(true);
 		textLengthSliderMax.setPaintLabels(true);
 		configurationOptions.add(textLengthSliderMax);
-		/*textLengthSliderMax.addChangeListener(new ChangeListener() {
+		textLengthSliderMax.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				maxLength = textLengthSliderMax.getValue();
 			}
-		});*/
+		});
+		maxLength = textLengthSliderMax.getValue();
 		configurationOptions.add(new JLabel("Textlänge minimal:"));
-		textLengthSliderMin = new JSlider(JSlider.HORIZONTAL, 0, 500, 0);
+		JSlider textLengthSliderMin = new JSlider(JSlider.HORIZONTAL, 0, 500, 0);
 		textLengthSliderMin.setMinorTickSpacing(25);
 		textLengthSliderMin.setMajorTickSpacing(100);
 		textLengthSliderMin.setPaintTicks(true);
 		textLengthSliderMin.setPaintLabels(true);
 		configurationOptions.add(textLengthSliderMin);
-		/*textLengthSliderMin.addChangeListener(new ChangeListener() {
+		textLengthSliderMin.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				minLength = textLengthSliderMin.getValue();
 			}
-		});*/
+		});
+		minLength = textLengthSliderMin.getValue();
 		configurationPanel.add(configurationOptions, BorderLayout.CENTER);
 
 		return configurationPanel;

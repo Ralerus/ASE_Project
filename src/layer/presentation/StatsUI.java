@@ -68,7 +68,7 @@ public class StatsUI {
         if(gameStats !=null) {
             gameStatsPanel.add(new JLabel("Durchgeführte Wettkämpfe: "+ gameStats.getNumberOfCompetitons()));
             gameStatsPanel.add(new JLabel("Durchgeführte Trainings: "+ gameStats.getNumberOfTrainings()));
-            gameStatsPanel.add(new JLabel("Registrierte Spieler:innen:"+ gameStats.getNumberOfPlayers()));
+            gameStatsPanel.add(new JLabel("Registrierte Spieler*innen:"+ gameStats.getNumberOfPlayers()));
             gameStatsPanel.add(new JLabel("Highscore:"));
             highscorePanel.setLayout(new GridLayout(11, 5));
             highscorePanel.add(new JLabel("<html><h3>Platz</h3></html>"));
