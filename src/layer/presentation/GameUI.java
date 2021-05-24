@@ -56,6 +56,8 @@ public class GameUI implements GameUIListener {
 						game = new Game(players,rules,true);
 						lastGame = game;
 						game.start();
+						players.add(Application.getSession().getLoggedInPlayer());
+						refreshPlayersList();
 					} catch (TextRepository.TextNotFoundException ex) {
 						JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
 					}
