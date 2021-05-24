@@ -146,7 +146,7 @@ public class GameUI implements GameUIListener {
 	private JPanel setUpConfigurationPanel() {
 		JPanel configurationPanel = new JPanel();
 		configurationPanel.setLayout(new BorderLayout());
-		configurationPanel.add(new JLabel("Konfiguration"), BorderLayout.NORTH);
+		configurationPanel.add(new JLabel("<html><h2>Konfiguration</h2></html>"), BorderLayout.NORTH);
 		JPanel configurationOptions = new JPanel();
 		configurationOptions.setLayout(new GridLayout(3, 2));
 		configurationOptions.add(new JLabel("Schwierigkeitsgrad:"));
@@ -203,7 +203,7 @@ public class GameUI implements GameUIListener {
 		playerPanel.setLayout(new BorderLayout());
 		JPanel addUserPanel = new JPanel();
 		addUserPanel.setLayout(new GridLayout(4,1));
-		addUserPanel.add(new JLabel("Nutzer hinzufügen:"));
+		addUserPanel.add(new JLabel("<html><h3>Nutzer hinzufügen</h3></html>"));
 
 		JPanel addUserInputField = new JPanel();
 		addUserInputField.setLayout(new GridLayout(1,3));

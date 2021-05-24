@@ -21,7 +21,7 @@ public class SettingsUI {
     private JPanel getUserMananagementUI(){
         JPanel userManagement = new JPanel();
         userManagement.setLayout(new GridLayout(8,1));
-        userManagement.add(new JLabel("Nutzerverwaltung"));
+        userManagement.add(new JLabel("<html><h2>Nutzerverwaltung</h2></html>"));
         JPanel userInputFields = new JPanel();
         userInputFields.setLayout(new GridLayout(4,2 ));
         userInputFields.add(new JLabel("Neuer Benutzername:"));
@@ -120,7 +120,7 @@ public class SettingsUI {
     private JPanel getAddTextUI(){
         JPanel addText = new JPanel();
         addText.setLayout(new GridLayout(5,1));
-        addText.add(new JLabel("Texte hinzufügen"));
+        addText.add(new JLabel("<html><h2>Texte hinzufügen</h2></html>"));
 
         JPanel textInput = new JPanel();
         textInput.setLayout(new GridLayout(3,2));

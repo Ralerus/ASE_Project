@@ -32,12 +32,15 @@ public class StatsUI {
             throwables.printStackTrace();
         }
         if(playerStats != null) {
-            userStatsPanel.add(new JLabel("Spielerstatistik für " + Application.getSession().getLoggedInPlayer().getUsername()));
+            userStatsPanel.add(new JLabel("<html><h2>Spielerstatistik für " + Application.getSession().getLoggedInPlayer().getUsername()+"</h2></html>"));
             userStatsPanel.add(new JLabel("Durchgeführte Wettkämpfe: " + playerStats.getNumberOfCompetitons()));
             userStatsPanel.add(new JLabel("Durchgeführte Trainings: " + playerStats.getNumberOfTrainings()));
             userStatsPanel.add(new JLabel("Letzte Ergebnisse:"));
             userStatsPanel.add(new JLabel("Beste Spiele:"));
-            historyPanel.setLayout(new GridLayout(5, 3));
+            historyPanel.setLayout(new GridLayout(6, 3));
+            historyPanel.add(new JLabel("<html><h3>Datum</h3></html>"));
+            historyPanel.add(new JLabel("<html><h3>Geschwindigkeit</h3></html>"));
+            historyPanel.add(new JLabel("<html><h3>Text</h3></html>"));
             for(HistoryEntry h : playerStats.getHistory()){
                 historyPanel.add(new JLabel(h.getDate()));
                 historyPanel.add(new JLabel(h.getValue()+" Zeichen/s"));
@@ -55,7 +58,7 @@ public class StatsUI {
         JPanel gameStatsPanel = new JPanel();
         JPanel highscorePanel = new JPanel();
         gameStatsPanel.setLayout(new BoxLayout(gameStatsPanel, BoxLayout.PAGE_AXIS));
-        gameStatsPanel.add(new JLabel("Allgemeine Spielstatistik"));
+        gameStatsPanel.add(new JLabel("<html><h2>Allgemeine Spielstatistik</h2></html>"));
         GameStats gameStats = null;
         try {
             gameStats = StatsRepository.getStats();
@@ -67,7 +70,12 @@ public class StatsUI {
             gameStatsPanel.add(new JLabel("Durchgeführte Trainings: "+ gameStats.getNumberOfTrainings()));
             gameStatsPanel.add(new JLabel("Registrierte Spieler:innen:"+ gameStats.getNumberOfPlayers()));
             gameStatsPanel.add(new JLabel("Highscore:"));
-            highscorePanel.setLayout(new GridLayout(10, 5));
+            highscorePanel.setLayout(new GridLayout(11, 5));
+            highscorePanel.add(new JLabel("<html><h3>Platz</h3></html>"));
+            highscorePanel.add(new JLabel("<html><h3>Spieler*in</h3></html>"));
+            highscorePanel.add(new JLabel("<html><h3>Geschwindigkeit</h3></html>"));
+            highscorePanel.add(new JLabel("<html><h3>Text</h3></html>"));
+            highscorePanel.add(new JLabel("<html><h3>Datum</h3></html>"));
             int counter = 1;
             for(HistoryEntry h : gameStats.getHighscore()){
                 highscorePanel.add(new JLabel(counter+"."));
