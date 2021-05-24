@@ -16,7 +16,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class GameUI {
+public class GameUI implements GameUIListener {
 	private JRadioButton radioEasy;
 	private JRadioButton radioMedium;
 	private JRadioButton radioHard;
@@ -222,7 +222,8 @@ public class GameUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				UserUI userUI = new UserUI();
-				userUI.drawRegisterUI();
+				userUI.setGameUIListener(Application.getUi().getGameUI());
+				userUI.drawRegisterUI(true);
 			}
 		});
 		addUserPanel.add(addUserInputField);
@@ -258,5 +259,11 @@ public class GameUI {
 			playersList.add(user);
 		}
 		playersList.repaint();
+	}
+
+	@Override
+	public void addToGame(Player p) {
+		players.add(p);
+		refreshPlayersList();
 	}
 }

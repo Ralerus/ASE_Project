@@ -20,11 +20,13 @@ public class UserUI {
     private JDialog loginDialog;
 	private GameListener listener;
 	private UIListener uiListener;
+	private GameUIListener gameUIListener;
 
     public void setListener(GameListener listener) {
     	this.listener = listener;
     }
     public void setUiListener(UIListener listener) { this.uiListener = listener;}
+    public void setGameUIListener(GameUIListener listener) { this.gameUIListener = listener;}
 
     public void drawLoginUIFor(Player p) {
         loginDialog = new JDialog(Application.getUi(), "Login", true);
@@ -52,7 +54,7 @@ public class UserUI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     UserUI userUI = new UserUI();
-                    userUI.drawRegisterUI();
+                    userUI.drawRegisterUI(false);
                 }
             });
             loginPanel.add(newUser);
@@ -84,7 +86,7 @@ public class UserUI {
         loginDialog.setVisible(true);
     }
 
-    public void drawRegisterUI(){
+    public void drawRegisterUI(boolean addToGame){
         registerDialog = new JDialog(Application.getUi(), "Neuen Nutzer registrieren", true);
         JPanel registerPanel = new JPanel();
         registerPanel.setLayout(new GridLayout(4,2,6,3));
@@ -103,10 +105,16 @@ public class UserUI {
             public void actionPerformed(ActionEvent e) {
                 try {
                     String passwordHash = Security.getSecureHash(new String(password.getPassword()));
-                    PlayerRepository.createPlayer(new Player(username.getText(), fullname.getText()),passwordHash);
+                    Player p = new Player(username.getText(), fullname.getText());
+                    PlayerRepository.createPlayer(p,passwordHash);
                     registerDialog.setVisible(false);
                     registerDialog.dispose();
+
+                    if(addToGame){
+                        gameUIListener.addToGame(p);
+                    }
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(registerDialog, "Fehler beim Anlegen des Nutzers", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
             }

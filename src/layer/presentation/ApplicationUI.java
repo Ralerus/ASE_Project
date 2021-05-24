@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ApplicationUI extends JFrame implements UIListener {
+    private GameUI gameUI;
     public ApplicationUI(){
         UserUI userUI = new UserUI();
         userUI.setUiListener(this);
@@ -19,7 +20,7 @@ public class ApplicationUI extends JFrame implements UIListener {
         this.setTitle("Tippduell - "+Application.getSession().getLoggedInPlayer().getUsername()+" angemeldet");
         JTabbedPane tabbedpane = new JTabbedPane();
 
-        GameUI gameUI = new GameUI();
+        gameUI = new GameUI();
         SettingsUI settingsUI = new SettingsUI();
         StatsUI statsUI = new StatsUI();
 
@@ -32,5 +33,9 @@ public class ApplicationUI extends JFrame implements UIListener {
         this.setSize(1000,800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+    }
+
+    public GameUI getGameUI(){
+        return gameUI;
     }
 }
