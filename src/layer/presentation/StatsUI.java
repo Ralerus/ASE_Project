@@ -67,7 +67,7 @@ public class StatsUI {
             gameStatsPanel.add(new JLabel("Durchgeführte Trainings: "+ gameStats.getNumberOfTrainings()));
             gameStatsPanel.add(new JLabel("Registrierte Spieler:innen:"+ gameStats.getNumberOfPlayers()));
             gameStatsPanel.add(new JLabel("Highscore:"));
-            highscorePanel.setLayout(new GridLayout(5, 5));
+            highscorePanel.setLayout(new GridLayout(10, 5));
             int counter = 1;
             for(HistoryEntry h : gameStats.getHighscore()){
                 highscorePanel.add(new JLabel(counter+"."));

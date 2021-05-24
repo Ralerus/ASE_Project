@@ -2,9 +2,16 @@ package layer.data;
 
 import javax.management.StandardEmitterMBean;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.time.temporal.TemporalAccessor;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class StatsRepository {
     public static GameStats getStats() throws SQLException {
@@ -57,13 +64,17 @@ public class StatsRepository {
     private static List<HistoryEntry> getHighscoreList() throws SQLException {
         List<HistoryEntry> highscore = new LinkedList<>();
         String sql =  "SELECT r.username, (t.length/r.duration) AS value, t.title, g.date FROM result AS r,game AS g,text AS t  \n"
-                     +"WHERE r.gameId = g.id AND g.textTitle = t.title ORDER BY value DESC LIMIT 5";
+                     +"WHERE r.gameId = g.id AND g.textTitle = t.title ORDER BY value DESC LIMIT 10";
         Connection conn = Database.connect();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
 
         while(rs.next()){
-            HistoryEntry historyEntry = new HistoryEntry(rs.getString("username"),rs.getDouble("value"), rs.getString("title"),rs.getString("date"));
+            double roundedValue = Math.round(rs.getDouble("value")*100.0)/100.0;
+            Instant dateInstant = Instant.parse(rs.getString("date"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMANY).withZone(ZoneId.systemDefault());
+            String formattedDate = formatter.format(dateInstant);
+            HistoryEntry historyEntry = new HistoryEntry(rs.getString("username"),roundedValue, rs.getString("title"),formattedDate);
             highscore.add(historyEntry);
         }
         conn.close();
@@ -78,7 +89,11 @@ public class StatsRepository {
         pstmt.setString(1,username);
         ResultSet rs = pstmt.executeQuery();
         while(rs.next()){
-            HistoryEntry historyEntry = new HistoryEntry(username,rs.getDouble("value"), rs.getString("title"),rs.getString("date"));
+            double roundedValue = Math.round(rs.getDouble("value")*100.0)/100.0;
+            Instant dateInstant = Instant.parse(rs.getString("date"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMANY).withZone(ZoneId.systemDefault());
+            String formattedDate = formatter.format(dateInstant);
+            HistoryEntry historyEntry = new HistoryEntry(username,roundedValue, rs.getString("title"),formattedDate);
             history.add(historyEntry);
         }
         conn.close();
