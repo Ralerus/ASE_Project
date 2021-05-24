@@ -24,6 +24,7 @@ public class GameUI {
 	private JSlider textLengthSliderMax;
 	private List<Player> players = new ArrayList<>();
 	private static Game lastGame;
+	private JPanel playersList;
 	//private int maxLength;
 	//private int minLength;
 
@@ -189,8 +190,10 @@ public class GameUI {
 	}
 
 	private JPanel setUpAddUserPanel(){
+		JPanel playerPanel = new JPanel();
+		playerPanel.setLayout(new BorderLayout());
 		JPanel addUserPanel = new JPanel();
-		addUserPanel.setLayout(new GridLayout(21,1));
+		addUserPanel.setLayout(new GridLayout(4,1));
 		addUserPanel.add(new JLabel("Nutzer hinzufügen:"));
 
 		JPanel addUserInputField = new JPanel();
@@ -199,15 +202,17 @@ public class GameUI {
 		JTextField username = new JTextField();
 		addUserInputField.add(username);
 		JButton addUser = new JButton("+");
+		playersList = new JPanel();
+		playersList.setLayout(new GridLayout(21,1));
 		addUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					players.add(PlayerRepository.getPlayerRepository(username.getText()).getPlayer());
-					addUserPanel.add(new JLabel(username.getText())); //TODO remove player button
+					refreshPlayersList();
 					username.setText("");
 				}catch (PlayerNotFoundException ex){
-					JOptionPane.showMessageDialog(null, ex.getMessage(), "Spieler nicht gefunden", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Spieler nicht gefunden", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -223,7 +228,35 @@ public class GameUI {
 		addUserPanel.add(addUserInputField);
 		addUserPanel.add(newUser);
 		players.add(Application.getSession().getLoggedInPlayer());
-		addUserPanel.add(new JLabel(Application.getSession().getLoggedInPlayer().getUsername()));
-		return addUserPanel;
+		refreshPlayersList();
+		playerPanel.add(addUserPanel, BorderLayout.NORTH);
+		playerPanel.add(playersList, BorderLayout.CENTER);
+		return playerPanel;
+	}
+
+	private void refreshPlayersList(){
+		playersList.removeAll();
+		playersList.revalidate();
+		for(Player p : players){
+			JPanel user = new JPanel();
+			user.setLayout(new GridLayout(1, 2));
+			user.add(new JLabel(p.getUsername()));
+			JButton removePlayer = new JButton("Entfernen");
+			removePlayer.setActionCommand(p.getUsername());
+			removePlayer.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						players.remove(PlayerRepository.getPlayerRepository(removePlayer.getActionCommand()).getPlayer());
+						refreshPlayersList();
+					} catch (PlayerNotFoundException playerNotFoundException) {
+						playerNotFoundException.printStackTrace();
+					}
+				}
+			});
+			user.add(removePlayer);
+			playersList.add(user);
+		}
+		playersList.repaint();
 	}
 }
