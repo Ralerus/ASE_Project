@@ -26,7 +26,7 @@ public class TextRepository {
         String text = null;
         String title = null;
         Difficulty difficulty = null;
-
+        //TODO where is the random component?
         try(Connection conn = Database.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,rules.getDifficulty().ordinal());
@@ -60,6 +60,49 @@ public class TextRepository {
         }
 
         return new Text(title,text,difficulty,text.length()); //TODO für was wird difficulty im frontend gebraucht?
+    }
+
+    public static Text getTextByTitle(String title) throws TextNotFoundException {
+        String sql = "SELECT * FROM text WHERE title= ?";
+        String text = null;
+        Difficulty difficulty = null;
+        try(Connection conn = Database.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, title);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                text = rs.getString("text");
+                int difficultyInt = rs.getInt("difficulty");
+                switch (difficultyInt) {
+                    case 0:
+                        difficulty = Difficulty.Easy;
+                        break;
+                    case 1:
+                        difficulty = Difficulty.Medium;
+                        break;
+                    case 2:
+                        difficulty = Difficulty.Hard;
+                        break;
+                }
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.err.println(e.getMessage());
+            throw new TextNotFoundException("Kein Text mit diesem Titel gefunden!");
+        }
+        if(text==null || difficulty == null){
+            throw new TextNotFoundException("Kein Text mit diesem Titel gefunden!");
+        }
+        return new Text(title,text,difficulty,text.length());
+    }
+
+    public static boolean deleteText(Text text){
+        try{
+            Database.updateEntry("DELETE FROM text WHERE title = ?", text.getTitle(),"");
+        } catch (SQLException e){
+            return false;
+        }
+        return true;
     }
 
     public static class TextNotFoundException extends Exception {
