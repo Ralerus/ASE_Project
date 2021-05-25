@@ -1,5 +1,7 @@
 package layer.data;
 
+import org.sqlite.SQLiteException;
+
 import java.sql.*;
 
 public class PlayerRepository {
@@ -71,14 +73,19 @@ public class PlayerRepository {
         return PlayerRepository.getPlayerRepository(p.getUsername());
     }
 
-    public static boolean createPlayer(Player p, String password){
+    public static boolean createPlayer(Player p, String password) throws PlayerAlreadyExistsException {
         String sql = "INSERT INTO player(username, password, fullname) VALUES (?,?,?)";
         try(Connection conn = Database.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,p.getUsername());
             pstmt.setString(2,password);
             pstmt.setString(3,p.getFullname());
             pstmt.executeUpdate();
-        } catch (SQLException e){
+        }catch(SQLiteException ex){
+            if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed (UNIQUE constraint failed: player.username)")){
+                throw new PlayerAlreadyExistsException();
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -91,5 +98,23 @@ public class PlayerRepository {
             return false;
         }
         return true;
+    }
+
+    public static class PlayerNotFoundException extends Exception {
+        public PlayerNotFoundException() {
+            super("Spieler*in existiert nicht");
+        }
+        public PlayerNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    public static class PlayerAlreadyExistsException extends Exception{
+        public PlayerAlreadyExistsException(){
+            super("Benutzername bereits vergeben.");
+        }
+        public PlayerAlreadyExistsException(String message){
+            super(message);
+        }
     }
 }

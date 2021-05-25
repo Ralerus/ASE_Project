@@ -53,10 +53,10 @@ public class TextRepository {
         }catch (SQLException e){
             e.printStackTrace();
             System.err.println(e.getMessage());
-            throw new TextNotFoundException("Kein Text für Regeln gefunden!");
+            throw new TextNotFoundException("Kein Text für diese Regeln gefunden!");
         }
         if(text==null || difficulty==null ){
-            throw new TextNotFoundException("Kein Text für Regeln gefunden!!");
+            throw new TextNotFoundException("Kein Text für diese Regeln gefunden!");
         }
 
         return new Text(title,text,difficulty,text.length()); //TODO für was wird difficulty im frontend gebraucht?

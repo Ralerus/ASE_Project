@@ -199,7 +199,7 @@ public class GameUI implements GameUIListener {
 		playerPanel.setLayout(new BorderLayout());
 		JPanel addUserPanel = new JPanel();
 		addUserPanel.setLayout(new GridLayout(4,1));
-		addUserPanel.add(new JLabel("<html><h3>Nutzer hinzufügen</h3></html>"));
+		addUserPanel.add(new JLabel("<html><h3>Spieler*innen hinzufügen</h3></html>"));
 
 		JPanel addUserInputField = new JPanel();
 		addUserInputField.setLayout(new GridLayout(1,3));
@@ -218,11 +218,12 @@ public class GameUI implements GameUIListener {
 						players.add(p);
 						refreshPlayersList();
 					}else{
-						JOptionPane.showMessageDialog(Application.getUi(), "Du hast diesen Spieler bereits hinzugefügt.", "Fehler", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(Application.getUi(), "Du hast diese*n Spieler*in bereits hinzugefügt.", "Fehler", JOptionPane.ERROR_MESSAGE);
 					}
 					username.setText("");
-				}catch (PlayerNotFoundException ex){
-					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Spieler nicht gefunden", JOptionPane.ERROR_MESSAGE);
+				}catch (PlayerRepository.PlayerNotFoundException ex){
+					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Spieler*in nicht gefunden", JOptionPane.ERROR_MESSAGE);
+					username.setText("");
 				}
 			}
 		});
@@ -260,7 +261,7 @@ public class GameUI implements GameUIListener {
 					try {
 						players.remove(PlayerRepository.getPlayerRepository(removePlayer.getActionCommand()).getPlayer());
 						refreshPlayersList();
-					} catch (PlayerNotFoundException playerNotFoundException) {
+					} catch (PlayerRepository.PlayerNotFoundException playerNotFoundException) {
 						playerNotFoundException.printStackTrace();
 					}
 				}

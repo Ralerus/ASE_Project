@@ -42,66 +42,91 @@ public class SettingsUI {
         changeData.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayerRepository player = null;
-                try {
-                    player = PlayerRepository.getPlayerRepository(Application.getSession().getLoggedInPlayer());
-                } catch (PlayerNotFoundException playerNotFoundException) {
-                    playerNotFoundException.printStackTrace();
-                }
-                if(!username.getText().isEmpty()){
-                    if(player!=null){
-                        if(player.changeUserName(username.getText())){
-                            JOptionPane.showMessageDialog(Application.getUi(),"Nutzername erfolgreich geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-                            Application.getSession().setLoggedInPlayer(new Player(username.getText(), Application.getSession().getLoggedInPlayer().getFullname()));
-                            Application.getUi().setTitle("Tippduell - "+username.getText()+" angemeldet");
-                            username.setText("");
-                        }else {
-                            JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des Nutzernames", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                String usernameValue = username.getText();
+                String fullnameValue = fullname.getText();
+                char[] passwordValue = password.getPassword();
+                char[] passwordRepetitionValue = password_repetition.getPassword();
+
+                if(!usernameValue.isEmpty() || !fullnameValue.isEmpty() || !(passwordValue.length==0) || !(passwordRepetitionValue.length==0)){
+                    PlayerRepository player = null;
+                    try {
+                        player = PlayerRepository.getPlayerRepository(Application.getSession().getLoggedInPlayer());
+                    } catch (PlayerRepository.PlayerNotFoundException playerNotFoundException) {
+                        playerNotFoundException.printStackTrace();
+                    }
+                    if(!usernameValue.isEmpty()){
+                        if(player!=null){
+                            if(player.changeUserName(usernameValue)){
+                                JOptionPane.showMessageDialog(Application.getUi(),"Nutzername erfolgreich geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                                Application.getSession().setLoggedInPlayer(new Player(usernameValue, Application.getSession().getLoggedInPlayer().getFullname()));
+                                Application.getUi().setTitle("Tippduell - "+usernameValue+" angemeldet");
+                                username.setText("");
+                            }else {
+                                JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des Nutzernames", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                            }
                         }
                     }
-                }
-                if(!fullname.getText().isEmpty()){
-                    if(player!=null){
-                        if(player.changeFullname(fullname.getText())){
-                            JOptionPane.showMessageDialog(Application.getUi(),"Vollständiger Name erfolgreich geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-                            Application.getSession().setLoggedInPlayer(new Player(Application.getSession().getLoggedInPlayer().getUsername(),fullname.getText()));
-                            fullname.setText("");
-                        }else {
-                            JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des vollständigen Namens", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                    if(!fullnameValue.isEmpty()){
+                        if(player!=null){
+                            if(player.changeFullname(fullnameValue)){
+                                JOptionPane.showMessageDialog(Application.getUi(),"Vollständiger Name erfolgreich geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                                Application.getSession().setLoggedInPlayer(new Player(Application.getSession().getLoggedInPlayer().getUsername(),fullnameValue));
+                                fullname.setText("");
+                            }else {
+                                JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des vollständigen Namens", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                            }
                         }
                     }
-                }
-                if(password.getPassword().length > 0 && password_repetition.getPassword().length > 0){
-                    String newPasswordString = new String(password_repetition.getPassword());
-                    String passwordString = new String(password.getPassword());
-                    if(newPasswordString.equals(passwordString) && player !=null){
-                        String passwordHash = Security.getSecureHash(passwordString);
-                        if(player.changePassword(passwordHash)){
-                            JOptionPane.showMessageDialog(Application.getUi(),"Password erfolgreich geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                    if(passwordValue.length > 0 && passwordRepetitionValue.length > 0){
+                        String newPasswordString = new String(passwordRepetitionValue);
+                        String passwordString = new String(passwordValue);
+                        if(newPasswordString.equals(passwordString) && player !=null){
+                            if(passwordString.length()>5){
+                                String passwordHash = Security.getSecureHash(passwordString);
+                                if(player.changePassword(passwordHash)){
+                                    JOptionPane.showMessageDialog(Application.getUi(),"Password erfolgreich geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                                    password.setText("");
+                                    password_repetition.setText("");
+                                }else {
+                                    JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des Passworts", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                                }
+                            }else{
+                                JOptionPane.showMessageDialog(Application.getUi(), "Das Password muss mindestens 6 Zeichen aufweisen.", "Passwort zu kurz", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }else{
+                            JOptionPane.showMessageDialog(Application.getUi(), "Die Passwortwiederholung stimmt nicht mit \ndem Passwort überein.", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                            password_repetition.setText("");
+                        }
+                    }else{
+                        if(passwordValue.length>0 || passwordRepetitionValue.length >0){
+                            JOptionPane.showMessageDialog(Application.getUi(), "Bitte gib das neue Passwort ein und \nwiederhole es!", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                             password.setText("");
                             password_repetition.setText("");
-                        }else {
-                            JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des Passworts", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                         }
                     }
+                }else{
+                    JOptionPane.showMessageDialog(Application.getUi(), "Bitte gebe entweder einen neuen Benutzernamen, vollständigen Name \noder ein neues Passwort an!", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
         userManagement.add(changeData);
-        JButton deleteUser = new JButton("Nutzer löschen");
+        JButton deleteUser = new JButton("Nutzer*in löschen");
         deleteUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    PlayerRepository player = PlayerRepository.getPlayerRepository(Application.getSession().getLoggedInPlayer());
-                    if(player.deleteUser()){
-                        JOptionPane.showMessageDialog(Application.getUi(),"Nutzer erfolgreich gelöscht, sie werden nun ausgeloggt.", "Löschen erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-                        Application.getSession().logoff();
-                    }else{
-                        JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Löschen des Nutzers", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                int response = JOptionPane.showConfirmDialog(Application.getUi(),  "Nutzer*in wirklich löschen?", "Löschbestätigung", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                if(response==0){
+                    try {
+                        PlayerRepository player = PlayerRepository.getPlayerRepository(Application.getSession().getLoggedInPlayer());
+                        if(player.deleteUser()){
+                            JOptionPane.showMessageDialog(Application.getUi(),"Nutzer*in erfolgreich gelöscht,\ndu wirst nun abgemeldet.", "Löschen erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                            Application.getSession().logoff();
+                        }else{
+                            JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Löschen des bzw. der Nutzer*in", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (PlayerRepository.PlayerNotFoundException playerNotFoundException) {
+                        playerNotFoundException.printStackTrace();
                     }
-                } catch (PlayerNotFoundException playerNotFoundException) {
-                    playerNotFoundException.printStackTrace();
                 }
             }
         });

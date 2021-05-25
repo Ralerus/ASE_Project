@@ -7,10 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import application.Application;
-import layer.data.Player;
-import layer.data.PlayerNotFoundException;
-import layer.data.PlayerRepository;
-import layer.data.Security;
+import layer.data.*;
 import layer.domain.GameListener;
 import layer.domain.WrongPasswordException;
 
@@ -28,7 +25,7 @@ public class UserUI {
     public void setGameUIListener(GameUIListener listener) { this.gameUIListener = listener;}
 
     public void drawLoginUIFor(Player p) {
-        loginDialog = new JDialog(Application.getUi(), "Login", true);
+        loginDialog = new JDialog(Application.getUi(), "Anmeldung", true);
     	JPanel loginPanel = new JPanel();
         loginPanel.setLayout(new GridLayout(3,2,6,3));
         loginPanel.add(new JLabel("Benutzername:"));
@@ -59,23 +56,29 @@ public class UserUI {
             });
             loginPanel.add(newUser);
         }
-        JButton loginButton = new JButton("Login");
+        JButton loginButton = new JButton("Anmelden");
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    String passwordHash = Security.getSecureHash(new String(password.getPassword()));
-                    Application.getSession().login(username.getText(), passwordHash);//TODO return boolean needed? use exceptions
-                    loginDialog.setVisible(false);
-                    loginDialog.dispose();
-                    if (gameLogin) {
-                        listener.startRoundFor(Application.getSession().getLoggedInPlayer());
-                    } else {
-                        uiListener.drawUI();
+                String usernameValue = username.getText();
+                char[] passwordValue = password.getPassword();
+                if(!usernameValue.isEmpty() && !(passwordValue.length==0)){
+                    try {
+                        String passwordHash = Security.getSecureHash(new String(passwordValue));
+                        Application.getSession().login(usernameValue, passwordHash);//TODO return boolean needed? use exceptions
+                        loginDialog.setVisible(false);
+                        loginDialog.dispose();
+                        if (gameLogin) {
+                            listener.startRoundFor(Application.getSession().getLoggedInPlayer());
+                        } else {
+                            uiListener.drawUI();
+                        }
+                    } catch (PlayerRepository.PlayerNotFoundException|WrongPasswordException ex) {
+                        JOptionPane.showMessageDialog(loginDialog, "Benutzername oder Passwort inkorrekt!", "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                        password.setText("");
                     }
-                } catch (PlayerNotFoundException|WrongPasswordException ex) {
-                    JOptionPane.showMessageDialog(loginDialog, "Benutzername oder Passwort inkorrekt!", "Login fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
-                    password.setText("");
+                }else{
+                    JOptionPane.showMessageDialog(loginDialog,"Bitte gebe Benutzername und Password ein!", "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                 }
             }
             });
@@ -103,19 +106,32 @@ public class UserUI {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    String passwordHash = Security.getSecureHash(new String(password.getPassword()));
-                    Player p = new Player(username.getText(), fullname.getText());
-                    PlayerRepository.createPlayer(p,passwordHash);
-                    registerDialog.setVisible(false);
-                    registerDialog.dispose();
+                String usernameValue = username.getText();
+                String fullnameValue = fullname.getText();
+                char[] passwordValue = password.getPassword();
+                if(!usernameValue.isEmpty() && !fullnameValue.isEmpty() && !(passwordValue.length==0)){
+                    if(passwordValue.length>5){
+                        try {
+                            String passwordHash = Security.getSecureHash(new String(password.getPassword()));
+                            Player p = new Player(username.getText(), fullname.getText());
+                            PlayerRepository.createPlayer(p,passwordHash);
+                            registerDialog.setVisible(false);
+                            registerDialog.dispose();
 
-                    if(addToGame){
-                        gameUIListener.addToGame(p);
+                            if(addToGame){
+                                gameUIListener.addToGame(p);
+                            }
+                        }catch(PlayerRepository.PlayerAlreadyExistsException ex1) {
+                            JOptionPane.showMessageDialog(registerDialog, ex1.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+                        }catch (Exception ex2) {
+                            ex2.printStackTrace();
+                            JOptionPane.showMessageDialog(registerDialog, "Fehler beim Anlegen des Nutzers", "Fehler", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(registerDialog, "Das Password muss mindestens 6 Zeichen aufweisen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(registerDialog, "Fehler beim Anlegen des Nutzers", "Fehler", JOptionPane.ERROR_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(registerDialog, "Bitte fülle alle Felder aus!", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
