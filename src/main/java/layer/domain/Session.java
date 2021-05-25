@@ -8,7 +8,8 @@ import layer.presentation.ApplicationUI;
 public class Session {
     private Player loggedInPlayer = new Player("","");
 
-    public void login(String username, String password) throws PlayerRepository.PlayerNotFoundException, WrongPasswordException {
+    public void login(String username, String password) throws PlayerRepository.PlayerNotFoundException,
+            WrongPasswordException {
         PlayerRepository p = PlayerRepository.getPlayerRepository(username);
         if(p.isPasswordCorrect(password)){
             this.loggedInPlayer = p.getPlayer();

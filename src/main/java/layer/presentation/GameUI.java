@@ -218,11 +218,13 @@ public class GameUI implements GameUIListener {
 						players.add(p);
 						refreshPlayersList();
 					}else{
-						JOptionPane.showMessageDialog(Application.getUi(), "Du hast diese*n Spieler*in bereits hinzugefügt.", "Fehler", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(Application.getUi(), "Du hast diese*n Spieler*in bereits" +
+								" hinzugefügt.", "Fehler", JOptionPane.ERROR_MESSAGE);
 					}
 					username.setText("");
 				}catch (PlayerRepository.PlayerNotFoundException ex){
-					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Spieler*in nicht gefunden", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Spieler*in nicht gefunden"
+							, JOptionPane.ERROR_MESSAGE);
 					username.setText("");
 				}
 			}

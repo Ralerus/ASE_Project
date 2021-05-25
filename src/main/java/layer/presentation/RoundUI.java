@@ -19,7 +19,8 @@ public class RoundUI {
 
     public void displayRoundFor(Player p, String text){
         System.out.println(p.getUsername()+" plays round");
-        JOptionPane.showConfirmDialog(Application.getUi(),  "Bist du bereit, "+p.getUsername()+"?", "Bereit?", JOptionPane.DEFAULT_OPTION);
+        JOptionPane.showConfirmDialog(Application.getUi(),  "Bist du bereit, "+p.getUsername()+"?",
+                "Bereit?", JOptionPane.DEFAULT_OPTION);
         jDialog = new JDialog(Application.getUi(),"Runde von "+p.getUsername(), true);
         jDialog.setLayout(new GridLayout(8,1));
         JPanel jpanel = new JPanel();

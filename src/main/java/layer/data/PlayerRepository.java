@@ -81,7 +81,8 @@ public class PlayerRepository {
             pstmt.setString(3,p.getFullname());
             pstmt.executeUpdate();
         }catch(SQLiteException ex){
-            if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed (UNIQUE constraint failed: player.username)")){
+            if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed" +
+                    " (UNIQUE constraint failed: player.username)")){
                 throw new PlayerAlreadyExistsException();
             }
         }catch (SQLException e){

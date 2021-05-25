@@ -91,7 +91,8 @@ public class Game implements GameListener {
             }else{
                 if(resultsWithUsername.size()==1) {
                     String username = resultsWithUsername.keySet().toArray()[0].toString();
-                    GameRepository.writeTrainingToStats(text.getTitle(), username,resultsWithUsername.get(username),Instant.now());
+                    GameRepository.writeTrainingToStats(text.getTitle(), username,resultsWithUsername.get(username),
+                            Instant.now());
                 }
             }
         } catch (SQLException e) {

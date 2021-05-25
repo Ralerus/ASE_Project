@@ -70,7 +70,8 @@ public class StatsRepository {
             Instant dateInstant = Instant.parse(rs.getString("date"));
             DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMANY).withZone(ZoneId.systemDefault());
             String formattedDate = formatter.format(dateInstant);
-            HistoryEntry historyEntry = new HistoryEntry(rs.getString("username"),roundedValue, rs.getString("title"),formattedDate);
+            HistoryEntry historyEntry = new HistoryEntry(rs.getString("username"),roundedValue,
+                    rs.getString("title"),formattedDate);
             highscore.add(historyEntry);
         }
         conn.close();
@@ -89,7 +90,8 @@ public class StatsRepository {
             Instant dateInstant = Instant.parse(rs.getString("date"));
             DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMANY).withZone(ZoneId.systemDefault());
             String formattedDate = formatter.format(dateInstant);
-            HistoryEntry historyEntry = new HistoryEntry(username,roundedValue, rs.getString("title"),formattedDate);
+            HistoryEntry historyEntry = new HistoryEntry(username,roundedValue, rs.getString("title"),
+                    formattedDate);
             history.add(historyEntry);
         }
         conn.close();

@@ -32,7 +32,8 @@ public class StatsUI {
             throwables.printStackTrace();
         }
         if(playerStats != null) {
-            userStatsPanel.add(new JLabel("<html><h2>Spielerstatistik für " + Application.getSession().getLoggedInPlayer().getUsername()+"</h2></html>"));
+            userStatsPanel.add(new JLabel("<html><h2>Spielerstatistik für " +
+                    Application.getSession().getLoggedInPlayer().getUsername()+"</h2></html>"));
             userStatsPanel.add(new JLabel("Durchgeführte Wettkämpfe: " + playerStats.getNumberOfCompetitons()));
             userStatsPanel.add(new JLabel("Durchgeführte Trainings: " + playerStats.getNumberOfTrainings()));
             userStatsPanel.add(new JLabel("Letzte Ergebnisse:"));

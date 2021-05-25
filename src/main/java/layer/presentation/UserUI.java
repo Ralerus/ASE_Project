@@ -74,11 +74,13 @@ public class UserUI {
                             uiListener.drawUI();
                         }
                     } catch (PlayerRepository.PlayerNotFoundException|WrongPasswordException ex) {
-                        JOptionPane.showMessageDialog(loginDialog, "Benutzername oder Passwort inkorrekt!", "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(loginDialog, "Benutzername oder Passwort inkorrekt!",
+                                "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                         password.setText("");
                     }
                 }else{
-                    JOptionPane.showMessageDialog(loginDialog,"Bitte gebe Benutzername und Password ein!", "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(loginDialog,"Bitte gebe Benutzername und Password ein!",
+                            "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                 }
             }
             });
@@ -122,16 +124,20 @@ public class UserUI {
                                 gameUIListener.addToGame(p);
                             }
                         }catch(PlayerRepository.PlayerAlreadyExistsException ex1) {
-                            JOptionPane.showMessageDialog(registerDialog, ex1.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(registerDialog, ex1.getMessage(), "Fehler",
+                                    JOptionPane.ERROR_MESSAGE);
                         }catch (Exception ex2) {
                             ex2.printStackTrace();
-                            JOptionPane.showMessageDialog(registerDialog, "Fehler beim Anlegen des Nutzers", "Fehler", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(registerDialog, "Fehler beim Anlegen des Nutzers",
+                                    "Fehler", JOptionPane.ERROR_MESSAGE);
                         }
                     }else{
-                        JOptionPane.showMessageDialog(registerDialog, "Das Password muss mindestens 6 Zeichen aufweisen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(registerDialog, "Das Password muss mindestens 6 Zeichen" +
+                                " aufweisen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     }
                 }else{
-                    JOptionPane.showMessageDialog(registerDialog, "Bitte fülle alle Felder aus!", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(registerDialog, "Bitte fülle alle Felder aus!", "Fehler",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
