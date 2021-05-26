@@ -12,23 +12,22 @@ import layer.domain.GameListener;
 import layer.domain.Session;
 
 public class UserUI {
-	private JDialog registerDialog;
-    private JDialog loginDialog;
-	private GameListener listener;
-	private UIListener uiListener;
-	private GameUIListener gameUIListener;
+	private static JDialog registerDialog;
+    private static JDialog loginDialog;
+	private static GameListener listener;
+	private static UIListener uiListener;
+	private static GameUIListener gameUIListener;
 
-    public void setListener(GameListener listener) {
-        this.listener = listener;
+    public static void setListener(GameListener listener) {
+        UserUI.listener = listener;
     }
-    public void setUiListener(UIListener listener) {
-        this.uiListener = listener;
+    public static void setUiListener(UIListener listener) {
+        UserUI.uiListener = listener;
     }
-    public void setGameUIListener(GameUIListener listener) {
-        this.gameUIListener = listener;
+    public static void setGameUIListener(GameUIListener listener) {UserUI.gameUIListener = listener;
     }
 
-    public void drawLoginUIFor(Player p) {
+    public static void drawLoginUIFor(Player p) {
         loginDialog = new JDialog(Application.getUi(), "Anmeldung", true);
     	JPanel loginPanel = new JPanel();
         loginPanel.setLayout(new GridLayout(3,2,6,3));
@@ -95,7 +94,7 @@ public class UserUI {
         loginDialog.setVisible(true);
     }
 
-    public void drawRegisterUI(boolean addToGame){
+    public static void drawRegisterUI(boolean addToGame){
         registerDialog = new JDialog(Application.getUi(), "Neuen Nutzer registrieren", true);
         JPanel registerPanel = new JPanel();
         registerPanel.setLayout(new GridLayout(4,2,6,3));

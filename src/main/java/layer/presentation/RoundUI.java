@@ -13,11 +13,11 @@ public class RoundUI {
     private static JDialog jDialog;
     private static JTextArea textArea;
     private static RoundListener listener;
-    public void setListener(RoundListener listener) {
-        this.listener = listener;
+    public static void setListener(RoundListener listener) {
+        RoundUI.listener = listener;
     }
 
-    public void displayRoundFor(Player p, String text){
+    public static void displayRoundFor(Player p, String text){
         System.out.println(p.getUsername()+" plays round");
         JOptionPane.showConfirmDialog(Application.getUi(),  "Bist du bereit, "+p.getUsername()+"?",
                 "Bereit?", JOptionPane.DEFAULT_OPTION);
@@ -54,7 +54,7 @@ public class RoundUI {
         jDialog.setVisible(true);
     }
 
-    public void closeRound(){
+    public static void closeRound(){
         jDialog.setVisible(false);
         jDialog.dispose();
     }

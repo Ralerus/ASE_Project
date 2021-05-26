@@ -11,15 +11,15 @@ import java.awt.*;
 import java.sql.SQLException;
 
 public class StatsUI {
-    public JPanel getStatsUI(){
+    public static JPanel getStatsUI(){
         JPanel statsUI = new JPanel();
         statsUI.setLayout(new BorderLayout());
-        statsUI.add(this.getGameStatsUI(), BorderLayout.WEST);
-        statsUI.add(this.getUserStatsUI(), BorderLayout.EAST);
+        statsUI.add(StatsUI.getGameStatsUI(), BorderLayout.WEST);
+        statsUI.add(StatsUI.getUserStatsUI(), BorderLayout.EAST);
         return statsUI;
     }
 
-    private JPanel getUserStatsUI() {
+    private static JPanel getUserStatsUI() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         JPanel historyPanel = new JPanel();
@@ -53,7 +53,7 @@ public class StatsUI {
         return panel;
     }
 
-    private JPanel getGameStatsUI() {
+    private static JPanel getGameStatsUI() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         JPanel gameStatsPanel = new JPanel();

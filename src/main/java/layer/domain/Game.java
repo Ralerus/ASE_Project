@@ -16,7 +16,6 @@ public class Game implements GameListener {
     private List<Player> allPlayers;
     private Rules rule;
     private Round currentRound;
-    private UserUI userUI;
     private boolean isCompetition;
 
     public Game(List<Player> playersLeft, Rules rule, boolean isCompetition) throws TextRepository.TextNotFoundException {
@@ -27,8 +26,7 @@ public class Game implements GameListener {
         this.rule = rule;
         this.currentRound = null;
         this.isCompetition = isCompetition;
-        this.userUI = new UserUI();
-        userUI.setListener(this);
+        UserUI.setListener(this);
     }
 
     public void start(){
@@ -56,7 +54,7 @@ public class Game implements GameListener {
         }else {
             Player nextPlayer = playersLeft.remove(0);
             if(!nextPlayer.equals(Application.getSession().getLoggedInPlayer())){
-                this.userUI.drawLoginUIFor(nextPlayer);
+                UserUI.drawLoginUIFor(nextPlayer);
             }else{
                 this.startRoundFor(nextPlayer);
             }

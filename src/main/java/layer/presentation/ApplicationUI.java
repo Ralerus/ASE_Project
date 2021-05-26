@@ -5,11 +5,10 @@ import application.Application;
 import javax.swing.*;
 
 public class ApplicationUI extends JFrame implements UIListener {
-    private GameUI gameUI;
+    private static final GameUI gameUI = new GameUI();
     public ApplicationUI(){
-        UserUI userUI = new UserUI();
-        userUI.setUiListener(this);
-        userUI.drawLoginUIFor(null);
+        UserUI.setUiListener(this);
+        UserUI.drawLoginUIFor(null);
     }
 
     @Override
@@ -17,14 +16,10 @@ public class ApplicationUI extends JFrame implements UIListener {
         this.setTitle("Tippduell - "+Application.getSession().getLoggedInPlayer().getUsername()+" angemeldet");
         JTabbedPane tabbedpane = new JTabbedPane();
 
-        gameUI = new GameUI();
-        SettingsUI settingsUI = new SettingsUI();
-        StatsUI statsUI = new StatsUI();
-
         tabbedpane.addTab("Wettkampf", gameUI.getCompetitionUI());
         tabbedpane.addTab("Training", gameUI.getTrainingUI());
-        tabbedpane.addTab("Statistik", statsUI.getStatsUI());
-        tabbedpane.addTab("Einstellungen", settingsUI.getSettingsUI());
+        tabbedpane.addTab("Statistik", StatsUI.getStatsUI());
+        tabbedpane.addTab("Einstellungen", SettingsUI.getSettingsUI());
 
         this.add(tabbedpane);
         this.setSize(1000,800);

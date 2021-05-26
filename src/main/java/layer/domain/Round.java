@@ -15,7 +15,6 @@ public class Round implements RoundListener{
     private Instant startTime;
     private Instant endTime;
     private GameListener listener;
-    private RoundUI roundUI;
 
     public void setListener(GameListener listener) {
         this.listener = listener;
@@ -47,9 +46,8 @@ public class Round implements RoundListener{
     }
     
     public void startRound() {
-        this.roundUI = new RoundUI();
-        roundUI.setListener(this);;
-        roundUI.displayRoundFor(p, this.getTextLeft());
+        RoundUI.setListener(this);;
+        RoundUI.displayRoundFor(p, this.getTextLeft());
     }
 
     @Override
@@ -60,7 +58,7 @@ public class Round implements RoundListener{
     private void setEndTime() {
     	this.endTime = Instant.now();
         double duration = (double) Duration.between(startTime, endTime).toMillis() / 1000;
-        roundUI.closeRound();
+        RoundUI.closeRound();
         this.listener.endRoundFor(p,duration);
     }
 }
