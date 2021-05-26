@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TextManagementUI {
-    public static JPanel getAddTextUI(){
+    public static JPanel getUI(){
         JPanel textManagement = new JPanel();
         textManagement.setLayout(new BoxLayout(textManagement, BoxLayout.PAGE_AXIS));
         textManagement.add(new JLabel("<html><h2>Text hinzufügen</h2></html>"));

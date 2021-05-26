@@ -62,4 +62,6 @@ Erfolg des Refactorings bewertet werden.
 
 Ein Code Smell, nämlich eine Large Class mit Long Methods, kann in der `SettingsUI`-Klasse hierdurch identifiziert werden. Diese Klasse beinhaltet den UI-Code
 für die Nutzerverwaltung und Textverwaltung. Allein durch diese Beschreibung wird klar, dass die Klasse nicht dem Single Responsiblitiy Prinzip folgt.
-Deshalb soll als erstes Refactoring die Klasse in zwei Klassen `UserManagementUI` und `TextManagementUI` aufgeteilt werden.
+Deshalb soll als erstes Refactoring die Klasse in zwei Klassen `UserManagementUI` und `TextManagementUI` aufgeteilt werden. Diese Aufteilung ist in [diesem Commit](https://github.com/Ralerus/ASE_Project/commit/e33955c28d18d9d8b755d1edd9c3099472b45b3e) zu sehen.
+Anschließend kann das Long Method-Problem angegangen werden und die beiden langen Methoden `getUserManagementUI` und `getAddTextUI` in kleinere Methoden aufgeteilt werden, sodass jede Methode nur eine Aufgabe erfüllt. 
+Dieser Zwischenstand ist in diesem Commit sichtbar.

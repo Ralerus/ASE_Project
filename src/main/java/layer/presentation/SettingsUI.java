@@ -7,8 +7,8 @@ public class SettingsUI {
     public JPanel getSettingsUI() {
         JPanel settingsUI = new JPanel();
         settingsUI.setLayout(new BorderLayout());
-        settingsUI.add(UserManagementUI.getUserMananagementUI(), BorderLayout.WEST);
-        settingsUI.add(TextManagementUI.getAddTextUI(), BorderLayout.EAST);
+        settingsUI.add(UserManagementUI.getUI(), BorderLayout.WEST);
+        settingsUI.add(TextManagementUI.getUI(), BorderLayout.EAST);
         return settingsUI;
     }
 
