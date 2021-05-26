@@ -64,4 +64,5 @@ Ein Code Smell, nämlich eine Large Class mit Long Methods, kann in der `Setting
 für die Nutzerverwaltung und Textverwaltung. Allein durch diese Beschreibung wird klar, dass die Klasse nicht dem Single Responsiblitiy Prinzip folgt.
 Deshalb soll als erstes Refactoring die Klasse in zwei Klassen `UserManagementUI` und `TextManagementUI` aufgeteilt werden. Diese Aufteilung ist in [diesem Commit](https://github.com/Ralerus/ASE_Project/commit/e33955c28d18d9d8b755d1edd9c3099472b45b3e) zu sehen.
 Anschließend kann das Long Method-Problem angegangen werden und die beiden langen Methoden `getUserManagementUI` und `getAddTextUI` in kleinere Methoden aufgeteilt werden, sodass jede Methode nur eine Aufgabe erfüllt. 
-Dieser Zwischenstand ist in diesem Commit sichtbar.
+Dieser Zwischenstand ist in diesem Commit sichtbar. Allerdings ist das Ergebnis noch nicht zufriedenstellend, es fällt auf, dass Methoden wie `changeUsernameIfNotEmpty` eigentlich kein UI-Code, sondern Domain-Code sind.
+Deshalb sollen diese Methoden in einer neuen Klasse `UserManagement` in der domain-Schicht zusammengefasst werden.
