@@ -11,6 +11,10 @@ import java.awt.*;
 import java.sql.SQLException;
 
 public class StatsUI {
+    private final static JPanel historyPanel = new JPanel();
+    private final static JPanel userStatsPanel = new JPanel();
+    private final static JPanel gameStatsPanel = new JPanel();
+    private final static JPanel highscorePanel = new JPanel();
     public static JPanel getStatsUI(){
         JPanel statsUI = new JPanel();
         statsUI.setLayout(new BorderLayout());
@@ -22,9 +26,33 @@ public class StatsUI {
     private static JPanel getUserStatsUI() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        JPanel historyPanel = new JPanel();
-        JPanel userStatsPanel = new JPanel();
         userStatsPanel.setLayout(new BoxLayout(userStatsPanel, BoxLayout.PAGE_AXIS));
+        StatsUI.refreshUserStats();
+        panel.add(userStatsPanel, BorderLayout.NORTH);
+        panel.add(historyPanel, BorderLayout.SOUTH);
+        return panel;
+    }
+
+    private static JPanel getGameStatsUI() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        gameStatsPanel.setLayout(new BoxLayout(gameStatsPanel, BoxLayout.PAGE_AXIS));
+        gameStatsPanel.add(new JLabel("<html><h2>Allgemeine Spielstatistik</h2></html>"));
+        StatsUI.refreshGameStats();
+        panel.add(gameStatsPanel, BorderLayout.NORTH);
+        panel.add(highscorePanel, BorderLayout.SOUTH);
+        return panel;
+    }
+
+    public static void refreshStatsUI(){
+        StatsUI.refreshUserStats();
+        StatsUI.refreshGameStats();
+    }
+
+    public static void refreshUserStats(){
+        userStatsPanel.removeAll();
+        historyPanel.removeAll();
+
         PlayerStats playerStats = null;
         try {
             playerStats = StatsRepository.getStatsFor(Application.getSession().getLoggedInPlayer().getUsername());
@@ -36,7 +64,6 @@ public class StatsUI {
                     Application.getSession().getLoggedInPlayer().getUsername()+"</h2></html>"));
             userStatsPanel.add(new JLabel("Durchgeführte Wettkämpfe: " + playerStats.getNumberOfCompetitons()));
             userStatsPanel.add(new JLabel("Durchgeführte Trainings: " + playerStats.getNumberOfTrainings()));
-            userStatsPanel.add(new JLabel("Letzte Ergebnisse:"));
             userStatsPanel.add(new JLabel("Beste Spiele:"));
             historyPanel.setLayout(new GridLayout(6, 3));
             historyPanel.add(new JLabel("<html><h3>Datum</h3></html>"));
@@ -48,18 +75,16 @@ public class StatsUI {
                 historyPanel.add(new JLabel(h.getTextTitle()));
             }
         }
-        panel.add(userStatsPanel, BorderLayout.NORTH);
-        panel.add(historyPanel, BorderLayout.SOUTH);
-        return panel;
+        userStatsPanel.revalidate();
+        userStatsPanel.repaint();
+        historyPanel.revalidate();
+        historyPanel.repaint();
     }
 
-    private static JPanel getGameStatsUI() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        JPanel gameStatsPanel = new JPanel();
-        JPanel highscorePanel = new JPanel();
-        gameStatsPanel.setLayout(new BoxLayout(gameStatsPanel, BoxLayout.PAGE_AXIS));
-        gameStatsPanel.add(new JLabel("<html><h2>Allgemeine Spielstatistik</h2></html>"));
+    public static void refreshGameStats(){
+        gameStatsPanel.removeAll();
+        highscorePanel.removeAll();
+
         GameStats gameStats = null;
         try {
             gameStats = StatsRepository.getStats();
@@ -87,8 +112,9 @@ public class StatsUI {
                 counter++;
             }
         }
-        panel.add(gameStatsPanel, BorderLayout.NORTH);
-        panel.add(highscorePanel, BorderLayout.SOUTH);
-        return panel;
+        gameStatsPanel.revalidate();
+        gameStatsPanel.repaint();
+        highscorePanel.revalidate();
+        highscorePanel.repaint();
     }
 }

@@ -17,9 +17,7 @@ class CheckCurrentInputChar {
         Text text = mock(Text.class);
         when(text.getText()).thenReturn("Testtext");
 
-        Player p = mock(Player.class);
-
-        round = new Round(text,p);
+        round = new Round(text);
     }
 
     @Test

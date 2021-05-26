@@ -1,6 +1,6 @@
 package layer.data;
 
-public class Stats {
+public abstract class Stats {
     private int numberOfCompetitons;
     private int numberOfTrainings;
 

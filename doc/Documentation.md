@@ -22,15 +22,26 @@ Das ermöglicht niedrige Komplexität und Kopplung. So besitzt die Klasse `Sessi
 Das Open Closed Prinzip beschreibt, dass Klassen generell offen für Erweiterungen und geschlossen für Änderungen sein sollten.
 Durch Abstraktionen kann die Erweiterbarkeit gefördert werden, sodass bei Erweiterungen der bestehende Code nicht geändert werden muss.
 #### Liskov Substitution Principle
+Das Liskov Substitution Principle besagt, dass Objekte eines abgeleiteten Typs als Ersatz für Instanzen ihres Basistyps funktionieren müssen ohne die Korrektheit des Programms zu ändern.
+Durch Einsatz des Prinzips können Invarianzen eingehalten werden.
+In Tippduell erben die Klassen `GameStats` und `PlayerStats` von der Klasse `Stats`. Zur Einhaltung des Liskov Substitution Principles müssen `Stats`-Objekte ohne Probleme durch Objekte der abgeleiteten Klassen ersetzt werden können.
+Dies ist möglich, da die Klasse `Stats` zu keinem Zeitpunkt instanziiert wird, sie ist abstrakt. Eine weitere Vererbung findet in der Anwendung keine Anwendung, daher kann dieses Prinzip nicht aufgezeigt werden.
 #### Interface Segregation Principle
+Dieses Programmierprinzip sagt aus, dass Anwender nicht von den Funktionen abhängig sein sollten, die sie nicht nutzen, und lässt sich durch passgenaue Interfaces realisieren.
+In der vorliegenden Anwendung werden ausschließlich passgenaue Interfaces verwendet, da diese jeweils nur von einer Klasse implementiert werden und lediglich im Rahmen des *Listener-Patterns* zum Einsatz kommen. Somit ist dieses Prinzip erfüllt.
 #### Dependency Inversion Principle
-
+Das Dependency Inversion Principle verlangt, dass High-Level-Module nicht von Low-Level-Modulen, sondern beide von Abstraktionen abhängig sein sollten.
 
 ### GRASP
+GRASP steht für General Responsibilty Assignment Software Patterns und bezeichnet eine Sammlung an Basisprinzipien. Von diesen soll zwei im Folgenden behandelt werden.
+#### Low Coupling
+Low Coupling verlangt eine geringe bzw. lose Kopplung zwischen Objekten, d.h. diese weisen nur geringe Beziehungen auf. Dadurch liegen nur geringere Abhängigkeiten vor, der Code wird verständlicher und einfach wiederverwendbar.
+#### High Cohesion
+Kohäsion ist allgemein ein Maß für den Zusammenhalt einer Klasse und beschreibt die semantische Nähe der Elemente einer Klasse. High Cohesion erfordert somit, eine hohe semantische Nähe aller Klassenelemente.
 
 ### DRY
+DRY ist eine Abkürzung für *Don't Repeat Yourself!* und versucht jegliche unnötige Duplikation zu vermeiden.
 Installationsskript
-
 
 ## Entwurfsmuster
 Als Entwurfsmuster wurde im Tippduell vor allem das **Observer-Pattern** bzw. **Listener-Pattern** angewandt. Es handelt sich hierbei um ein Verhaltensmuster, also einem 

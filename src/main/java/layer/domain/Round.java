@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 public class Round implements RoundListener{
     private List<Character> textLeft;
-    private Player p;
     private Instant startTime;
     private Instant endTime;
     private GameListener listener;
@@ -20,9 +19,8 @@ public class Round implements RoundListener{
         this.listener = listener;
     }
 
-    public Round(Text text, Player p) {
+    public Round(Text text) {
         this.textLeft = text.getText().chars().mapToObj(c -> (char) c).collect(Collectors.toList());
-        this.p = p;
     }
     @Override
     public boolean checkCurrentInputChar(char c){
@@ -47,7 +45,7 @@ public class Round implements RoundListener{
     
     public void startRound() {
         RoundUI.setListener(this);;
-        RoundUI.displayRoundFor(p, this.getTextLeft());
+        RoundUI.displayRoundFor(this.getTextLeft());
     }
 
     @Override
@@ -59,6 +57,6 @@ public class Round implements RoundListener{
     	this.endTime = Instant.now();
         double duration = (double) Duration.between(startTime, endTime).toMillis() / 1000;
         RoundUI.closeRound();
-        this.listener.endRoundFor(p,duration);
+        this.listener.endRound(duration);
     }
 }

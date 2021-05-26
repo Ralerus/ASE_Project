@@ -3,6 +3,7 @@ package layer.domain;
 import application.Application;
 import layer.data.*;
 import layer.presentation.GameUI;
+import layer.presentation.StatsUI;
 import layer.presentation.UserUI;
 
 import java.sql.SQLException;
@@ -34,7 +35,6 @@ public class Game implements GameListener {
         this.gotoNextPlayer();
     }
 
-    @Override
     public void playAgain() {
         this.playersLeft.addAll(allPlayers);
         this.results.clear();
@@ -42,8 +42,8 @@ public class Game implements GameListener {
     }
 
     @Override
-    public void startRoundFor(Player p) {
-        this.currentRound = new Round(this.text, p);
+    public void startRound() {
+        this.currentRound = new Round(this.text);
         currentRound.setListener(this);
         currentRound.startRound();
     }
@@ -56,14 +56,14 @@ public class Game implements GameListener {
             if(!nextPlayer.equals(Application.getSession().getLoggedInPlayer())){
                 UserUI.drawLoginUIFor(nextPlayer);
             }else{
-                this.startRoundFor(nextPlayer);
+                this.startRound();
             }
         }
     }
 
     @Override
-    public void endRoundFor(Player p, double duration) {
-        this.results.put(p,duration);
+    public void endRound(double duration) {
+        this.results.put(Application.getSession().getLoggedInPlayer(), duration);
         this.gotoNextPlayer();
     }
 
@@ -96,5 +96,6 @@ public class Game implements GameListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        StatsUI.refreshStatsUI();
     }
 }

@@ -72,7 +72,7 @@ public class UserUI {
                         loginDialog.setVisible(false);
                         loginDialog.dispose();
                         if (gameLogin) {
-                            listener.startRoundFor(Application.getSession().getLoggedInPlayer());
+                            listener.startRound();
                         } else {
                             uiListener.drawUI();
                         }
@@ -123,6 +123,7 @@ public class UserUI {
                             registerDialog.setVisible(false);
                             registerDialog.dispose();
 
+                            StatsUI.refreshGameStats();
                             if(addToGame){
                                 gameUIListener.addToGame(p);
                             }

@@ -17,7 +17,8 @@ public class RoundUI {
         RoundUI.listener = listener;
     }
 
-    public static void displayRoundFor(Player p, String text){
+    public static void displayRoundFor(String text){
+        Player p = Application.getSession().getLoggedInPlayer();
         System.out.println(p.getUsername()+" plays round");
         JOptionPane.showConfirmDialog(Application.getUi(),  "Bist du bereit, "+p.getUsername()+"?",
                 "Bereit?", JOptionPane.DEFAULT_OPTION);
