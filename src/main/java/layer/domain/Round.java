@@ -54,8 +54,9 @@ public class Round implements RoundListener{
 
     @Override
     public void setStartTime() {
-    	this.startTime = Instant.now();
+        this.startTime = Instant.now();
     }
+
     private void setEndTime() {
     	this.endTime = Instant.now();
         double duration = (double) Duration.between(startTime, endTime).toMillis() / 1000;

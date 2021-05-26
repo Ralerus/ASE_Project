@@ -4,6 +4,7 @@ import application.Application;
 import layer.data.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,8 +21,8 @@ public class SettingsUI {
 
     private JPanel getUserMananagementUI(){
         JPanel userManagement = new JPanel();
-        userManagement.setLayout(new GridLayout(8,1));
-        userManagement.add(new JLabel("<html><h2>Nutzerverwaltung</h2></html>"));
+        userManagement.setLayout(new BorderLayout());
+        userManagement.add(new JLabel("<html><h2>Nutzerverwaltung</h2></html>"), BorderLayout.NORTH);
         JPanel userInputFields = new JPanel();
         userInputFields.setLayout(new GridLayout(4,2 ));
         userInputFields.add(new JLabel("Neuer Benutzername:"));
@@ -36,8 +37,9 @@ public class SettingsUI {
         userInputFields.add(new JLabel("Passwort bestätigen:"));
         JPasswordField password_repetition = new JPasswordField();
         userInputFields.add(password_repetition);
-        userManagement.add(userInputFields);
+        userManagement.add(userInputFields, BorderLayout.CENTER);
 
+        JPanel buttons = new JPanel();
         JButton changeData = new JButton("Übernehmen");
         changeData.addActionListener(new ActionListener() {
             @Override
@@ -129,7 +131,7 @@ public class SettingsUI {
                 }
             }
         });
-        userManagement.add(changeData);
+        buttons.add(changeData);
         JButton deleteUser = new JButton("Nutzer*in löschen");
         deleteUser.addActionListener(new ActionListener() {
             @Override
@@ -155,7 +157,7 @@ public class SettingsUI {
                 }
             }
         });
-        userManagement.add(deleteUser);
+        buttons.add(deleteUser);
         JButton logoff = new JButton("Abmelden");
         logoff.addActionListener(new ActionListener() {
             @Override
@@ -163,7 +165,8 @@ public class SettingsUI {
                 Application.getSession().logoff();
             }
         });
-        userManagement.add(logoff);
+        buttons.add(logoff);
+        userManagement.add(buttons, BorderLayout.SOUTH);
         return userManagement;
     }
 

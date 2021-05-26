@@ -44,10 +44,12 @@ public class GameUI implements GameUIListener {
 						players.add(Application.getSession().getLoggedInPlayer());
 						refreshPlayersList();
 					} catch (TextRepository.TextNotFoundException ex) {
-						JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}else{
-					JOptionPane.showMessageDialog(Application.getUi(), "Bitte füge zuerst Spieler hinzu, bevor du ein Spiel startest!", "Keine Spieler", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(Application.getUi(), "Bitte füge zuerst Spieler hinzu," +
+							" bevor du ein Spiel startest!", "Keine Spieler", JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -75,7 +77,8 @@ public class GameUI implements GameUIListener {
 					lastGame = game;
 					game.start();
 				} catch (TextRepository.TextNotFoundException ex) {
-					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -92,7 +95,8 @@ public class GameUI implements GameUIListener {
 		int counter = 1;
 		for(Player p: results.keySet()){
 			if(counter == 1){
-				JOptionPane.showMessageDialog(Application.getUi(),p.getUsername()+" hat gewonnen!", "Gewinner ermittelt", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(Application.getUi(),p.getUsername()+" hat gewonnen!",
+						"Gewinner ermittelt", JOptionPane.INFORMATION_MESSAGE);
 			}
 			System.out.println("Player "+p.getUsername()+" has "+results.get(p)+" seconds.");
 			resultsPanel.add(new JLabel(counter+"."));

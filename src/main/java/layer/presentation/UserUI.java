@@ -9,7 +9,7 @@ import javax.swing.*;
 import application.Application;
 import layer.data.*;
 import layer.domain.GameListener;
-import layer.domain.WrongPasswordException;
+import layer.domain.Session;
 
 public class UserUI {
 	private JDialog registerDialog;
@@ -19,10 +19,14 @@ public class UserUI {
 	private GameUIListener gameUIListener;
 
     public void setListener(GameListener listener) {
-    	this.listener = listener;
+        this.listener = listener;
     }
-    public void setUiListener(UIListener listener) { this.uiListener = listener;}
-    public void setGameUIListener(GameUIListener listener) { this.gameUIListener = listener;}
+    public void setUiListener(UIListener listener) {
+        this.uiListener = listener;
+    }
+    public void setGameUIListener(GameUIListener listener) {
+        this.gameUIListener = listener;
+    }
 
     public void drawLoginUIFor(Player p) {
         loginDialog = new JDialog(Application.getUi(), "Anmeldung", true);
@@ -73,7 +77,7 @@ public class UserUI {
                         } else {
                             uiListener.drawUI();
                         }
-                    } catch (PlayerRepository.PlayerNotFoundException|WrongPasswordException ex) {
+                    } catch (PlayerRepository.PlayerNotFoundException| Session.WrongPasswordException ex) {
                         JOptionPane.showMessageDialog(loginDialog, "Benutzername oder Passwort inkorrekt!",
                                 "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                         password.setText("");
