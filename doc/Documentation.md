@@ -57,3 +57,9 @@ Dabei gilt allgemein, dass jede Schicht nur von den unterliegenden Schichten abh
 ## Unit Tests
 
 ## Refactoring
+Zur objektiven, metrikbasierten Identifikation von Code Smells wird für dieses Projekt das Analysetool *Codacy* eingesetzt. Anhand des Quality-Scores dort, kann der konkrete
+Erfolg des Refactorings bewertet werden.
+
+Ein Code Smell, nämlich eine Large Class mit Long Methods, kann in der `SettingsUI`-Klasse hierdurch identifiziert werden. Diese Klasse beinhaltet den UI-Code
+für die Nutzerverwaltung und Textverwaltung. Allein durch diese Beschreibung wird klar, dass die Klasse nicht dem Single Responsiblitiy Prinzip folgt.
+Deshalb soll als erstes Refactoring die Klasse in zwei Klassen `UserManagementUI` und `TextManagementUI` aufgeteilt werden.
