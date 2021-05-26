@@ -18,15 +18,14 @@ public class Database {
     }
 
     public static void updateEntry(String sql, String value1, String value2) throws SQLException{
-        try(Connection conn = Database.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql)){
-            pstmt.setString(1,value1);
-            if(value2!=""){
-                pstmt.setString(2, value2);
-            }
-            pstmt.executeUpdate();
-        }catch (SQLException ex){
-            throw ex;
+        Connection conn = Database.connect();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1,value1);
+        if(value2!=""){
+            pstmt.setString(2, value2);
         }
+        pstmt.executeUpdate();
+        pstmt.close();
+        conn.close();
     }
 }

@@ -13,30 +13,23 @@ public class PlayerRepository {
         this.password = password;
     }
 
-    public boolean changeUserName(String newUsername){
+    public void changeUserName(String newUsername) throws SQLException, PlayerAlreadyExistsException {
         try{
             Database.updateEntry("UPDATE player SET username = ? WHERE username = ?",newUsername,this.player.getUsername());
-        } catch (SQLException e){
-            return false;
+        }catch(SQLiteException ex){
+            if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed" +
+                    " (UNIQUE constraint failed: player.username)")){
+                throw new PlayerAlreadyExistsException();
+            }
         }
-        return true;
     }
-    public boolean changePassword(String newPassword){
-        try{
-            Database.updateEntry("UPDATE player SET password = ? WHERE username = ?",newPassword,this.player.getUsername());
-        } catch (SQLException e){
-            return false;
-        }
-        return true;
+    public void changePassword(String newPassword) throws SQLException {
+        Database.updateEntry("UPDATE player SET password = ? WHERE username = ?",newPassword,this.player.getUsername());
     }
-    public boolean changeFullname(String newFullname){
-        try{
-            Database.updateEntry("UPDATE player SET fullname = ? WHERE username = ?",newFullname,this.player.getUsername());
-        } catch (SQLException e){
-            return false;
-        }
-        return true;
+    public void changeFullname(String newFullname) throws SQLException {
+        Database.updateEntry("UPDATE player SET fullname = ? WHERE username = ?", newFullname, this.player.getUsername());
     }
+
     public boolean isPasswordCorrect(String password){
         return this.password.equals(password);
     }
@@ -73,7 +66,7 @@ public class PlayerRepository {
         return PlayerRepository.getPlayerRepository(p.getUsername());
     }
 
-    public static boolean createPlayer(Player p, String password) throws PlayerAlreadyExistsException {
+    public static void createPlayer(Player p, String password) throws PlayerAlreadyExistsException, SQLException {
         String sql = "INSERT INTO player(username, password, fullname) VALUES (?,?,?)";
         try(Connection conn = Database.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,p.getUsername());
@@ -85,20 +78,11 @@ public class PlayerRepository {
                     " (UNIQUE constraint failed: player.username)")){
                 throw new PlayerAlreadyExistsException();
             }
-        }catch (SQLException e){
-            e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
-    public boolean deleteUser(){
-        try{
-            Database.updateEntry("DELETE FROM player WHERE username = ?",this.player.getUsername(),"");
-        } catch (SQLException e){
-            return false;
-        }
-        return true;
+    public void deleteUser() throws SQLException {
+        Database.updateEntry("DELETE FROM player WHERE username = ?",this.player.getUsername(),"");
     }
 
     public static class PlayerNotFoundException extends Exception {

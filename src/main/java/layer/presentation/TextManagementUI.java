@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class TextManagementUI {
     private static final JTextField title = new JTextField();
@@ -111,14 +112,15 @@ public class TextManagementUI {
                                 text.getTitle()+" wirklich löschen?", "Löschbestätigung",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if(response==0){
-                    if(TextRepository.deleteText(text)){
+                    try {
+                        TextRepository.deleteText(text);
                         JOptionPane.showMessageDialog(Application.getUi(),"Text "+
                                 text.getTitle()+" erfolgreich gelöscht!","Löschen" +
                                 " erfolgreich", JOptionPane.INFORMATION_MESSAGE);
                         searchResults.removeAll();
                         searchResults.revalidate();
                         searchResults.repaint();
-                    }else{
+                    } catch (SQLException throwables) {
                         JOptionPane.showMessageDialog(Application.getUi(),"Fehler beim Löschen" +
                                 " des Textes","Fehler",JOptionPane.ERROR_MESSAGE);
                     }
@@ -186,7 +188,8 @@ public class TextManagementUI {
                     }else if(radioHard.isSelected()){
                         difficulty = Difficulty.Hard;
                     }
-                    if(TextRepository.createText(titleValue, textValue, difficulty)){
+                    try {
+                        TextRepository.createText(titleValue, textValue, difficulty);
                         JOptionPane.showMessageDialog(Application.getUi(),title.getText()+" erfolgreich " +
                                 "hinzugefügt.", "Text erfolgreich hinzugefügt", JOptionPane.INFORMATION_MESSAGE);
                         title.setText("");
@@ -194,7 +197,7 @@ public class TextManagementUI {
                         radioEasy.setSelected(false);
                         radioMedium.setSelected(false);
                         radioHard.setSelected(false);
-                    }else{
+                    } catch (SQLException throwables) {
                         JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Hinzufügen des Textes",
                                 "Fehler", JOptionPane.ERROR_MESSAGE);
                     }

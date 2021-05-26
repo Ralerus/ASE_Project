@@ -6,19 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class TextRepository {
-    public static boolean createText(String title, String text, Difficulty difficulty){
+    public static void createText(String title, String text, Difficulty difficulty) throws SQLException {
         String sql = "INSERT INTO text(title, text, difficulty, length) VALUES (?,?,?,?)";
-        try(Connection conn = Database.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql)){
-            pstmt.setString(1,title);
-            pstmt.setString(2,text);
-            pstmt.setInt(3,difficulty.ordinal());
-            pstmt.setInt(4,text.length());
-            pstmt.executeUpdate();
-        } catch (SQLException e){
-            return false;
-        }
-        return true;
+        Connection conn = Database.connect();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1,title);
+        pstmt.setString(2,text);
+        pstmt.setInt(3,difficulty.ordinal());
+        pstmt.setInt(4,text.length());
+        pstmt.executeUpdate();
+        pstmt.close();
+        conn.close();
     }
 
     public static Text getRandomTextBasedOn(Rules rules) throws TextNotFoundException{
@@ -96,13 +94,8 @@ public class TextRepository {
         return new Text(title,text,difficulty,text.length());
     }
 
-    public static boolean deleteText(Text text){
-        try{
-            Database.updateEntry("DELETE FROM text WHERE title = ?", text.getTitle(),"");
-        } catch (SQLException e){
-            return false;
-        }
-        return true;
+    public static void deleteText(Text text) throws SQLException {
+        Database.updateEntry("DELETE FROM text WHERE title = ?", text.getTitle(),"");
     }
 
     public static class TextNotFoundException extends Exception {

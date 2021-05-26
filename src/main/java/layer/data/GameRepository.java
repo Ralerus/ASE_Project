@@ -6,9 +6,8 @@ import java.time.Instant;
 import java.util.Map;
 
 public class GameRepository {
-	//TODO: Besserer Stil Try-Catch nur auf oberster Ebene?
 	public static void writeCompetitionToStats(String textTitle, Map<String, Double> results, Instant date)
-			throws SQLException{ //TODO kein Game übergeben, damit keine Abhängigkeiten nach Außen?
+			throws SQLException{
 		String sql = "INSERT INTO game (date, textTitle) VALUES (?,?)";
 		Connection conn = Database.connect();
 		PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -16,7 +15,7 @@ public class GameRepository {
 		pstmt.setString(2,textTitle);
 		pstmt.executeUpdate();
 		pstmt.close();
-		String sql2 = "SELECT MAX(id) AS id FROM game"; //TODO geht bestimmt besser, stored procedure?
+		String sql2 = "SELECT MAX(id) AS id FROM game";
 		String sql3 = "INSERT INTO result (gameId, username, duration) VALUES (?,?,?)";
 
 		Statement stmt = conn.createStatement();
@@ -35,7 +34,7 @@ public class GameRepository {
 		conn.close();
 	}
 	public static void writeTrainingToStats(String textTitle, String username, Double duration, Instant date)
-			throws SQLException{ //TODO kein Game übergeben, damit keine Abhängigkeiten nach Außen?
+			throws SQLException{
 		String sql = "INSERT INTO training (username, duration, textTitle, date) VALUES (?,?,?,?)";
 		Connection conn = Database.connect();
 		PreparedStatement pstmt = conn.prepareStatement(sql);

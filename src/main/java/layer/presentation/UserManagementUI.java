@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class UserManagementUI {
     private static final JTextField username = new JTextField();
@@ -97,17 +98,19 @@ public class UserManagementUI {
                     try {
                         PlayerRepository player = PlayerRepository.getPlayerRepository(
                                 Application.getSession().getLoggedInPlayer());
-                        if(player.deleteUser()){
+                        try {
+                            player.deleteUser();
                             JOptionPane.showMessageDialog(Application.getUi(),"Nutzer*in erfolgreich gelöscht," +
                                             "\ndu wirst nun abgemeldet.", "Löschen erfolgreich",
                                     JOptionPane.INFORMATION_MESSAGE);
                             Application.getSession().logoff();
-                        }else{
+                        } catch (SQLException throwables) {
                             JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Löschen des bzw." +
                                     " der Nutzer*in", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                         }
                     } catch (PlayerRepository.PlayerNotFoundException playerNotFoundException) {
-                        playerNotFoundException.printStackTrace();
+                        JOptionPane.showMessageDialog(Application.getUi(), "Zu löschende*r Nutzer*in konnte " +
+                                "nicht gefunden werden.", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

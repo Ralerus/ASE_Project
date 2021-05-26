@@ -6,18 +6,23 @@ import layer.data.PlayerRepository;
 import layer.data.Security;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class UserManagement {
     public static boolean isUsernameChanged(String usernameValue, PlayerRepository player){
         if(!usernameValue.isEmpty()){
             if(player!=null){
-                if(player.changeUserName(usernameValue)){
+                try {
+                    player.changeUserName(usernameValue);
                     JOptionPane.showMessageDialog(Application.getUi(),"Nutzername erfolgreich " +
-                            "geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                                "geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
                     Application.getSession().setLoggedInPlayer(new Player(usernameValue,
-                            Application.getSession().getLoggedInPlayer().getFullname()));
+                                Application.getSession().getLoggedInPlayer().getFullname()));
                     return true;
-                }else {
+                } catch (PlayerRepository.PlayerAlreadyExistsException e) {
+                    JOptionPane.showMessageDialog(Application.getUi(), e.getMessage(), "Änderung fehlgeschlagen",
+                            JOptionPane.ERROR_MESSAGE);
+                } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des" +
                             " Nutzernames", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                 }
@@ -27,16 +32,17 @@ public class UserManagement {
     }
 
     public static boolean isFullNameChanged(String fullnameValue, PlayerRepository player){
-        if(!fullnameValue.isEmpty()){
-            if(player!=null){
-                if(player.changeFullname(fullnameValue)){
-                    JOptionPane.showMessageDialog(Application.getUi(),"Vollständiger Name" +
+        if(!fullnameValue.isEmpty()) {
+            if (player != null) {
+                try {
+                    player.changeFullname(fullnameValue);
+                    JOptionPane.showMessageDialog(Application.getUi(), "Vollständiger Name" +
                                     " erfolgreich geändert", "Änderung erfolgreich",
                             JOptionPane.INFORMATION_MESSAGE);
                     Application.getSession().setLoggedInPlayer(new Player(
-                            Application.getSession().getLoggedInPlayer().getUsername(),fullnameValue));
+                            Application.getSession().getLoggedInPlayer().getUsername(), fullnameValue));
                     return true;
-                }else {
+                } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des" +
                                     " vollständigen Namens", "Änderung fehlgeschlagen",
                             JOptionPane.ERROR_MESSAGE);
@@ -54,11 +60,12 @@ public class UserManagement {
             if(newPasswordString.equals(passwordString) && player !=null){
                 if(passwordString.length()>5){
                     String passwordHash = Security.getSecureHash(passwordString);
-                    if(player.changePassword(passwordHash)){
+                    try {
+                        player.changePassword(passwordHash);
                         JOptionPane.showMessageDialog(Application.getUi(),"Password erfolgreich" +
                                 " geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
                         return true;
-                    }else {
+                    } catch (SQLException throwables) {
                         JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern" +
                                         " des Passworts", "Änderung fehlgeschlagen",
                                 JOptionPane.ERROR_MESSAGE);
