@@ -197,7 +197,10 @@ public class TextManagementUI {
                         radioEasy.setSelected(false);
                         radioMedium.setSelected(false);
                         radioHard.setSelected(false);
-                    } catch (SQLException throwables) {
+                    }catch(TextRepository.TextAlreadyExistsException ex){
+                        JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(),
+                                "Fehler", JOptionPane.ERROR_MESSAGE);
+                    }catch (SQLException throwables) {
                         JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Hinzufügen des Textes",
                                 "Fehler", JOptionPane.ERROR_MESSAGE);
                     }

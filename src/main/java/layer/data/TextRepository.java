@@ -1,22 +1,28 @@
 package layer.data;
 
+import org.sqlite.SQLiteException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class TextRepository {
-    public static void createText(String title, String text, Difficulty difficulty) throws SQLException {
+    public static void createText(String title, String text, Difficulty difficulty) throws SQLException, TextAlreadyExistsException {
         String sql = "INSERT INTO text(title, text, difficulty, length) VALUES (?,?,?,?)";
-        Connection conn = Database.connect();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1,title);
-        pstmt.setString(2,text);
-        pstmt.setInt(3,difficulty.ordinal());
-        pstmt.setInt(4,text.length());
-        pstmt.executeUpdate();
-        pstmt.close();
-        conn.close();
+        try(Connection conn = Database.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);){
+            pstmt.setString(1,title);
+            pstmt.setString(2,text);
+            pstmt.setInt(3,difficulty.ordinal());
+            pstmt.setInt(4,text.length());
+            pstmt.executeUpdate();
+        }catch(SQLiteException ex){
+            if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed" +
+                    " (UNIQUE constraint failed: text.title)")){
+                throw new TextAlreadyExistsException();
+            }
+        }
     }
 
     public static Text getRandomTextBasedOn(Rules rules) throws TextNotFoundException{
@@ -105,5 +111,10 @@ public class TextRepository {
         public TextNotFoundException(String s){
             super(s);
         }
+    }
+
+    public static class TextAlreadyExistsException extends Exception {
+        public TextAlreadyExistsException() { super("Titel ist bereits vorhanden.");}
+        public TextAlreadyExistsException(String s){super(s);}
     }
 }
