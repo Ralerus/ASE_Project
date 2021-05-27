@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public class TextRepository {
     public static void createText(String title, String text, Difficulty difficulty) throws SQLException, TextAlreadyExistsException {
@@ -30,7 +33,7 @@ public class TextRepository {
         String text = null;
         String title = null;
         Difficulty difficulty = null;
-        //TODO where is the random component?
+        List<Text> matchingTexts = new LinkedList<>();
         try(Connection conn = Database.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,rules.getDifficulty().ordinal());
@@ -52,8 +55,8 @@ public class TextRepository {
                         difficulty = Difficulty.Hard;
                         break;
                 }
+                matchingTexts.add(new Text(title,text,difficulty,text.length()));
             }
-
         }catch (SQLException e){
             e.printStackTrace();
             System.err.println(e.getMessage());
@@ -63,7 +66,10 @@ public class TextRepository {
             throw new TextNotFoundException("Kein Text für diese Regeln gefunden!");
         }
 
-        return new Text(title,text,difficulty,text.length()); //TODO für was wird difficulty im frontend gebraucht?
+        Random r = new Random();
+        int indexOfRandomText = r.nextInt(matchingTexts.size());
+        System.out.println(indexOfRandomText);
+        return matchingTexts.get(indexOfRandomText); //TODO für was wird difficulty im frontend gebraucht?
     }
 
     public static Text getTextByTitle(String title) throws TextNotFoundException {

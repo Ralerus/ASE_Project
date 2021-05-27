@@ -51,7 +51,7 @@ public class Game implements GameListener {
     private void gotoNextPlayer() {
         if(playersLeft.isEmpty()){
             this.writeGameToStats();
-            Login.create().withTitle("Anmeldung des Spielleiters").forPlayer(originallyLoggedInPlayer).build();
+            Login.create().withTitle("Anmeldung des Spielleiters für Ergebnisse").forPlayer(originallyLoggedInPlayer).build();
             GameUI.drawResults(sortMapByValue(results));
         }else {
             Player nextPlayer = playersLeft.remove(0);
