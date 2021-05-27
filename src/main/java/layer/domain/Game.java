@@ -2,9 +2,9 @@ package layer.domain;
 
 import application.Application;
 import layer.data.*;
+import layer.presentation.Login;
 import layer.presentation.GameUI;
 import layer.presentation.StatsUI;
-import layer.presentation.UserUI;
 
 import java.sql.SQLException;
 import java.time.Instant;
@@ -29,7 +29,6 @@ public class Game implements GameListener {
         this.rule = rule;
         this.currentRound = null;
         this.isCompetition = isCompetition;
-        UserUI.setListener(this);
     }
 
     public void start(){
@@ -52,12 +51,12 @@ public class Game implements GameListener {
     private void gotoNextPlayer() {
         if(playersLeft.isEmpty()){
             this.writeGameToStats();
-            UserUI.drawLoginUIFor(originallyLoggedInPlayer);
+            Login.create().withTitle("Anmeldung des Spielleiters").forPlayer(originallyLoggedInPlayer).build();
             GameUI.drawResults(sortMapByValue(results));
         }else {
             Player nextPlayer = playersLeft.remove(0);
             if(!nextPlayer.equals(Application.getSession().getLoggedInPlayer())){
-                UserUI.drawLoginUIFor(nextPlayer);
+                Login.create().withTitle("Anmeldung des nächsten Spielers").forPlayer(nextPlayer).duringGame(this).build();
             }else{
                 this.startRound();
             }

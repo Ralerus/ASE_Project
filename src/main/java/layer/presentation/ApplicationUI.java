@@ -7,8 +7,7 @@ import javax.swing.*;
 public class ApplicationUI extends JFrame implements UIListener {
     private static final GameUI gameUI = new GameUI();
     public ApplicationUI(){
-        UserUI.setUiListener(this);
-        UserUI.drawLoginUIFor(null);
+        Login.create().withTitle("Anmeldung").atAppStart(this).withRegisterButton().build();
     }
 
     @Override

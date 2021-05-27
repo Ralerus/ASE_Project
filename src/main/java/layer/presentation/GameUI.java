@@ -238,8 +238,8 @@ public class GameUI implements GameUIListener {
 		newUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				UserUI.setGameUIListener(Application.getUi().getGameUI());
-				UserUI.drawRegisterUI(true);
+				Registration.setGameUIListener(Application.getUi().getGameUI());
+				Registration.drawUI(true);
 			}
 		});
 		addUserPanel.add(addUserInputField);
