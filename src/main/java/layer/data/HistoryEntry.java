@@ -1,18 +1,16 @@
 package layer.data;
 
-import java.time.Instant;
-
 public class HistoryEntry {
     private String username;
     private double value;
     private String textTitle;
-    private String date; //TODO change to real date format
+    private String formattedDate;
 
-    public HistoryEntry(String username, double value, String textTitle, String date) {
+    public HistoryEntry(String username, double value, String textTitle, String formattedDate) {
         this.username = username;
         this.value = value;
         this.textTitle = textTitle;
-        this.date = date;
+        this.formattedDate = formattedDate;
     }
 
     public String getUsername() {
@@ -27,7 +25,7 @@ public class HistoryEntry {
         return textTitle;
     }
 
-    public String getDate() {
-        return date;
+    public String getFormattedDate() {
+        return formattedDate;
     }
 }

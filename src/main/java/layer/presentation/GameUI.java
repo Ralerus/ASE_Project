@@ -85,12 +85,12 @@ public class GameUI implements GameUIListener {
 		trainingPanel.add(startButton, BorderLayout.SOUTH);
 		return trainingPanel;
 	}
-	public static void drawResults(Map<Player, Double> results) {
+	public static void drawResults(Map<Player, Double> results, int textLength) {
 		JDialog jDialog = new JDialog(Application.getUi(), "Ergebnisse", true);
 		JPanel resultsPanelWithButton = new JPanel();
 		resultsPanelWithButton.setLayout(new BoxLayout(resultsPanelWithButton, BoxLayout.PAGE_AXIS));
 		JPanel resultsPanel = new JPanel();
-		resultsPanel.setLayout(new GridLayout(results.keySet().size(),3));
+		resultsPanel.setLayout(new GridLayout(results.keySet().size(),4));
 		System.out.println("Game over");
 		int counter = 1;
 		for(Player p: results.keySet()){
@@ -102,6 +102,8 @@ public class GameUI implements GameUIListener {
 			resultsPanel.add(new JLabel(counter+"."));
 			resultsPanel.add(new JLabel(p.getUsername()));
 			resultsPanel.add(new JLabel(results.get(p)+" Sekunden"));
+			double roundedLettersPerSecond = Math.round((textLength/results.get(p))*100.0)/100.0;
+			resultsPanel.add(new JLabel(roundedLettersPerSecond+" Zeichen/s"));
 			counter++;
 		}
 		resultsPanelWithButton.add(resultsPanel);

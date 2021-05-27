@@ -11,10 +11,12 @@ import java.awt.*;
 import java.sql.SQLException;
 
 public class StatsUI {
-    private final static JPanel historyPanel = new JPanel();
     private final static JPanel userStatsPanel = new JPanel();
+    private final static JPanel userHistoryPanel = new JPanel();
+    private final static JPanel userHighscorePanel = new JPanel();
     private final static JPanel gameStatsPanel = new JPanel();
-    private final static JPanel highscorePanel = new JPanel();
+    private final static JPanel gameHighscorePanel = new JPanel();
+
     public static JPanel getStatsUI(){
         JPanel statsUI = new JPanel();
         statsUI.setLayout(new BorderLayout());
@@ -26,10 +28,11 @@ public class StatsUI {
     private static JPanel getUserStatsUI() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        userStatsPanel.setLayout(new BoxLayout(userStatsPanel, BoxLayout.PAGE_AXIS));
+
         StatsUI.refreshUserStats();
         panel.add(userStatsPanel, BorderLayout.NORTH);
-        panel.add(historyPanel, BorderLayout.SOUTH);
+        panel.add(userHighscorePanel, BorderLayout.CENTER);
+        panel.add(userHistoryPanel, BorderLayout.SOUTH);
         return panel;
     }
 
@@ -40,7 +43,7 @@ public class StatsUI {
         gameStatsPanel.add(new JLabel("<html><h2>Allgemeine Spielstatistik</h2></html>"));
         StatsUI.refreshGameStats();
         panel.add(gameStatsPanel, BorderLayout.NORTH);
-        panel.add(highscorePanel, BorderLayout.SOUTH);
+        panel.add(gameHighscorePanel, BorderLayout.CENTER);
         return panel;
     }
 
@@ -51,7 +54,8 @@ public class StatsUI {
 
     public static void refreshUserStats(){
         userStatsPanel.removeAll();
-        historyPanel.removeAll();
+        userHistoryPanel.removeAll();
+        userHighscorePanel.removeAll();
 
         PlayerStats playerStats = null;
         try {
@@ -60,30 +64,52 @@ public class StatsUI {
             throwables.printStackTrace();
         }
         if(playerStats != null) {
+            userStatsPanel.setLayout(new BoxLayout(userStatsPanel, BoxLayout.PAGE_AXIS));
             userStatsPanel.add(new JLabel("<html><h2>Spielerstatistik für " +
                     Application.getSession().getLoggedInPlayer().getUsername()+"</h2></html>"));
             userStatsPanel.add(new JLabel("Durchgeführte Wettkämpfe: " + playerStats.getNumberOfCompetitons()));
             userStatsPanel.add(new JLabel("Durchgeführte Trainings: " + playerStats.getNumberOfTrainings()));
-            userStatsPanel.add(new JLabel("Beste Spiele:"));
-            historyPanel.setLayout(new GridLayout(6, 3));
-            historyPanel.add(new JLabel("<html><h3>Datum</h3></html>"));
-            historyPanel.add(new JLabel("<html><h3>Geschwindigkeit</h3></html>"));
-            historyPanel.add(new JLabel("<html><h3>Text</h3></html>"));
-            for(HistoryEntry h : playerStats.getHistory()){
-                historyPanel.add(new JLabel(h.getDate()));
-                historyPanel.add(new JLabel(h.getValue()+" Zeichen/s"));
-                historyPanel.add(new JLabel(h.getTextTitle()));
+            userStatsPanel.add(new JLabel("<html><h3>Beste Spiele:</h3></html>"));
+
+            userHighscorePanel.setLayout(new GridLayout(6,4));
+            userHighscorePanel.add(new JLabel("<html><h3>Platz</h3></html>"));
+            userHighscorePanel.add(new JLabel("<html><h3>Tempo</h3></html>"));
+            userHighscorePanel.add(new JLabel("<html><h3>Texttitel</h3></html>"));
+            userHighscorePanel.add(new JLabel("<html><h3>Datum</h3></html>"));
+            int counter=1;
+            for(HistoryEntry h: playerStats.getHighscore()){
+                userHighscorePanel.add(new JLabel(counter+"."));
+                userHighscorePanel.add(new JLabel(h.getValue()+" Zeichen/s"));
+                userHighscorePanel.add(new JLabel(h.getTextTitle()));
+                userHighscorePanel.add(new JLabel(h.getFormattedDate()));
+                counter++;
             }
+
+            userHistoryPanel.setLayout(new BorderLayout());
+            userHistoryPanel.add(new JLabel("<html><h3>Letzte Spiele:</h3></html>"), BorderLayout.NORTH);
+            JPanel historyEntries = new JPanel();
+            historyEntries.setLayout(new GridLayout(6, 3));
+            historyEntries.add(new JLabel("<html><h3>Datum</h3></html>"));
+            historyEntries.add(new JLabel("<html><h3>Tempo</h3></html>"));
+            historyEntries.add(new JLabel("<html><h3>Texttitel</h3></html>"));
+            for(HistoryEntry h : playerStats.getHistory()){
+                historyEntries.add(new JLabel(h.getFormattedDate()));
+                historyEntries.add(new JLabel(h.getValue()+" Zeichen/s"));
+                historyEntries.add(new JLabel(h.getTextTitle()));
+            }
+            userHistoryPanel.add(historyEntries,BorderLayout.CENTER);
         }
         userStatsPanel.revalidate();
         userStatsPanel.repaint();
-        historyPanel.revalidate();
-        historyPanel.repaint();
+        userHistoryPanel.revalidate();
+        userHistoryPanel.repaint();
+        userHighscorePanel.revalidate();
+        userHighscorePanel.repaint();
     }
 
     public static void refreshGameStats(){
         gameStatsPanel.removeAll();
-        highscorePanel.removeAll();
+        gameHighscorePanel.removeAll();
 
         GameStats gameStats = null;
         try {
@@ -92,29 +118,30 @@ public class StatsUI {
             throwables.printStackTrace();
         }
         if(gameStats !=null) {
+            gameStatsPanel.add(new JLabel("<html><h2>Allgemeine Spielstatistik</h2></html>"));
             gameStatsPanel.add(new JLabel("Durchgeführte Wettkämpfe: "+ gameStats.getNumberOfCompetitons()));
             gameStatsPanel.add(new JLabel("Durchgeführte Trainings: "+ gameStats.getNumberOfTrainings()));
-            gameStatsPanel.add(new JLabel("Registrierte Spieler*innen:"+ gameStats.getNumberOfPlayers()));
-            gameStatsPanel.add(new JLabel("Highscore:"));
-            highscorePanel.setLayout(new GridLayout(11, 5));
-            highscorePanel.add(new JLabel("<html><h3>Platz</h3></html>"));
-            highscorePanel.add(new JLabel("<html><h3>Spieler*in</h3></html>"));
-            highscorePanel.add(new JLabel("<html><h3>Geschwindigkeit</h3></html>"));
-            highscorePanel.add(new JLabel("<html><h3>Text</h3></html>"));
-            highscorePanel.add(new JLabel("<html><h3>Datum</h3></html>"));
+            gameStatsPanel.add(new JLabel("Registrierte Spieler*innen: "+ gameStats.getNumberOfPlayers()));
+            gameStatsPanel.add(new JLabel("<html><h3>Highscore-Liste:</h3></html>"));
+            gameHighscorePanel.setLayout(new GridLayout(11, 5));
+            gameHighscorePanel.add(new JLabel("<html><h3>Platz</h3></html>"));
+            gameHighscorePanel.add(new JLabel("<html><h3>Spieler*in</h3></html>"));
+            gameHighscorePanel.add(new JLabel("<html><h3>Tempo</h3></html>"));
+            gameHighscorePanel.add(new JLabel("<html><h3>Texttitel</h3></html>"));
+            gameHighscorePanel.add(new JLabel("<html><h3>Datum</h3></html>"));
             int counter = 1;
             for(HistoryEntry h : gameStats.getHighscore()){
-                highscorePanel.add(new JLabel(counter+"."));
-                highscorePanel.add(new JLabel(h.getUsername()));
-                highscorePanel.add(new JLabel(h.getValue()+" Zeichen/s"));
-                highscorePanel.add(new JLabel(h.getTextTitle()));
-                highscorePanel.add(new JLabel(h.getDate()));
+                gameHighscorePanel.add(new JLabel(counter+"."));
+                gameHighscorePanel.add(new JLabel(h.getUsername()));
+                gameHighscorePanel.add(new JLabel(h.getValue()+" Zeichen/s"));
+                gameHighscorePanel.add(new JLabel(h.getTextTitle()));
+                gameHighscorePanel.add(new JLabel(h.getFormattedDate()));
                 counter++;
             }
         }
         gameStatsPanel.revalidate();
         gameStatsPanel.repaint();
-        highscorePanel.revalidate();
-        highscorePanel.repaint();
+        gameHighscorePanel.revalidate();
+        gameHighscorePanel.repaint();
     }
 }
