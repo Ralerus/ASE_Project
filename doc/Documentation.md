@@ -44,14 +44,43 @@ DRY ist eine Abkürzung für *Don't Repeat Yourself!* und versucht jegliche unn�
 Installationsskript
 
 ## Entwurfsmuster
-Als Entwurfsmuster wurde im Tippduell vor allem das **Observer-Pattern** bzw. **Listener-Pattern** angewandt. Es handelt sich hierbei um ein Verhaltensmuster, also einem 
-Pattern zur Kommunikation zwischen Objekten und der Steuerung des Kontrollflusses einer Anwendung zur Laufzeit. Das Listener-Pattern ermöglicht eine automatische Reaktionen auf Zustandsänderungen und 
+Als Entwurfsmuster wurden im Tippduell zum einen das **Builder-Pattern** und zum anderen das **Observer-Pattern** bzw. **Listener-Pattern** angewandt. 
+### Builder-Pattern
+Grundsätzlich handelt es sich beim Builder-Pattern um ein Muster zur einfachen und schrittweisen Erstellung von komplexen Objekten in unterschiedlichen Ausführungen. In der Anwendung wird das Builder-Pattern nicht direkt zur Erstellung 
+von `Login`-Objekten bzw. Login-UIs eingesetzt. Diese werden in drei verschiedenen Abwandlungen in der Anwendung eingesetzt, daher ist der Einsatz des Builder-Patterns sinnvoll. Zudem erhöht das Builder-Pattern deutlich die Lesbarkeit und damit Wartbarkeit des Codes.
+
+[Aufrufe ohne Builder-Pattern](https://github.com/Ralerus/ASE_Project/tree/38c49087568b1a93d41e891a76e28d8d1446096b):
+- Anmeldung in `ApplicationUI` zu Programmstart: `UserUI.setUIListener(this); UserUI.drawLoginFor(null);`
+- Anmeldung in `Game` für nächsten Spieler: `UserUI.setListener(this); UserUI.drawLoginUIFor(nextPlayer);`
+- Anmeldung in `Game` für Spielleiter: `UserUI.setListener(this); UserUI.drawLoginFor(originallyLoggedInPlayer);`
+
+[Aufrufe mit Builder-Pattern](https://github.com/Ralerus/ASE_Project/commit/2178f80aeb50db3e314c6a9b14cd96ad0e73de99):
+- Anmeldung in `ApplicationUI` zu Programmstart: `Login.create().withTitle("Anmeldung").atAppStart(this).withRegisterButton().build();`
+- Anmeldung in `Game` für nächsten Spieler: `Login.create().withTitle("Anmeldung des Spielleiters").forPlayer(originallyLoggedInPlayer).build();`
+- Anmeldung in `Game` für Spielleiter: `Login.create().withTitle("Anmeldung des nächsten Spielers").forPlayer(nextPlayer).duringGame(this).build();`
+
+Durch das Builder-Pattern besteht nun auch die Möglichkeit einfach den Titel des Login-Dialogs anzupassen, so wird für den/die Nutzer*in klarer, wofür der aktuelle Dialog dient.
+Durch das eingesetzte Builder-Pattern ist nun auch gewährleistet, dass immer ein Listener gesetzt wird, sofern dieser benötigt wird. Dies geschieht in einem Methodenaufruf (z.B. `duringGame(this)`) und nicht mehr in zwei, wie zuvor.
+Da in diesem Beispiel lediglich einen konkreten Erbauer gibt, kann auf weitere Interfaces verzichtet werden. Zudem gibt die `build`-Methode kein Objekt zurück, sondern zeichnet das entsprechende UI. Deshalb wird auch für das letztendliche Produkt
+kein Interface benötigt.
+
+UML vorher:
+
+
+UML nachher:  
+![UML-Diagramm nach Builder-Pattern](img/UML_after_builder.png)
+
+
+### Listener-Pattern
+Es handelt sich hierbei um ein Verhaltensmuster, also einem Pattern zur Kommunikation zwischen Objekten und der Steuerung des Kontrollflusses einer Anwendung zur Laufzeit.
+Das Listener-Pattern ermöglicht eine automatische Reaktionen auf Zustandsänderungen und 
 wird in der vorliegenden Anwendung für die Kommunikation zwischen Benutzeroberfläche und Applikationslogik eingesetzt.
 
 Ein Interface wie beispielsweise `GameListener` gibt verschiedene Methoden vor, wie beispielsweise `startRoundFor(Player p)`, die die `Game`-Klasse implementiert.
-Das `UserUI` bekommt über die Methode `setGameListener` dann eine Game-Instanz als privaten Member gesetzt, über den das `UserUI` bei Bedarf die erwähnte Methode aufrufen kann.
-Die Klasse `Game` ist somit ein Observer, das `UserUI` ein Observable, das den Observer über die `startRoundFor(Player p)`-Methode benachrichtigen kann. Hierfür muss sich eine Instanz der Game-Klasse auf dem `UserUI` registrieren.
-
+Die Klasse `Login` bekommt über die `duringGame(GameListener g)`-Methode dann eine Game-Instanz als privaten Member gesetzt, über den das `Login` bei Bedarf die erwähnte Methode aufrufen kann.
+Die Klasse `Game` ist somit ein Observer, die Klasse `Login` ein Observable, das den Observer über die `startRoundFor(Player p)`-Methode benachrichtigen kann. 
+Hierfür muss sich eine Instanz der Game-Klasse auf dem `Login` während des Buildprozesses registrieren.
+Da das Login nach dem Builder-Pattern erzeugt wird, liegt keine klassische Implementierung des Listener-Patterns vor, so gibt es z.B. keine Methode `addListener`. Das kommt auch daher, da jedes Login nur maximal einen `Game`-Observer besitzen kann.
 
 ## Domain Driven Design
 
