@@ -50,8 +50,8 @@ public class Game implements GameListener {
     }
     private void gotoNextPlayer() {
         if(playersLeft.isEmpty()){
-            this.writeGameToStats();
             Login.create().withTitle("Anmeldung des Spielleiters für Ergebnisse").forPlayer(originallyLoggedInPlayer).build();
+            this.writeGameToStats();
             GameUI.drawResults(sortMapByValue(results), text.getLength());
         }else {
             Player nextPlayer = playersLeft.remove(0);

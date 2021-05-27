@@ -9,23 +9,29 @@ import javax.swing.*;
 import java.sql.SQLException;
 
 public class UserManagement {
-    public static boolean isUsernameChanged(String usernameValue, PlayerRepository player){
+    public static boolean isUsernameFieldClearNeeded(String usernameValue, PlayerRepository player){
         if(!usernameValue.isEmpty()){
             if(player!=null){
-                try {
-                    player.changeUserName(usernameValue);
-                    JOptionPane.showMessageDialog(Application.getUi(),"Nutzername erfolgreich " +
-                                "geändert", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-                    Application.getSession().setLoggedInPlayer(new Player(usernameValue,
+                int response = JOptionPane.showConfirmDialog(Application.getUi(),  "Benutzername wirklich" +
+                        " ändern?\nDeine Spielerstatistik ist an den Benutzernamen\ngebunden und startet bei neuem Namen neu.", "Änderungsbestätigung", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                if(response==0) {
+                    try {
+                        player.changeUserName(usernameValue);
+                        JOptionPane.showMessageDialog(Application.getUi(), "Benutzername erfolgreich " +
+                                "geändert. \nDu wirst nun abgemeldet, bitte melde dich\nneu an!", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                        Application.getSession().setLoggedInPlayer(new Player(usernameValue,
                                 Application.getSession().getLoggedInPlayer().getFullname()));
-                    return true;
-                } catch (PlayerRepository.PlayerAlreadyExistsException e) {
-                    JOptionPane.showMessageDialog(Application.getUi(), e.getMessage(), "Änderung fehlgeschlagen",
-                            JOptionPane.ERROR_MESSAGE);
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des" +
-                            " Nutzernames", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                        Application.getSession().logoff();
+                        return true;
+                    } catch (PlayerRepository.PlayerAlreadyExistsException e) {
+                        JOptionPane.showMessageDialog(Application.getUi(), e.getMessage(), "Änderung fehlgeschlagen",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des" +
+                                " Benutzernamens", "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
+                return true;
             }
         }
         return false;

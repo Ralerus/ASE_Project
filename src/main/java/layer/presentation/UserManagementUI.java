@@ -66,8 +66,7 @@ public class UserManagementUI {
                     } catch (PlayerRepository.PlayerNotFoundException playerNotFoundException) {
                         playerNotFoundException.printStackTrace();
                     }
-                    if(UserManagement.isUsernameChanged(usernameValue,player)){
-                        Application.getUi().setTitle("Tippduell - "+usernameValue+" angemeldet");
+                    if(UserManagement.isUsernameFieldClearNeeded(usernameValue,player)){
                         username.setText("");
                     }
                     if(UserManagement.isFullNameChanged(fullnameValue,player)){

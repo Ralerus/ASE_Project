@@ -16,7 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class GameUI implements GameUIListener {
-	private List<Player> players = new ArrayList<>(); //TODO keine Logik im UI
+	private List<Player> players;
 	private static Game lastGame;
 	private JPanel playersList;
 	Difficulty difficulty;
@@ -24,6 +24,7 @@ public class GameUI implements GameUIListener {
 	private int minLength;
 
 	public JPanel getCompetitionUI() {
+		players = new ArrayList<>();
 		JPanel competitionPanel = new JPanel();
 		competitionPanel.setLayout(new BorderLayout());
 
@@ -36,7 +37,7 @@ public class GameUI implements GameUIListener {
 			public void actionPerformed(ActionEvent e) {
 				if(!players.isEmpty()){
 					Rules rules = new Rules(difficulty,minLength,maxLength);
-					Game game = null; //TODO builder pattern?
+					Game game;
 					try {
 						game = new Game(players,rules,true);
 						lastGame = game;
@@ -71,7 +72,7 @@ public class GameUI implements GameUIListener {
 				Rules rules = new Rules(difficulty,minLength,maxLength);
 				List<Player> singleplayer = new ArrayList<>();
 				singleplayer.add(Application.getSession().getLoggedInPlayer());
-				Game game = null; //TODO builder pattern?
+				Game game;
 				try {
 					game = new Game(singleplayer,rules,false);
 					lastGame = game;
