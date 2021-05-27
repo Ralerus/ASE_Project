@@ -11,11 +11,6 @@ import layer.data.*;
 
 public class Registration {
 	private static JDialog registerDialog;
-	private static GameUIListener gameUIListener;
-
-    public static void setGameUIListener(GameUIListener listener) {
-        Registration.gameUIListener = listener;
-    }
 
     public static void drawUI(boolean addToGame){
         registerDialog = new JDialog(Application.getUi(), "Neuen Nutzer registrieren", true);
@@ -48,7 +43,7 @@ public class Registration {
 
                             StatsUI.refreshGameStats();
                             if(addToGame){
-                                gameUIListener.addToGame(p);
+                                GameUI.addToGame(p);
                             }
                         }catch(PlayerRepository.PlayerAlreadyExistsException ex1) {
                             JOptionPane.showMessageDialog(registerDialog, ex1.getMessage(), "Fehler",

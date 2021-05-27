@@ -15,15 +15,15 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class GameUI implements GameUIListener {
-	private List<Player> players;
+public class GameUI{
+	private static List<Player> players;
 	private static Game lastGame;
-	private JPanel playersList;
-	Difficulty difficulty;
-	private int maxLength;
-	private int minLength;
+	private static JPanel playersList;
+	private static Difficulty difficulty;
+	private static int maxLength;
+	private static int minLength;
 
-	public JPanel getCompetitionUI() {
+	public static JPanel getCompetitionUI() {
 		players = new ArrayList<>();
 		JPanel competitionPanel = new JPanel();
 		competitionPanel.setLayout(new BorderLayout());
@@ -59,7 +59,7 @@ public class GameUI implements GameUIListener {
 		return competitionPanel;
 	}
 	
-	public JPanel getTrainingUI() {
+	public static JPanel getTrainingUI() {
 		JPanel trainingPanel = new JPanel();
 		trainingPanel.setLayout(new BorderLayout());
 
@@ -127,7 +127,7 @@ public class GameUI implements GameUIListener {
 
 	}
 
-	private JPanel setUpConfigurationPanel() {
+	private static JPanel setUpConfigurationPanel() {
 		JPanel configurationPanel = new JPanel();
 		configurationPanel.setLayout(new BorderLayout());
 		configurationPanel.add(new JLabel("<html><h2>Konfiguration</h2></html>"), BorderLayout.NORTH);
@@ -202,7 +202,7 @@ public class GameUI implements GameUIListener {
 		return configurationPanel;
 	}
 
-	private JPanel setUpAddUserPanel(){
+	private static JPanel setUpAddUserPanel(){
 		JPanel playerPanel = new JPanel();
 		playerPanel.setLayout(new BorderLayout());
 		JPanel addUserPanel = new JPanel();
@@ -242,7 +242,6 @@ public class GameUI implements GameUIListener {
 		newUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Registration.setGameUIListener(Application.getUi().getGameUI());
 				Registration.drawUI(true);
 			}
 		});
@@ -255,7 +254,7 @@ public class GameUI implements GameUIListener {
 		return playerPanel;
 	}
 
-	private void refreshPlayersList(){
+	private static void refreshPlayersList(){
 		playersList.removeAll();
 		playersList.revalidate();
 		for(Player p : players){
@@ -281,8 +280,7 @@ public class GameUI implements GameUIListener {
 		playersList.repaint();
 	}
 
-	@Override
-	public void addToGame(Player p) {
+	public static void addToGame(Player p) {
 		players.add(p);
 		refreshPlayersList();
 	}
