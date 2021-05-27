@@ -23,11 +23,11 @@ public class RoundUI {
         JOptionPane.showConfirmDialog(Application.getUi(),  "Bist du bereit, "+p.getUsername()+"?",
                 "Bereit?", JOptionPane.DEFAULT_OPTION);
         jDialog = new JDialog(Application.getUi(),"Runde von "+p.getUsername(), true);
-        jDialog.setLayout(new GridLayout(8,1));
-        JPanel jpanel = new JPanel();
+        jDialog.setLayout(new GridLayout(3,1));
         textArea = new JTextArea(text,3,50);
         textArea.setEditable(false);
         textArea.setFocusable(false);
+        textArea.setBackground(new Color(238,238,238));
         JTextArea userInput = new JTextArea(4,50);
         userInput.addKeyListener(new KeyListener() {
             @Override
@@ -43,14 +43,12 @@ public class RoundUI {
             @Override
             public void keyReleased(KeyEvent e)  {}
         });
-
-        jpanel.add(textArea);
-        jpanel.add(userInput);
-        jpanel.add(new JLabel("Wettkampf läuft ..."));
         listener.setStartTime();
-        jDialog.add(jpanel);
-
-        jDialog.setSize(1000,800);
+        jDialog.add(textArea);
+        jDialog.add(userInput);
+        jDialog.add(new JLabel("Wettkampf läuft ..."));
+        jDialog.setSize(600,300);
+        jDialog.setLocationRelativeTo(Application.getUi());
         jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         jDialog.setVisible(true);
     }

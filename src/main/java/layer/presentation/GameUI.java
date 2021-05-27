@@ -119,7 +119,8 @@ public class GameUI implements GameUIListener {
 		resultsPanelWithButton.add(playAgain);
 		jDialog.add(resultsPanelWithButton);
 
-		jDialog.setSize(500,400);
+		jDialog.setSize(500,(100+results.keySet().size()*25));
+		jDialog.setLocationRelativeTo(Application.getUi());
 		jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		jDialog.setVisible(true);
 

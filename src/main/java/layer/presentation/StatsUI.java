@@ -69,7 +69,7 @@ public class StatsUI {
                     Application.getSession().getLoggedInPlayer().getUsername()+"</h2></html>"));
             userStatsPanel.add(new JLabel("Durchgeführte Wettkämpfe: " + playerStats.getNumberOfCompetitons()));
             userStatsPanel.add(new JLabel("Durchgeführte Trainings: " + playerStats.getNumberOfTrainings()));
-            userStatsPanel.add(new JLabel("<html><h3>Beste Spiele:</h3></html>"));
+            userStatsPanel.add(new JLabel("<html><h3>Beste Wettkämpfe:</h3></html>"));
 
             userHighscorePanel.setLayout(new GridLayout(6,4));
             userHighscorePanel.add(new JLabel("<html><h3>Platz</h3></html>"));
@@ -86,7 +86,7 @@ public class StatsUI {
             }
 
             userHistoryPanel.setLayout(new BorderLayout());
-            userHistoryPanel.add(new JLabel("<html><h3>Letzte Spiele:</h3></html>"), BorderLayout.NORTH);
+            userHistoryPanel.add(new JLabel("<html><h3>Letzte Wettkämpfe:</h3></html>"), BorderLayout.NORTH);
             JPanel historyEntries = new JPanel();
             historyEntries.setLayout(new GridLayout(6, 3));
             historyEntries.add(new JLabel("<html><h3>Datum</h3></html>"));

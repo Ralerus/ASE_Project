@@ -118,6 +118,7 @@ public final class Login {
         loginPanel.add(loginButton);
         loginDialog.add(loginPanel);
         loginDialog.setSize(300,150);
+        loginDialog.setLocationRelativeTo(Application.getUi());
         loginDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         loginDialog.setVisible(true);
     }

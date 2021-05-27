@@ -71,6 +71,7 @@ public class Registration {
         registerPanel.add(registerButton);
         registerDialog.add(registerPanel);
         registerDialog.setSize(250,150);
+        registerDialog.setLocationRelativeTo(Application.getUi());
         registerDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         registerDialog.setVisible(true);
     }
