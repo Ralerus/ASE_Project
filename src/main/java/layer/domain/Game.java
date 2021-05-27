@@ -15,12 +15,14 @@ public class Game implements GameListener {
     private Map<Player, Double> results;
     private List<Player> playersLeft;
     private List<Player> allPlayers;
+    private Player originallyLoggedInPlayer;
     private Rules rule;
     private Round currentRound;
     private boolean isCompetition;
 
     public Game(List<Player> playersLeft, Rules rule, boolean isCompetition) throws TextRepository.TextNotFoundException {
         this.text = TextRepository.getRandomTextBasedOn(rule);
+        this.originallyLoggedInPlayer = Application.getSession().getLoggedInPlayer();
         this.results = new HashMap<>();
         this.playersLeft = playersLeft;
         this.allPlayers = new ArrayList<>(playersLeft);
@@ -50,6 +52,7 @@ public class Game implements GameListener {
     private void gotoNextPlayer() {
         if(playersLeft.isEmpty()){
             this.writeGameToStats();
+            UserUI.drawLoginUIFor(originallyLoggedInPlayer);
             GameUI.drawResults(sortMapByValue(results));
         }else {
             Player nextPlayer = playersLeft.remove(0);
