@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CheckCurrentInputChar {
+class CheckCurrentInputCharTest {
     private Round round;
 
     @BeforeEach

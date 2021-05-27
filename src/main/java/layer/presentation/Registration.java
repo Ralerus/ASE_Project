@@ -41,9 +41,9 @@ public class Registration {
                             registerDialog.setVisible(false);
                             registerDialog.dispose();
 
-                            StatsUI.refreshGameStats();
                             if(addToGame){
                                 GameUI.addToGame(p);
+                                StatsUI.refreshGameStats();
                             }
                         }catch(PlayerRepository.PlayerAlreadyExistsException ex1) {
                             JOptionPane.showMessageDialog(registerDialog, ex1.getMessage(), "Fehler",

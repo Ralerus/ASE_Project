@@ -22,8 +22,8 @@ public class DatabaseSetup {
         }
     }
 
-    public static void main(String[] args) {
-        String url = "jdbc:sqlite:C:/Users/Nutzer/sqlite/db/Tippduell.db";
+    public static void setup() {
+        String url = "jdbc:sqlite:C:/Users/Nutzer/sqlite/db/Tippduell.db"; //TODO "jdbc:sqlite:C:/Users/Nutzer/sqlite/db/Tippduell.db";
         createNewDatabase(url);
         List<String> createTables = new LinkedList<>();
         createTables.add("CREATE TABLE IF NOT EXISTS player (\n"
@@ -64,7 +64,7 @@ public class DatabaseSetup {
             for(String sql : createTables){
                 stmt.execute(sql);
             }
-            System.out.println("Table created");
+            System.out.println("Tables created");
         } catch (SQLException e){
             System.err.println(e.getMessage());
         }

@@ -8,7 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CheckTestLeft {
+public class CheckTestLeftTest {
     private Round round;
 
     @BeforeEach
