@@ -62,6 +62,7 @@
                                 <mainClass>application.Application</mainClass>
                                 <preCp>anything</preCp>
                             </classPath>
+                            <icon>src/main/resources/icon.ico</icon>
                             <jre>
                                 <path>jre</path>
                             </jre>

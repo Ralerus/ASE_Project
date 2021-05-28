@@ -16,14 +16,13 @@ public class DatabaseSetup {
                 System.out.println("The driver name is " + meta.getDriverName());
                 System.out.println("A new database has been created.");
             }
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public static void setup() {
-        String url = "jdbc:sqlite:C:/Users/Nutzer/sqlite/db/Tippduell.db"; //TODO "jdbc:sqlite:C:/Users/Nutzer/sqlite/db/Tippduell.db";
+        String url = "jdbc:sqlite:resources/tippduell.db";
         createNewDatabase(url);
         List<String> createTables = new LinkedList<>();
         createTables.add("CREATE TABLE IF NOT EXISTS player (\n"

@@ -121,6 +121,7 @@ public class GameUI{
 			}
 		});
 		resultsPanelWithButton.add(playAgain);
+		resultsPanelWithButton.setBorder(new EmptyBorder(5,5,2,5));
 		jDialog.add(resultsPanelWithButton);
 
 		jDialog.setSize(500,(100+results.keySet().size()*25));

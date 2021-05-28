@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class Database {
     public static Connection connect(){
-        String url = "jdbc:sqlite:C:/Users/Nutzer/sqlite/db/Tippduell.db"; //TODO change path
+        String url = "jdbc:sqlite:resources/tippduell.db";//"jdbc:sqlite:src/main/resources/tippduell.db";
         Connection conn = null;
         try{
             conn = DriverManager.getConnection(url);

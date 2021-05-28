@@ -53,6 +53,7 @@ public class PlayerRepository {
             }
 
         } catch (SQLException e){
+            e.printStackTrace();
             throw new PlayerNotFoundException("Spieler "+username+" existiert nicht");
         }
         if(fullname==null || password == null){
@@ -67,7 +68,7 @@ public class PlayerRepository {
     }
 
     public static void createPlayer(Player p, String password) throws PlayerAlreadyExistsException, SQLException {
-        String sql = "INSERT INTO player(username, password, fullname) VALUES (?,?,?)";
+        String sql = "INSERT INTO player (username, password, fullname) VALUES (?,?,?)";
         try(Connection conn = Database.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,p.getUsername());
             pstmt.setString(2,password);
@@ -78,6 +79,7 @@ public class PlayerRepository {
                     " (UNIQUE constraint failed: player.username)")){
                 throw new PlayerAlreadyExistsException();
             }
+            ex.printStackTrace();
         }
     }
 
