@@ -116,6 +116,32 @@ Dabei gilt allgemein, dass jede Schicht nur von den unterliegenden Schichten abh
 Die Entscheidung viel auf diese Art der Schichtenarchitektur, da sie gut zur Anwendung passt.
 
 ## Unit Tests
+Unit Tests testen einzelne Komponenten des Systems und stellen deren Funktionalität unabhängig von anderen Komponenten sicher. Dazu ist es wichtig, andere Teile durch Stellvertreter, sogenannte Mocks, zu ersetzen
+um eine Unabhängigkeit zu gewährleisten. Im Tippduell wurden 10 Unit-Tests mit XX Testfällen realisiert. Zum Testen wird das Testing-Framework *JUnit5* verwendet, Mocks werden mit dem Mocking-Framework *mockito* erzeugt.
+
+### Tests
+Als beispielhafte Tests sollen hier der Test `CheckCurrentInputCharTest` angeführt werden, da diese eine wesentliche Funktionalität des Spiels testet.
+#### CheckCurrentInputCharTest
+Dieser [Test](https://github.com/Ralerus/ASE_Project/blob/main/src/test/java/layer/domain/CheckCurrentInputCharTest.java) testet die Methode `checkCurrentInputChar` der Klasse `Round`, die die Funktionalität repräsentiert, einen eingegebenen Buchstaben des Nutzers auf Übereinstimmung mit dem aktuell erforderlichen Buchstaben des Textes zu überprüfen.
+Dafür wird in diesem Test eine Instanz der Klasse `Round` mit einem gemockten `Text`-Objekt erzeugt, das wie folgt erzeugt wurde:  
+`Text text = mock(Text.class);`  
+`when(text.getText()).thenReturn("Testtext");`  
+Dadurch kann eine Unabhängigkeit von der tatsächlichen Klasse `Text` erzielt und dennoch das Szenario erfolgreich getestet werden. Der Test umfasst vier Testfälle, die die Komponente bei korrekt und inkorrekt eingegebenen Char sowie bei 
+korrekt und inkorrekt eingegebener Char-Folge überprüft.  
+Da die Methode lediglich Chars als Eingabe aktzeptiert, müssen falsche Eingabetypen nicht getestet werden. Sie sind nicht möglich.
+
+### A-TRIP-Regeln
+Die A-TRIP-Regeln können als Eigenschaften guter Tests angesehen werden. Im Folgenden sollen diese kurz vorgestellt und deren Einhaltung im Projekt erläutert werden.
+
+- **Automatic**: Tests müssen einfach durch einen Befehl ausführbar sein und ihre Ergebnisse selbst überprüfen. Im vorliegenden Projekt können alle Tests durch den Befehl `mvn test` gestartet werden, in der Konsole sind daraufhin die Ergebnisse der
+Tests, also ob sie bestanden oder fehlgeschlagen haben, auf einen Blick sichtbar. Somit gilt diese Eigenschaft als erfüllt.
+- **Thorough**: Tests müssen alles Notwendige überprüfen, d.h. alle relevanten Testfälle abdecken. 
+- **Repeatable**: Tests müssen beliebig wiederholbar sein und immer das gleiche Ergebnis liefern. Dies wird im vorliegenden Projekt durch den Einsatz von Mock-Objekten sichergestellt.
+- **Independent**: Tests dürfen keine Abhängigkeit zu anderen Tests haben. Dies wird im vorliegenden Projekt durch Setup-Methoden, die vor jedem Test durchgeführt werden sichergestellt. So besitzt jeder Test, unabhängig von 
+dem Zeitpunkt seiner Ausführung, die gleiche Testumgebung.
+- **Professional**: Tests unterliegen denselben Qualitätsstandards wie Produktivcode.
+
+### Code Coverage
 
 ## Refactoring
 
@@ -147,8 +173,22 @@ Folgende Probleme konnten dabei behoben werden:
 - Objektvergleiche mit != wurden durch equals ersetzt
 - Kombination von unnötig verschachtelten If-Statements wie in `UserManagement`
 
+Siehe zu den Ergebnissen des Refactorings [diesen Commit](https://github.com/Ralerus/ASE_Project/commit/5f8d4a7b00027583498ee65b54b59de8ff0e9b1b).
+Es konnten alle Codacy-Issues gelöst werden, wie folgender Ausschnitt des Codacy-Dashboards zeigt:  
+![Codacy-Dashboard](img/codacy_issues.png)
 
+Außerdem wurden noch Testmethoden umbenannt, da es nicht sinnvoll ist, dass alle Testmethoden des Tests `CheckTextLeftTest` mit `checkTextLeftAfter` starten.
+Die Umbenennung zu z.B. `forCorrectInputs` ermöglicht eine bessere Lesbarkeit. Das Ergebnis ist in [diesem Commit](https://github.com/Ralerus/ASE_Project/commit/3c92703c0372df0e5a03c4ea9c54772d1e7042ef) sichtbar.
 
+### Duplicated Code
+Als drittes angewandtes Refactoring soll hier die Beseitigung von duplicated Code in der Klasse `StatsRepository` angeführt werden. Vor dem Refactoring lag wie [hier](https://github.com/Ralerus/ASE_Project/blob/e64443d3d0cd5a32b945ae97890c7c46c0b3752c/src/main/java/layer/data/StatsRepository.java) ersichtlich
+der Codeteil zur Formattierung der Datenbankinhalte und Erzeugung eines `HistoryEntry`-Objektes dreimal in verschiedenen Methoden in nahezu gleicher Ausführung vor.  
+Dem konnte durch die Einführung einer neuen statischen `getFormattedStatsEntry`-Methode entgegengewirkt werden. Somit wurde das *Extract Method*-Refactoring angewandt. Zudem wurde die Methode `getHighscoreList` erweitert zu `getHighscoreListFor` und
+kann dadurch die Highscoreliste für das gesamte Spiel oder eine*n einzelnen Spieler*in liefern, was ebenfalls den duplicated Code reduziert.  
+Des weiteren wurde im Rahmen dieses Refactorings die Klasse `HistoryEntry` zu `StatsEntry` umbenannt, weil diese faktisch nicht nur Einträge der Historie, sondern auch Einträge des Highscores widerspiegelt und die
+Benennung somit nicht mehr der Verwendung entsprach.
+
+Die Ergebnisse des Refactorings sind [hier](https://github.com/Ralerus/ASE_Project/blob/e0c297a479fa2b75e06ce38bf5837d49d0fcbc83/src/main/java/layer/data/StatsRepository.java) ersichtlich.
 
 
 

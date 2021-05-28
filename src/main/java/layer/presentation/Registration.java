@@ -40,6 +40,8 @@ public class Registration {
                             PlayerRepository.createPlayer(p,passwordHash);
                             registerDialog.setVisible(false);
                             registerDialog.dispose();
+                            JOptionPane.showMessageDialog(registerDialog, "Nutzer*in "+username.getText()+" erfolgreich registriert.\n",
+                                    "Nutzer*in registriert", JOptionPane.INFORMATION_MESSAGE);
 
                             if(addToGame){
                                 GameUI.addToGame(p);
