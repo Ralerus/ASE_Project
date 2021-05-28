@@ -19,7 +19,7 @@ public class Game implements GameListener {
     private Round currentRound;
     private boolean isCompetition;
 
-    public Game(List<Player> playersLeft, Rules rules, boolean isCompetition) throws TextRepository.TextNotFoundException {
+    public Game(List<Player> playersLeft, Rules rules, boolean isCompetition) throws ObjectNotFoundException {
         this.text = TextRepository.getRandomTextBasedOn(rules);
         this.originallyLoggedInPlayer = Application.getSession().getLoggedInPlayer();
         this.results = new HashMap<>();

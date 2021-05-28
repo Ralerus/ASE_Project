@@ -45,7 +45,7 @@ public class GameUI{
 						game.start();
 						players.add(Application.getSession().getLoggedInPlayer());
 						refreshPlayersList();
-					} catch (TextRepository.TextNotFoundException ex) {
+					} catch (ObjectNotFoundException ex) {
 						JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler",
 								JOptionPane.ERROR_MESSAGE);
 					}
@@ -79,7 +79,7 @@ public class GameUI{
 					game = new Game(singleplayer,rules,false);
 					lastGame = game;
 					game.start();
-				} catch (TextRepository.TextNotFoundException ex) {
+				} catch (ObjectNotFoundException ex) {
 					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler",
 							JOptionPane.ERROR_MESSAGE);
 				}
@@ -234,7 +234,7 @@ public class GameUI{
 								" hinzugefügt.", "Fehler", JOptionPane.ERROR_MESSAGE);
 					}
 					username.setText("");
-				}catch (PlayerRepository.PlayerNotFoundException ex){
+				}catch (ObjectNotFoundException ex){
 					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Spieler*in nicht gefunden"
 							, JOptionPane.ERROR_MESSAGE);
 					username.setText("");
@@ -273,7 +273,7 @@ public class GameUI{
 					try {
 						players.remove(PlayerRepository.getPlayerRepository(removePlayer.getActionCommand()).getPlayer());
 						refreshPlayersList();
-					} catch (PlayerRepository.PlayerNotFoundException playerNotFoundException) {
+					} catch (ObjectNotFoundException playerNotFoundException) {
 						playerNotFoundException.printStackTrace();
 					}
 				}

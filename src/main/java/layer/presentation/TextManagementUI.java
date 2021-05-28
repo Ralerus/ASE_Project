@@ -1,9 +1,7 @@
 package layer.presentation;
 
 import application.Application;
-import layer.data.Difficulty;
-import layer.data.Text;
-import layer.data.TextRepository;
+import layer.data.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,7 +75,7 @@ public class TextManagementUI {
                         searchResults.revalidate();
                         searchResults.repaint();
                         searchField.setText("");
-                    } catch (TextRepository.TextNotFoundException textNotFoundException) {
+                    } catch (ObjectNotFoundException textNotFoundException) {
                         JOptionPane.showMessageDialog(Application.getUi(), textNotFoundException.getMessage(),
                                 "Fehler", JOptionPane.ERROR_MESSAGE);
                         searchField.setText("");
@@ -197,7 +195,7 @@ public class TextManagementUI {
                         radioEasy.setSelected(false);
                         radioMedium.setSelected(false);
                         radioHard.setSelected(false);
-                    }catch(TextRepository.TextAlreadyExistsException ex){
+                    }catch(ObjectAlreadyExistsException ex){
                         JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(),
                                 "Fehler", JOptionPane.ERROR_MESSAGE);
                     }catch (SQLException throwables) {

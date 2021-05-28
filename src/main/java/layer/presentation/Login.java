@@ -1,6 +1,7 @@
 package layer.presentation;
 
 import application.Application;
+import layer.data.ObjectNotFoundException;
 import layer.data.Player;
 import layer.data.PlayerRepository;
 import layer.data.Security;
@@ -105,7 +106,7 @@ public final class Login {
                         }else if(isAtAppStart){
                             uiListener.drawUI();
                         }
-                    } catch (PlayerRepository.PlayerNotFoundException| Session.WrongPasswordException ex) {
+                    } catch (ObjectNotFoundException | Session.WrongPasswordException ex) {
                         JOptionPane.showMessageDialog(loginDialog, "Benutzername oder Passwort inkorrekt!",
                                 "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                         password.setText("");

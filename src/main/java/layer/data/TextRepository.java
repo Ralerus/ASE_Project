@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 public class TextRepository {
-    public static void createText(String title, String text, Difficulty difficulty) throws SQLException, TextAlreadyExistsException {
+    public static void createText(String title, String text, Difficulty difficulty) throws SQLException, ObjectAlreadyExistsException {
         String sql = "INSERT INTO text(title, text, difficulty, length) VALUES (?,?,?,?)";
         try(Connection conn = Database.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql);){
@@ -23,12 +23,12 @@ public class TextRepository {
         }catch(SQLiteException ex){
             if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed" +
                     " (UNIQUE constraint failed: text.title)")){
-                throw new TextAlreadyExistsException();
+                throw new ObjectAlreadyExistsException("Titel bereits vergeben.");
             }
         }
     }
 
-    public static Text getRandomTextBasedOn(Rules rules) throws TextNotFoundException{
+    public static Text getRandomTextBasedOn(Rules rules) throws ObjectNotFoundException{
         String sql = "SELECT title, text, difficulty FROM text WHERE difficulty = ? AND length >= ? AND length <= ?";
         String text = null;
         String title = null;
@@ -60,10 +60,10 @@ public class TextRepository {
         }catch (SQLException e){
             e.printStackTrace();
             System.err.println(e.getMessage());
-            throw new TextNotFoundException("Kein Text für diese Regeln gefunden!");
+            throw new ObjectNotFoundException("Kein Text für diese Regeln gefunden!");
         }
         if(text==null || difficulty==null ){
-            throw new TextNotFoundException("Kein Text für diese Regeln gefunden!");
+            throw new ObjectNotFoundException("Kein Text für diese Regeln gefunden!");
         }
 
         Random r = new Random();
@@ -72,7 +72,7 @@ public class TextRepository {
         return matchingTexts.get(indexOfRandomText); //TODO für was wird difficulty im frontend gebraucht?
     }
 
-    public static Text getTextByTitle(String title) throws TextNotFoundException {
+    public static Text getTextByTitle(String title) throws ObjectNotFoundException {
         String sql = "SELECT * FROM text WHERE title= ?";
         String text = null;
         Difficulty difficulty = null;
@@ -98,10 +98,10 @@ public class TextRepository {
         }catch (SQLException e){
             e.printStackTrace();
             System.err.println(e.getMessage());
-            throw new TextNotFoundException("Kein Text mit diesem Titel gefunden!");
+            throw new ObjectNotFoundException("Kein Text mit diesem Titel gefunden!");
         }
         if(text==null || difficulty == null){
-            throw new TextNotFoundException("Kein Text mit diesem Titel gefunden!");
+            throw new ObjectNotFoundException("Kein Text mit diesem Titel gefunden!");
         }
         return new Text(title,text,difficulty,text.length());
     }
@@ -110,17 +110,4 @@ public class TextRepository {
         Database.updateEntry("DELETE FROM text WHERE title = ?", text.getTitle(),"");
     }
 
-    public static class TextNotFoundException extends Exception {
-        public TextNotFoundException(){
-            super();
-        }
-        public TextNotFoundException(String s){
-            super(s);
-        }
-    }
-
-    public static class TextAlreadyExistsException extends Exception {
-        public TextAlreadyExistsException() { super("Titel ist bereits vorhanden.");}
-        public TextAlreadyExistsException(String s){super(s);}
-    }
 }

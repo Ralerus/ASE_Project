@@ -1,6 +1,7 @@
 package layer.presentation;
 
 import application.Application;
+import layer.data.ObjectNotFoundException;
 import layer.data.PlayerRepository;
 import layer.domain.UserManagement;
 
@@ -63,7 +64,7 @@ public class UserManagementUI {
                     PlayerRepository player = null;
                     try {
                         player = PlayerRepository.getPlayerRepository(Application.getSession().getLoggedInPlayer());
-                    } catch (PlayerRepository.PlayerNotFoundException playerNotFoundException) {
+                    } catch (ObjectNotFoundException playerNotFoundException) {
                         playerNotFoundException.printStackTrace();
                     }
                     if(UserManagement.isUsernameFieldClearNeeded(usernameValue,player)){
@@ -107,7 +108,7 @@ public class UserManagementUI {
                             JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Löschen des bzw." +
                                     " der Nutzer*in", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                         }
-                    } catch (PlayerRepository.PlayerNotFoundException playerNotFoundException) {
+                    } catch (ObjectNotFoundException playerNotFoundException) {
                         JOptionPane.showMessageDialog(Application.getUi(), "Zu löschende*r Nutzer*in konnte " +
                                 "nicht gefunden werden.", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                     }

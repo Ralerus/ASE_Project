@@ -1,6 +1,7 @@
 package layer.domain;
 
 import application.Application;
+import layer.data.ObjectAlreadyExistsException;
 import layer.data.Player;
 import layer.data.PlayerRepository;
 import layer.data.Security;
@@ -22,7 +23,7 @@ public class UserManagement {
                             Application.getSession().getLoggedInPlayer().getFullname()));
                     Application.getSession().logoff();
                     return true;
-                } catch (PlayerRepository.PlayerAlreadyExistsException e) {
+                } catch (ObjectAlreadyExistsException e) {
                     JOptionPane.showMessageDialog(Application.getUi(), e.getMessage(), "Änderung fehlgeschlagen",
                             JOptionPane.ERROR_MESSAGE);
                 } catch (SQLException ex) {

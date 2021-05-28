@@ -12,7 +12,7 @@ class GameTest {
     private Game game;
 
     @BeforeEach
-    void setUp() throws TextRepository.TextNotFoundException {
+    void setUp() throws ObjectNotFoundException {
         List<Player> players = new ArrayList<>();
         players.add(mock(Player.class));
         players.add(mock(Player.class));

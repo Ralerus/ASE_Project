@@ -1,7 +1,9 @@
 package layer.data;
 
+import application.Application;
 import org.sqlite.SQLiteException;
 
+import javax.swing.*;
 import java.sql.*;
 
 public class PlayerRepository {
@@ -13,13 +15,13 @@ public class PlayerRepository {
         this.password = password;
     }
 
-    public void changeUserName(String newUsername) throws SQLException, PlayerAlreadyExistsException {
+    public void changeUserName(String newUsername) throws SQLException, ObjectAlreadyExistsException {
         try{
             Database.updateEntry("UPDATE player SET username = ? WHERE username = ?",newUsername,this.player.getUsername());
         }catch(SQLiteException ex){
             if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed" +
                     " (UNIQUE constraint failed: player.username)")){
-                throw new PlayerAlreadyExistsException();
+                throw new ObjectAlreadyExistsException("Benutzername bereits vergeben.");
             }
         }
     }
@@ -38,7 +40,7 @@ public class PlayerRepository {
         return this.player;
     }
 
-    public static PlayerRepository getPlayerRepository(String username) throws PlayerNotFoundException{
+    public static PlayerRepository getPlayerRepository(String username) throws ObjectNotFoundException{
         String sql = "SELECT username, password, fullname FROM player WHERE username = ?";
         String fullname=null;
         String password=null;
@@ -54,20 +56,20 @@ public class PlayerRepository {
 
         } catch (SQLException e){
             e.printStackTrace();
-            throw new PlayerNotFoundException("Spieler "+username+" existiert nicht");
+            throw new ObjectNotFoundException("Spieler*in "+username+" existiert nicht.");
         }
         if(fullname==null || password == null){
-            throw new PlayerNotFoundException();
+            throw new ObjectNotFoundException("Spieler*in nicht gefunden.");
         }
 
         return new PlayerRepository(username, fullname, password);
     }
 
-    public static PlayerRepository getPlayerRepository(Player p) throws PlayerNotFoundException{
+    public static PlayerRepository getPlayerRepository(Player p) throws ObjectNotFoundException{
         return PlayerRepository.getPlayerRepository(p.getUsername());
     }
 
-    public static void createPlayer(Player p, String password) throws PlayerAlreadyExistsException, SQLException {
+    public static void createPlayer(Player p, String password) throws ObjectAlreadyExistsException, SQLException {
         String sql = "INSERT INTO player (username, password, fullname) VALUES (?,?,?)";
         try(Connection conn = Database.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,p.getUsername());
@@ -77,9 +79,9 @@ public class PlayerRepository {
         }catch(SQLiteException ex){
             if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed" +
                     " (UNIQUE constraint failed: player.username)")){
-                throw new PlayerAlreadyExistsException();
+                throw new ObjectAlreadyExistsException("Benutzername bereits vergeben.");
             }
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(Application.getUi(),ex.getMessage(),"Fehler",JOptionPane.ERROR_MESSAGE); //TODO remove
         }
     }
 
@@ -87,21 +89,4 @@ public class PlayerRepository {
         Database.updateEntry("DELETE FROM player WHERE username = ?",this.player.getUsername(),"");
     }
 
-    public static class PlayerNotFoundException extends Exception {
-        public PlayerNotFoundException() {
-            super("Spieler*in existiert nicht");
-        }
-        public PlayerNotFoundException(String message) {
-            super(message);
-        }
-    }
-
-    public static class PlayerAlreadyExistsException extends Exception{
-        public PlayerAlreadyExistsException(){
-            super("Benutzername bereits vergeben.");
-        }
-        public PlayerAlreadyExistsException(String message){
-            super(message);
-        }
-    }
 }

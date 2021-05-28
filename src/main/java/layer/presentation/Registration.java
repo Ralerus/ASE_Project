@@ -48,7 +48,7 @@ public class Registration {
                                 GameUI.addToGame(p);
                                 StatsUI.refreshGameStats();
                             }
-                        }catch(PlayerRepository.PlayerAlreadyExistsException ex1) {
+                        }catch(ObjectAlreadyExistsException ex1) {
                             JOptionPane.showMessageDialog(registerDialog, ex1.getMessage(), "Fehler",
                                     JOptionPane.ERROR_MESSAGE);
                         }catch (Exception ex2) {
