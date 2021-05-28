@@ -5,6 +5,7 @@ import layer.data.Player;
 import layer.domain.RoundListener;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -23,7 +24,9 @@ public class RoundUI {
         JOptionPane.showConfirmDialog(Application.getUi(),  "Bist du bereit, "+p.getUsername()+"?",
                 "Bereit?", JOptionPane.DEFAULT_OPTION);
         jDialog = new JDialog(Application.getUi(),"Runde von "+p.getUsername(), true);
-        jDialog.setLayout(new GridLayout(3,1));
+
+        JPanel dialogContent = new JPanel();
+        dialogContent.setLayout(new GridLayout(3,1));
         textArea = new JTextArea(text,3,50);
         textArea.setEditable(false);
         textArea.setFocusable(false);
@@ -47,9 +50,11 @@ public class RoundUI {
             }
         });
         listener.setStartTime();
-        jDialog.add(textArea);
-        jDialog.add(userInput);
-        jDialog.add(new JLabel("Wettkampf läuft ..."));
+        dialogContent.add(textArea);
+        dialogContent.add(userInput);
+        dialogContent.add(new JLabel("Wettkampf läuft ..."));
+        dialogContent.setBorder(new EmptyBorder(8,8,8,8));
+        jDialog.add(dialogContent);
         jDialog.setSize(600,300);
         jDialog.setLocationRelativeTo(Application.getUi());
         jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

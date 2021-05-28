@@ -13,7 +13,7 @@ public class Registration {
 	private static JDialog registerDialog;
 
     public static void drawUI(boolean addToGame){
-        registerDialog = new JDialog(Application.getUi(), "Neuen Nutzer registrieren", true);
+        registerDialog = new JDialog(Application.getUi(), "Registrierung", true);
         JPanel registerPanel = new JPanel();
         registerPanel.setLayout(new GridLayout(4,2,6,3));
         registerPanel.add(new JLabel("Benutzername:"));
@@ -67,6 +67,11 @@ public class Registration {
         });
         registerPanel.add(registerButton);
         registerDialog.add(registerPanel);
+        try {
+            registerDialog.setIconImage(ApplicationUI.getAppIcon());
+        }catch(NullPointerException ex){
+            ex.printStackTrace();
+        }
         registerDialog.setSize(250,150);
         registerDialog.setLocationRelativeTo(Application.getUi());
         registerDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -77,7 +77,7 @@ public final class Login {
         JPasswordField password = new JPasswordField();
         loginPanel.add(password);
         if(withRegisterButton){
-            JButton newUser = new JButton("Neuer Nutzer");
+            JButton newUser = new JButton("Registrieren");
             newUser.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -116,8 +116,7 @@ public final class Login {
             }
         });
         try {
-            ImageIcon appIcon = new ImageIcon(this.getClass().getResource("icon.png"));
-            loginDialog.setIconImage(appIcon.getImage());
+            loginDialog.setIconImage(ApplicationUI.getAppIcon());
         }catch(NullPointerException ex){
             ex.printStackTrace();
         }

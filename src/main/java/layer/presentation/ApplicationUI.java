@@ -3,12 +3,14 @@ package layer.presentation;
 import application.Application;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ApplicationUI extends JFrame implements UIListener {
+    private static Image appIcon;
     public ApplicationUI(){
         try {
-            ImageIcon appIcon = new ImageIcon(this.getClass().getResource("icon.png"));
-            setIconImage(appIcon.getImage());
+            appIcon = new ImageIcon(this.getClass().getResource("icon.png")).getImage();
+            setIconImage(appIcon);
         }catch(NullPointerException ex){
             ex.printStackTrace();
         }
@@ -31,5 +33,9 @@ public class ApplicationUI extends JFrame implements UIListener {
         this.setLocationRelativeTo(Application.getUi());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+    }
+
+    public static Image getAppIcon() {
+        return appIcon;
     }
 }
