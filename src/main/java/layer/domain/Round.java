@@ -1,6 +1,5 @@
 package layer.domain;
 
-import layer.data.Player;
 import layer.data.Text;
 import layer.presentation.RoundUI;
 
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
 public class Round implements RoundListener{
     private List<Character> textLeft;
     private Instant startTime;
-    private Instant endTime;
     private GameListener listener;
 
     public void setListener(GameListener listener) {
@@ -44,7 +42,7 @@ public class Round implements RoundListener{
     }
     
     public void startRound() {
-        RoundUI.setListener(this);;
+        RoundUI.setListener(this);
         RoundUI.displayRoundFor(this.getTextLeft());
     }
 
@@ -54,7 +52,7 @@ public class Round implements RoundListener{
     }
 
     private void setEndTime() {
-    	this.endTime = Instant.now();
+    	Instant endTime = Instant.now();
         double duration = (double) Duration.between(startTime, endTime).toMillis() / 1000;
         RoundUI.closeRound();
         this.listener.endRound(duration);

@@ -4,7 +4,6 @@ import application.Application;
 import layer.data.Player;
 import layer.data.PlayerRepository;
 import layer.presentation.ApplicationUI;
-import layer.presentation.GameUI;
 
 public class Session {
     private Player loggedInPlayer = new Player("","");

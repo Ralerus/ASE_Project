@@ -38,10 +38,13 @@ public class RoundUI {
                     JOptionPane.showMessageDialog(jDialog, "Vertippt!", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
             }
+
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+            }
             @Override
-            public void keyReleased(KeyEvent e)  {}
+            public void keyReleased(KeyEvent e) {
+            }
         });
         listener.setStartTime();
         jDialog.add(textArea);

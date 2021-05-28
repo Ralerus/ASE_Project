@@ -32,7 +32,7 @@ public class Registration {
                 String usernameValue = username.getText();
                 String fullnameValue = fullname.getText();
                 char[] passwordValue = password.getPassword();
-                if(!usernameValue.isEmpty() && !fullnameValue.isEmpty() && !(passwordValue.length==0)){
+                if(!usernameValue.isEmpty() && !fullnameValue.isEmpty() && (passwordValue.length!=0)){
                     if(passwordValue.length>5){
                         try {
                             String passwordHash = Security.getSecureHash(new String(password.getPassword()));

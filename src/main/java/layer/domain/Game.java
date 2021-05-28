@@ -16,17 +16,15 @@ public class Game implements GameListener {
     private List<Player> playersLeft;
     private List<Player> allPlayers;
     private Player originallyLoggedInPlayer;
-    private Rules rule;
     private Round currentRound;
     private boolean isCompetition;
 
-    public Game(List<Player> playersLeft, Rules rule, boolean isCompetition) throws TextRepository.TextNotFoundException {
-        this.text = TextRepository.getRandomTextBasedOn(rule);
+    public Game(List<Player> playersLeft, Rules rules, boolean isCompetition) throws TextRepository.TextNotFoundException {
+        this.text = TextRepository.getRandomTextBasedOn(rules);
         this.originallyLoggedInPlayer = Application.getSession().getLoggedInPlayer();
         this.results = new HashMap<>();
         this.playersLeft = playersLeft;
         this.allPlayers = new ArrayList<>(playersLeft);
-        this.rule = rule;
         this.currentRound = null;
         this.isCompetition = isCompetition;
     }

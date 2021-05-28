@@ -93,7 +93,7 @@ public final class Login {
             public void actionPerformed(ActionEvent e) {
                 String usernameValue = username.getText();
                 char[] passwordValue = password.getPassword();
-                if(!usernameValue.isEmpty() && !(passwordValue.length==0)){
+                if(!usernameValue.isEmpty() && (passwordValue.length!=0)){
                     try {
                         String passwordHash = Security.getSecureHash(new String(passwordValue));
                         Application.getSession().login(usernameValue, passwordHash);

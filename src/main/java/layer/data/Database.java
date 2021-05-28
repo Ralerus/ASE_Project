@@ -21,7 +21,7 @@ public class Database {
         Connection conn = Database.connect();
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1,value1);
-        if(value2!=""){
+        if(!value2.equals("")){
             pstmt.setString(2, value2);
         }
         pstmt.executeUpdate();

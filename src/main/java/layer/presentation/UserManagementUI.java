@@ -58,8 +58,8 @@ public class UserManagementUI {
                 char[] passwordValue = password.getPassword();
                 char[] passwordRepetitionValue = password_repetition.getPassword();
 
-                if(!usernameValue.isEmpty() || !fullnameValue.isEmpty() || !(passwordValue.length==0) ||
-                        !(passwordRepetitionValue.length==0)){
+                if(!usernameValue.isEmpty() || !fullnameValue.isEmpty() || (passwordValue.length!=0) ||
+                        (passwordRepetitionValue.length!=0)){
                     PlayerRepository player = null;
                     try {
                         player = PlayerRepository.getPlayerRepository(Application.getSession().getLoggedInPlayer());

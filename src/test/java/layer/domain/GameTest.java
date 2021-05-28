@@ -2,20 +2,14 @@ package layer.domain;
 
 import layer.data.*;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
-    Game game;
+    private Game game;
 
     @BeforeEach
     void setUp() throws TextRepository.TextNotFoundException {
