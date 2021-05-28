@@ -2,7 +2,7 @@ package layer.presentation;
 
 import application.Application;
 import layer.data.GameStats;
-import layer.data.HistoryEntry;
+import layer.data.StatsEntry;
 import layer.data.PlayerStats;
 import layer.data.StatsRepository;
 
@@ -72,14 +72,14 @@ public class StatsUI {
             userStatsPanel.add(new JLabel("<html><h3>Beste Wettkämpfe:</h3></html>"));
 
             userHighscorePanel.setLayout(new GridLayout(6,4));
-            userHighscorePanel.add(new JLabel("<html><h3>Platz</h3></html>"));
+            userHighscorePanel.add(new JLabel("<html><h3>Nummer</h3></html>"));
             userHighscorePanel.add(new JLabel("<html><h3>Tempo</h3></html>"));
             userHighscorePanel.add(new JLabel("<html><h3>Texttitel</h3></html>"));
             userHighscorePanel.add(new JLabel("<html><h3>Datum</h3></html>"));
             int counter=1;
-            for(HistoryEntry h: playerStats.getHighscore()){
+            for(StatsEntry h: playerStats.getHighscore()){
                 userHighscorePanel.add(new JLabel(counter+"."));
-                userHighscorePanel.add(new JLabel(h.getValue()+" Zeichen/s"));
+                userHighscorePanel.add(new JLabel(h.getSpeed()+" Zeichen/s"));
                 userHighscorePanel.add(new JLabel(h.getTextTitle()));
                 userHighscorePanel.add(new JLabel(h.getFormattedDate()));
                 counter++;
@@ -92,9 +92,9 @@ public class StatsUI {
             historyEntries.add(new JLabel("<html><h3>Datum</h3></html>"));
             historyEntries.add(new JLabel("<html><h3>Tempo</h3></html>"));
             historyEntries.add(new JLabel("<html><h3>Texttitel</h3></html>"));
-            for(HistoryEntry h : playerStats.getHistory()){
+            for(StatsEntry h : playerStats.getHistory()){
                 historyEntries.add(new JLabel(h.getFormattedDate()));
-                historyEntries.add(new JLabel(h.getValue()+" Zeichen/s"));
+                historyEntries.add(new JLabel(h.getSpeed()+" Zeichen/s"));
                 historyEntries.add(new JLabel(h.getTextTitle()));
             }
             userHistoryPanel.add(historyEntries,BorderLayout.CENTER);
@@ -124,16 +124,16 @@ public class StatsUI {
             gameStatsPanel.add(new JLabel("Registrierte Spieler*innen: "+ gameStats.getNumberOfPlayers()));
             gameStatsPanel.add(new JLabel("<html><h3>Highscore-Liste:</h3></html>"));
             gameHighscorePanel.setLayout(new GridLayout(11, 5));
-            gameHighscorePanel.add(new JLabel("<html><h3>Platz</h3></html>"));
+            gameHighscorePanel.add(new JLabel("<html><h3>Nummer</h3></html>"));
             gameHighscorePanel.add(new JLabel("<html><h3>Spieler*in</h3></html>"));
             gameHighscorePanel.add(new JLabel("<html><h3>Tempo</h3></html>"));
             gameHighscorePanel.add(new JLabel("<html><h3>Texttitel</h3></html>"));
             gameHighscorePanel.add(new JLabel("<html><h3>Datum</h3></html>"));
             int counter = 1;
-            for(HistoryEntry h : gameStats.getHighscore()){
+            for(StatsEntry h : gameStats.getHighscore()){
                 gameHighscorePanel.add(new JLabel(counter+"."));
                 gameHighscorePanel.add(new JLabel(h.getUsername()));
-                gameHighscorePanel.add(new JLabel(h.getValue()+" Zeichen/s"));
+                gameHighscorePanel.add(new JLabel(h.getSpeed()+" Zeichen/s"));
                 gameHighscorePanel.add(new JLabel(h.getTextTitle()));
                 gameHighscorePanel.add(new JLabel(h.getFormattedDate()));
                 counter++;

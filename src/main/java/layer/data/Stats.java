@@ -5,9 +5,9 @@ import java.util.List;
 public abstract class Stats {
     private int numberOfCompetitons;
     private int numberOfTrainings;
-    private List<HistoryEntry> highscore;
+    private List<StatsEntry> highscore;
 
-    public Stats(int numberOfCompetitons, int numberOfTrainings, List<HistoryEntry> highscore) {
+    public Stats(int numberOfCompetitons, int numberOfTrainings, List<StatsEntry> highscore) {
         this.numberOfCompetitons = numberOfCompetitons;
         this.numberOfTrainings = numberOfTrainings;
         this.highscore = highscore;
@@ -21,7 +21,7 @@ public abstract class Stats {
         return numberOfTrainings;
     }
 
-    public List<HistoryEntry> getHighscore() {
+    public List<StatsEntry> getHighscore() {
         return highscore;
     }
 }

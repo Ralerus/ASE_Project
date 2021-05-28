@@ -1,14 +1,14 @@
 package layer.data;
 
-public class HistoryEntry {
+public class StatsEntry {
     private String username;
-    private double value;
+    private double speed;
     private String textTitle;
     private String formattedDate;
 
-    public HistoryEntry(String username, double value, String textTitle, String formattedDate) {
+    public StatsEntry(String username, double speed, String textTitle, String formattedDate) {
         this.username = username;
-        this.value = value;
+        this.speed = speed;
         this.textTitle = textTitle;
         this.formattedDate = formattedDate;
     }
@@ -17,8 +17,8 @@ public class HistoryEntry {
         return username;
     }
 
-    public double getValue() {
-        return value;
+    public double getSpeed() {
+        return speed;
     }
 
     public String getTextTitle() {
