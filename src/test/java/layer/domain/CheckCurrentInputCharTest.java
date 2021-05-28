@@ -22,25 +22,34 @@ class CheckCurrentInputCharTest {
     }
 
     @Test
-    void checkCorrectInputChar() {
+    void forCorrectInputChar() {
         boolean result = round.checkCurrentInputChar('T');
 
         assertTrue(result);
     }
 
     @Test
-    void checkWrongInputChar() {
+    void forIncorrectInputChar() {
         boolean result = round.checkCurrentInputChar('h');
 
         assertFalse(result);
     }
 
     @Test
-    void checkInputCharSequence(){
+    void forCorrectInputCharSequence(){
         boolean result1 = round.checkCurrentInputChar('T');
         boolean result2 = round.checkCurrentInputChar('e');
         boolean result3 = round.checkCurrentInputChar('s');
 
         assertTrue(result1 && result2 && result3);
+    }
+
+    @Test
+    void forIncorrectInputCharSequence(){
+        boolean result1 = round.checkCurrentInputChar('Ö');
+        boolean result2 = round.checkCurrentInputChar('5');
+        boolean result3 = round.checkCurrentInputChar('_');
+
+        assertFalse(result1 || result2 || result3);
     }
 }

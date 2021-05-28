@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CheckTestLeftTest {
+public class CheckTextLeftTest {
     private Round round;
 
     @BeforeEach
@@ -19,20 +19,27 @@ public class CheckTestLeftTest {
     }
 
     @Test
-    void checkFullTextLeft(){
+    void forFullTextLeft(){
         String textLeft = round.getTextLeft();
         assertTrue(textLeft.equals("Testtext"));
     }
 
     @Test
-    void checkTextLeftAfterCorrectInput(){
+    void forCorrectInput(){
         round.checkCurrentInputChar('T');
         String textLeft = round.getTextLeft();
         assertTrue(textLeft.equals("esttext"));
     }
 
     @Test
-    void checkTextLeftAfterCorrectInputs(){
+    void forIncorrectInput(){
+        round.checkCurrentInputChar(' ');
+        String textLeft = round.getTextLeft();
+        assertTrue(textLeft.equals("Testtext"));
+    }
+
+    @Test
+    void forCorrectInputs(){
         round.checkCurrentInputChar('T');
         round.checkCurrentInputChar('e');
         round.checkCurrentInputChar('s');
@@ -41,7 +48,7 @@ public class CheckTestLeftTest {
     }
 
     @Test
-    void checkTextLeftAfterIncorrectInputs(){
+    void forIncorrectInputs(){
         round.checkCurrentInputChar('J');
         round.checkCurrentInputChar('.');
         round.checkCurrentInputChar('$');
@@ -50,7 +57,7 @@ public class CheckTestLeftTest {
     }
 
     @Test
-    void checkTextLeftAfterMixedInputs(){
+    void forMixedInputs(){
         round.checkCurrentInputChar('T');
         round.checkCurrentInputChar('g');
         round.checkCurrentInputChar('e');
