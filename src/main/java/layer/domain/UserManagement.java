@@ -36,21 +36,19 @@ public class UserManagement {
     }
 
     public static boolean isFullNameChanged(String fullnameValue, PlayerRepository player){
-        if(!fullnameValue.isEmpty()) {
-            if (player != null) {
-                try {
-                    player.changeFullname(fullnameValue);
-                    JOptionPane.showMessageDialog(Application.getUi(), "Vollständiger Name" +
-                                    " erfolgreich geändert", "Änderung erfolgreich",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    Application.getSession().setLoggedInPlayer(new Player(
-                            Application.getSession().getLoggedInPlayer().getUsername(), fullnameValue));
-                    return true;
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des" +
-                                    " vollständigen Namens", "Änderung fehlgeschlagen",
-                            JOptionPane.ERROR_MESSAGE);
-                }
+        if(!fullnameValue.isEmpty() && player != null) {
+            try {
+                player.changeFullname(fullnameValue);
+                JOptionPane.showMessageDialog(Application.getUi(), "Vollständiger Name" +
+                                " erfolgreich geändert", "Änderung erfolgreich",
+                        JOptionPane.INFORMATION_MESSAGE);
+                Application.getSession().setLoggedInPlayer(new Player(
+                        Application.getSession().getLoggedInPlayer().getUsername(), fullnameValue));
+                return true;
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des" +
+                                " vollständigen Namens", "Änderung fehlgeschlagen",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
         return false;
