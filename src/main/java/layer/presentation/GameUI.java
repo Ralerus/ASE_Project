@@ -216,7 +216,7 @@ public class GameUI{
 		addUserInputField.add(username);
 		JButton addUser = new JButton("+");
 		playersList = new JPanel();
-		playersList.setLayout(new GridLayout(21,1));
+		playersList.setLayout(new GridLayout(15,1));
 		addUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

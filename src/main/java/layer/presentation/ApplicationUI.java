@@ -6,6 +6,12 @@ import javax.swing.*;
 
 public class ApplicationUI extends JFrame implements UIListener {
     public ApplicationUI(){
+        try {
+            ImageIcon appIcon = new ImageIcon(this.getClass().getResource("icon.png"));
+            setIconImage(appIcon.getImage());
+        }catch(NullPointerException ex){
+            ex.printStackTrace();
+        }
         Login.create().withTitle("Anmeldung").atAppStart(this).withRegisterButton().build();
     }
 
@@ -20,6 +26,7 @@ public class ApplicationUI extends JFrame implements UIListener {
         tabbedpane.addTab("Einstellungen", SettingsUI.getSettingsUI());
 
         this.add(tabbedpane);
+
         this.setSize(820,497);
         this.setLocationRelativeTo(Application.getUi());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

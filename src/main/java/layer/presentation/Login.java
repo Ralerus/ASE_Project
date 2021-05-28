@@ -115,6 +115,12 @@ public final class Login {
                 }
             }
         });
+        try {
+            ImageIcon appIcon = new ImageIcon(this.getClass().getResource("icon.png"));
+            loginDialog.setIconImage(appIcon.getImage());
+        }catch(NullPointerException ex){
+            ex.printStackTrace();
+        }
         loginPanel.add(loginButton);
         loginDialog.add(loginPanel);
         loginDialog.setSize(300,150);
