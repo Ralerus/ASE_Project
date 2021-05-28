@@ -12,6 +12,7 @@ import layer.data.*;
 import layer.domain.Game;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -56,6 +57,7 @@ public class GameUI{
 			}
 		});
 		competitionPanel.add(startButton, BorderLayout.SOUTH);
+		competitionPanel.setBorder(new EmptyBorder(5,5,2,5));
 		return competitionPanel;
 	}
 	
@@ -84,6 +86,7 @@ public class GameUI{
 			}
 		});
 		trainingPanel.add(startButton, BorderLayout.SOUTH);
+		trainingPanel.setBorder(new EmptyBorder(5,5,2,5));
 		return trainingPanel;
 	}
 	public static void drawResults(Map<Player, Double> results, int textLength) {
@@ -216,7 +219,7 @@ public class GameUI{
 		addUserInputField.add(username);
 		JButton addUser = new JButton("+");
 		playersList = new JPanel();
-		playersList.setLayout(new GridLayout(15,1));
+		playersList.setLayout(new GridLayout(12,1));
 		addUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

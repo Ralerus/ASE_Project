@@ -4,6 +4,7 @@ import application.Application;
 import layer.data.*;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class StatsUI {
         statsUI.setLayout(new BorderLayout());
         statsUI.add(StatsUI.getGameStatsUI(), BorderLayout.WEST);
         statsUI.add(StatsUI.getUserStatsUI(), BorderLayout.EAST);
+        statsUI.add(new JLabel("alle Tempoangaben sind in Zeichen/Sekunde (Z/s)"), BorderLayout.SOUTH);
+        statsUI.setBorder(new EmptyBorder(5,5,2,5));
         return statsUI;
     }
 
@@ -36,12 +39,6 @@ public class StatsUI {
         );
         lyt.setHorizontalGroup(lyt.createSequentialGroup().addGroup(lyt.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(userStatsPanel).addComponent(userHighscorePanel).addComponent(userHistoryPanel)));
-
-
-       /* panel.add(userStatsPanel, BorderLayout.NORTH);
-
-        panel.add(userHighscorePanel, BorderLayout.CENTER);
-        panel.add(userHistoryPanel, BorderLayout.SOUTH);*/
         return panel;
     }
 

@@ -29,7 +29,7 @@ public class ApplicationUI extends JFrame implements UIListener {
 
         this.add(tabbedpane);
 
-        this.setSize(820,497);
+        this.setSize(830,520);
         this.setLocationRelativeTo(Application.getUi());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);

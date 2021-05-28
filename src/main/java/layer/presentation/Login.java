@@ -8,6 +8,7 @@ import layer.domain.GameListener;
 import layer.domain.Session;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -121,6 +122,7 @@ public final class Login {
             ex.printStackTrace();
         }
         loginPanel.add(loginButton);
+        loginPanel.setBorder(new EmptyBorder(5,5,2,5));
         loginDialog.add(loginPanel);
         loginDialog.setSize(300,150);
         loginDialog.setLocationRelativeTo(Application.getUi());

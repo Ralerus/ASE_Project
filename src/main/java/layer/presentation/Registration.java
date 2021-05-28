@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import application.Application;
 import layer.data.*;
@@ -66,6 +67,7 @@ public class Registration {
             }
         });
         registerPanel.add(registerButton);
+        registerPanel.setBorder(new EmptyBorder(5,5,2,5));
         registerDialog.add(registerPanel);
         try {
             registerDialog.setIconImage(ApplicationUI.getAppIcon());
