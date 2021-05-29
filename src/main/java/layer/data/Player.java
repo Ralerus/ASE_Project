@@ -4,19 +4,19 @@ import java.util.Objects;
 
 public final class Player {
     private final String username;
-    private final String fullname;
+    private final String fullName;
 
-    public Player(String username, String fullname) {
+    public Player(String username, String fullName) {
         this.username = username;
-        this.fullname = fullname;
+        this.fullName = fullName;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getFullName() {
+        return fullName;
     }
 
     @Override

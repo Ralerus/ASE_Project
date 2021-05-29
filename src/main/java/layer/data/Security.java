@@ -3,10 +3,10 @@ package layer.data;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Security {
+public abstract class Security {
     public static String getSecureHash(String passwordToHash) throws IllegalArgumentException{
         if(passwordToHash.isEmpty()){
-            throw new IllegalArgumentException("Password can not be empty");
+            throw new IllegalArgumentException("Passwort darf nicht leer sein.");
         }else {
             String generatedPassword = null;
             try {

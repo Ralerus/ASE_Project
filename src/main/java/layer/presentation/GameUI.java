@@ -10,6 +10,7 @@ import java.util.Map;
 import application.Application;
 import layer.data.*;
 import layer.domain.Game;
+import layer.domain.Session;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -43,7 +44,7 @@ public class GameUI{
 						game = new Game(players,rules,true);
 						lastGame = game;
 						game.start();
-						players.add(Application.getSession().getLoggedInPlayer());
+						players.add(Session.getLoggedInPlayer());
 						refreshPlayersList();
 					} catch (ObjectNotFoundException ex) {
 						JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler",
@@ -73,7 +74,7 @@ public class GameUI{
 			public void actionPerformed(ActionEvent e) {
 				Rules rules = new Rules(difficulty,minLength,maxLength);
 				List<Player> singleplayer = new ArrayList<>();
-				singleplayer.add(Application.getSession().getLoggedInPlayer());
+				singleplayer.add(Session.getLoggedInPlayer());
 				Game game;
 				try {
 					game = new Game(singleplayer,rules,false);
@@ -242,7 +243,7 @@ public class GameUI{
 			}
 		});
 		addUserInputField.add(addUser);
-		JButton newUser = new JButton("Neuen Nutzer anlegen");
+		JButton newUser = new JButton("Neue*n Spieler*in anlegen");
 		newUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -251,7 +252,7 @@ public class GameUI{
 		});
 		addUserPanel.add(addUserInputField);
 		addUserPanel.add(newUser);
-		players.add(Application.getSession().getLoggedInPlayer());
+		players.add(Session.getLoggedInPlayer());
 		refreshPlayersList();
 		playerPanel.add(addUserPanel, BorderLayout.NORTH);
 		playerPanel.add(playersList, BorderLayout.CENTER);

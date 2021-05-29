@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class StatsRepository {
+public abstract class StatsRepository {
     public static void writeCompetitionToStats(String textTitle, Map<String, Double> results, Instant date)
             throws SQLException{
         String sql = "INSERT INTO competition (date, textTitle) VALUES (?,?)";
@@ -138,7 +138,7 @@ public class StatsRepository {
         return history;
     }
 
-    private static StatsEntry getFormattedStatsEntry(String username, double speed, String textTitle, String date) {
+    public static StatsEntry getFormattedStatsEntry(String username, double speed, String textTitle, String date) {
         double roundedValue = Math.round(speed*100.0)/100.0;
         Instant dateInstant = Instant.parse(date);
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).

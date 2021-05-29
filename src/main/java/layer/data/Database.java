@@ -1,11 +1,10 @@
 package layer.data;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Database {
+public abstract class Database {
     private static final String url = "jdbc:sqlite:src/main/resources/tippduell.db";//"jdbc:sqlite:resources/tippduell.db";
     public static Connection connect(){
         Connection conn = null;
@@ -32,7 +31,6 @@ public class Database {
     public static void createNewDatabase(String url) {
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
-                DatabaseMetaData meta = conn.getMetaData();
                 System.out.println("Connection to database established.");
             }
         } catch (SQLException e) {

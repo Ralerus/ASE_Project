@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class SecurityTest {
@@ -20,6 +21,13 @@ class SecurityTest {
         String returnedHash = Security.getSecureHash("Djkcile$2-d456__3d1^-d");
         assertTrue(returnedHash.equals("b6d894dcd5d8245de1dfe822b55fb02a6ca8020db308b253" +
                 "c7851fad715869ebbc5e9a251e1e55cbc7da201b23a751d34544e64352df624f61bcb3ddce67404d"));
+    }
+
+    @Test
+    void checkEqualityOfHashesOfSamePassword(){
+        String returnedHash1 = Security.getSecureHash("asdfKLEkj356$*djkl2:dllöa");
+        String returnedHash2 = Security.getSecureHash("asdfKLEkj356$*djkl2:dllöa");
+        assertEquals(returnedHash1,returnedHash2);
     }
 
     @Test

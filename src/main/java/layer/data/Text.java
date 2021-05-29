@@ -21,7 +21,6 @@ public final class Text {
         return text;
     }
 
-
     public int getLength() {
         return length;
     }

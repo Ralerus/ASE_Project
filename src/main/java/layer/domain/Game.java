@@ -21,7 +21,7 @@ public class Game implements GameListener {
 
     public Game(List<Player> playersLeft, Rules rules, boolean isCompetition) throws ObjectNotFoundException {
         this.text = TextRepository.getRandomTextBasedOn(rules);
-        this.originallyLoggedInPlayer = Application.getSession().getLoggedInPlayer();
+        this.originallyLoggedInPlayer = Session.getLoggedInPlayer();
         this.results = new HashMap<>();
         this.playersLeft = playersLeft;
         this.allPlayers = new ArrayList<>(playersLeft);
@@ -46,6 +46,13 @@ public class Game implements GameListener {
         currentRound.setListener(this);
         currentRound.startRound();
     }
+
+    @Override
+    public void endRound(double duration) {
+        this.results.put(Session.getLoggedInPlayer(), duration);
+        this.gotoNextPlayer();
+    }
+
     private void gotoNextPlayer() {
         if(playersLeft.isEmpty()){
             Login.create().withTitle("Anmeldung des Spielleiters für Ergebnisse").forPlayer(originallyLoggedInPlayer).build();
@@ -53,18 +60,12 @@ public class Game implements GameListener {
             GameUI.drawResults(sortMapByValue(results), text.getLength());
         }else {
             Player nextPlayer = playersLeft.remove(0);
-            if(!nextPlayer.equals(Application.getSession().getLoggedInPlayer())){
+            if(!nextPlayer.equals(Session.getLoggedInPlayer())){
                 Login.create().withTitle("Anmeldung des nächsten Spielers").forPlayer(nextPlayer).duringGame(this).build();
             }else{
                 this.startRound();
             }
         }
-    }
-
-    @Override
-    public void endRound(double duration) {
-        this.results.put(Application.getSession().getLoggedInPlayer(), duration);
-        this.gotoNextPlayer();
     }
 
     private Map<Player, Double> sortMapByValue(Map<Player,Double> map){

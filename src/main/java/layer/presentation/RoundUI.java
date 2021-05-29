@@ -3,6 +3,7 @@ package layer.presentation;
 import application.Application;
 import layer.data.Player;
 import layer.domain.RoundListener;
+import layer.domain.Session;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -19,7 +20,7 @@ public class RoundUI {
     }
 
     public static void displayRoundFor(String text){
-        Player p = Application.getSession().getLoggedInPlayer();
+        Player p = Session.getLoggedInPlayer();
         System.out.println(p.getUsername()+" plays round");
         JOptionPane.showConfirmDialog(Application.getUi(),  "Bist du bereit, "+p.getUsername()+"?",
                 "Bereit?", JOptionPane.DEFAULT_OPTION);

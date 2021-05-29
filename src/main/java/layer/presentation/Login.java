@@ -3,7 +3,6 @@ package layer.presentation;
 import application.Application;
 import layer.data.ObjectNotFoundException;
 import layer.data.Player;
-import layer.data.PlayerRepository;
 import layer.data.Security;
 import layer.domain.GameListener;
 import layer.domain.Session;
@@ -98,7 +97,7 @@ public final class Login {
                 if(!usernameValue.isEmpty() && (passwordValue.length!=0)){
                     try {
                         String passwordHash = Security.getSecureHash(new String(passwordValue));
-                        Application.getSession().login(usernameValue, passwordHash);
+                        Session.login(usernameValue, passwordHash);
                         loginDialog.setVisible(false);
                         loginDialog.dispose();
                         if (isDuringGame) {

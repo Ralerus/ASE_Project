@@ -19,9 +19,9 @@ public class UserManagement {
                     player.changeUserName(usernameValue);
                     JOptionPane.showMessageDialog(Application.getUi(), "Benutzername erfolgreich " +
                             "geändert. \nDu wirst nun abgemeldet, bitte melde dich\nneu an!", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-                    Application.getSession().setLoggedInPlayer(new Player(usernameValue,
-                            Application.getSession().getLoggedInPlayer().getFullname()));
-                    Application.getSession().logoff();
+                    Session.setLoggedInPlayer(new Player(usernameValue,
+                            Session.getLoggedInPlayer().getFullName()));
+                    Session.logoff();
                     return true;
                 } catch (ObjectAlreadyExistsException e) {
                     JOptionPane.showMessageDialog(Application.getUi(), e.getMessage(), "Änderung fehlgeschlagen",
@@ -43,8 +43,8 @@ public class UserManagement {
                 JOptionPane.showMessageDialog(Application.getUi(), "Vollständiger Name" +
                                 " erfolgreich geändert", "Änderung erfolgreich",
                         JOptionPane.INFORMATION_MESSAGE);
-                Application.getSession().setLoggedInPlayer(new Player(
-                        Application.getSession().getLoggedInPlayer().getUsername(), fullnameValue));
+                Session.setLoggedInPlayer(new Player(
+                        Session.getLoggedInPlayer().getUsername(), fullnameValue));
                 return true;
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des" +

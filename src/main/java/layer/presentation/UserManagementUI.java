@@ -3,6 +3,7 @@ package layer.presentation;
 import application.Application;
 import layer.data.ObjectNotFoundException;
 import layer.data.PlayerRepository;
+import layer.domain.Session;
 import layer.domain.UserManagement;
 
 import javax.swing.*;
@@ -63,7 +64,7 @@ public class UserManagementUI {
                         (passwordRepetitionValue.length!=0)){
                     PlayerRepository player = null;
                     try {
-                        player = PlayerRepository.getPlayerRepository(Application.getSession().getLoggedInPlayer());
+                        player = PlayerRepository.getPlayerRepository(Session.getLoggedInPlayer());
                     } catch (ObjectNotFoundException playerNotFoundException) {
                         playerNotFoundException.printStackTrace();
                     }
@@ -97,13 +98,13 @@ public class UserManagementUI {
                 if(response==0){
                     try {
                         PlayerRepository player = PlayerRepository.getPlayerRepository(
-                                Application.getSession().getLoggedInPlayer());
+                                Session.getLoggedInPlayer());
                         try {
                             player.deleteUser();
                             JOptionPane.showMessageDialog(Application.getUi(),"Nutzer*in erfolgreich gelöscht," +
                                             "\ndu wirst nun abgemeldet.", "Löschen erfolgreich",
                                     JOptionPane.INFORMATION_MESSAGE);
-                            Application.getSession().logoff();
+                            Session.logoff();
                         } catch (SQLException throwables) {
                             JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Löschen des bzw." +
                                     " der Nutzer*in", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
@@ -123,7 +124,7 @@ public class UserManagementUI {
         logoff.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Application.getSession().logoff();
+                Session.logoff();
             }
         });
         return logoff;

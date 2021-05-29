@@ -2,6 +2,7 @@ package layer.presentation;
 
 import application.Application;
 import layer.data.*;
+import layer.domain.Session;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -65,14 +66,14 @@ public class StatsUI {
 
         PlayerStats playerStats = null;
         try {
-            playerStats = StatsRepository.getStatsFor(Application.getSession().getLoggedInPlayer().getUsername());
+            playerStats = StatsRepository.getStatsFor(Session.getLoggedInPlayer().getUsername());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         if(playerStats != null) {
             userStatsPanel.setLayout(new BoxLayout(userStatsPanel, BoxLayout.PAGE_AXIS));
             userStatsPanel.add(new JLabel("<html><h2>Persönliche Statistik für " +
-                    Application.getSession().getLoggedInPlayer().getUsername()+"</h2></html>"));
+                    Session.getLoggedInPlayer().getUsername()+"</h2></html>"));
             userStatsPanel.add(new JLabel("Durchgeführte Wettkämpfe: " + playerStats.getNumberOfCompetitons()));
             userStatsPanel.add(new JLabel("Durchgeführte Trainings: " + playerStats.getNumberOfTrainings()));
 

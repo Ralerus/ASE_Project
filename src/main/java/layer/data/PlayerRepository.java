@@ -1,14 +1,12 @@
 package layer.data;
 
-import application.Application;
 import org.sqlite.SQLiteException;
 
-import javax.swing.*;
 import java.sql.*;
 
-public class PlayerRepository {
-    private Player player;
-    private String password;
+public final class PlayerRepository {
+    private final Player player;
+    private final String password;
 
     private PlayerRepository(String username, String fullname, String password) {
         this.player = new Player(username,fullname);
@@ -16,12 +14,14 @@ public class PlayerRepository {
     }
 
     public void changeUserName(String newUsername) throws SQLException, ObjectAlreadyExistsException {
-        try{
-            Database.updateEntry("UPDATE player SET username = ? WHERE username = ?",newUsername,this.player.getUsername());
-        }catch(SQLiteException ex){
-            if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed" +
-                    " (UNIQUE constraint failed: player.username)")){
+        try {
+            Database.updateEntry("UPDATE player SET username = ? WHERE username = ?", newUsername, this.player.getUsername());
+        }catch (SQLiteException ex) {
+            if (ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed" +
+                    " (UNIQUE constraint failed: player.username)")) {
                 throw new ObjectAlreadyExistsException("Benutzername bereits vergeben.");
+            }else{
+                throw ex;
             }
         }
     }
@@ -74,14 +74,15 @@ public class PlayerRepository {
         try(Connection conn = Database.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,p.getUsername());
             pstmt.setString(2,password);
-            pstmt.setString(3,p.getFullname());
+            pstmt.setString(3,p.getFullName());
             pstmt.executeUpdate();
         }catch(SQLiteException ex){
             if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed" +
                     " (UNIQUE constraint failed: player.username)")){
                 throw new ObjectAlreadyExistsException("Benutzername bereits vergeben.");
+            }else{
+                throw ex;
             }
-            JOptionPane.showMessageDialog(Application.getUi(),ex.getMessage(),"Fehler",JOptionPane.ERROR_MESSAGE); //TODO remove
         }
     }
 

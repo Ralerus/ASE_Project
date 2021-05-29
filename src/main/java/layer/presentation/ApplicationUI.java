@@ -1,6 +1,7 @@
 package layer.presentation;
 
 import application.Application;
+import layer.domain.Session;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +20,7 @@ public class ApplicationUI extends JFrame implements UIListener {
 
     @Override
     public void drawUI() {
-        this.setTitle("Tippduell - "+Application.getSession().getLoggedInPlayer().getUsername()+" angemeldet");
+        this.setTitle("Tippduell - "+ Session.getLoggedInPlayer().getUsername()+" angemeldet");
         JTabbedPane tabbedpane = new JTabbedPane();
 
         tabbedpane.addTab("Wettkampf", GameUI.getCompetitionUI());

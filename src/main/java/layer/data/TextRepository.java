@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class TextRepository {
+public abstract class TextRepository {
     public static void createText(String title, String text, Difficulty difficulty) throws SQLException, ObjectAlreadyExistsException {
         String sql = "INSERT INTO text(title, text, difficulty, length) VALUES (?,?,?,?)";
         try(Connection conn = Database.connect();
@@ -24,6 +24,8 @@ public class TextRepository {
             if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed" +
                     " (UNIQUE constraint failed: text.title)")){
                 throw new ObjectAlreadyExistsException("Titel bereits vergeben.");
+            }else{
+                throw ex;
             }
         }
     }

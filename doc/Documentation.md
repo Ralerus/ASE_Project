@@ -3,7 +3,7 @@ Philipp Rall, TINF18B2, 5844601
 
 ---
 
-## Projektidee
+## 1. Projektidee
 Meine Idee ist mit Java ein kleines, lokales Desktop-Spiel „Tippduell“ nach dem Vorbild von Typeracer zu entwickeln. D.h. das Spielziel besteht darin, einen vorgegebenen Text möglichst schnell korrekt abzutippen.
 In einem Wettkampfbereich soll hierzu zunächst die Schwierigkeit vom Spielleiter festgelegt werden, bevor ein entsprechender Text aus der Datenbank geladen wird.
 Anschließend tippt ein Spieler nach dem anderen den Text ab, der schnellste gewinnt die Runde.
@@ -14,11 +14,11 @@ Generell dient die geplante Anwendung dem übergeordneten Zweck die Tippgeschwin
 
 Die vorliegende Softwarelösung dient zeitgleich als Untersuchung von Praxistauglichkeit gendergerechter Sprache.
 
-## Technologien
+## 2. Technologien
 Die Anwendung ist in Java entwickelt, die Benutzeroberfläche basiert auf der in der Programmierenvorlesung erlernten Java-Swing-Technologie.  
 Als Build-Management-Tool wird Maven verwendet, als Datenbank eine SQLite-Datenbank. 
 
-## Programmierprinzipien
+## 3. Programmierprinzipien
 ### SOLID
 #### Single Responsibility Principle
 Dieses Programmierprinzip sagt aus, dass jede Klasse nur eine Zuständigkeit, eine klar definierte Aufgabe besitzen soll.
@@ -61,7 +61,7 @@ Statt den Code dreimal zu wiederholen, wurde auf das Builder-Pattern gesetzt. D.
 Ein weiteres Beispiel ist die Klasse `Game` bzw. auch das `GameUI`. Ein spiegelt grundsätzlich sowohl einen Wettkampf als auch ein Trainingsspiel wider und wird hierfür ebenfalls sinnvoll wiederverwendet.
 Durch das Attribut `isCompetition` kann eine Unterscheidung vorgenommen werden, es muss kein Code dupliziert werden.
 
-## Entwurfsmuster
+## 4. Entwurfsmuster
 Als Entwurfsmuster wurden im Tippduell zum einen das **Builder-Pattern** und zum anderen das **Observer-Pattern** bzw. **Listener-Pattern** angewandt. 
 ### Builder-Pattern
 Grundsätzlich handelt es sich beim Builder-Pattern um ein Muster zur einfachen und schrittweisen Erstellung von komplexen Objekten in unterschiedlichen Ausführungen. In der Anwendung wird das Builder-Pattern nicht direkt zur Erstellung 
@@ -103,21 +103,21 @@ Hierfür muss sich eine Instanz der Game-Klasse auf dem `Login` während des Bui
 Da das Login nach dem Builder-Pattern erzeugt wird, liegt keine klassische Implementierung des Listener-Patterns vor, so gibt es z.B. keine Methode `addListener`.
 Das kommt auch daher, da jedes Login nur maximal einen `Game`-Observer besitzen kann.
 
-## Domain Driven Design
+## 5. Domain Driven Design
 ### Analyse der Ubiquitous Language
 Die Ubiquitous Language bezeichnet die Sprache, mit der Regeln, Prozesse und Konzepte einer Domäne ausgedrückt werden und legt einheitliches Vokabular zwischen Domänenexperten
 und Entwicklern fest. Die vorliegende Domäne ist die Messung und der Vergleich der Tippgeschwindigkeit in Form eines Wettkampfs. Im Folgenden sollen einige wesentliche Begriffe
 der festgelegten Projektsprache vorgestellt werden. Da für die technische Umsetzung die englische Sprache verwendet wurde, ist zu jedem Begriff der korrespondierende englische
 Begriff mit angegeben. Die Begriffe werden einheitlich zur Benennung von Klasse, Methoden oder Datenbanktabellen eingesetzt.
 - **Spieler\*in** bzw. **Player**: Eine Person, die sich in der Anwendung registriert und damit die Möglichkeit besitzt diese zu nutzen. Da die wesentliche Funktionalität der 
-Anwendung in Spielen besteht, wurde diese Bezeichnung statt der allgemeinen Bezeichner eines bzw. einer Nutzer*in gewählt.
+Anwendung in Spielen besteht, wurde diese Bezeichnung statt der allgemeinen Bezeichner eines\*einer Nutzer*in gewählt.
 - **Spiel** bzw. **Game**: Ein Spiel ist entweder ein Wettkampfs- oder ein Trainingsdurchlauf in der Anwendung.
 - **Wettkampf** bzw. **Competition**: Ein Spiel mit mehreren Spieler*innen.
-- **Training**: Ein Spiel mit nur einem bzw. einer Spieler*in.
+- **Training**: Ein Spiel mit nur einem\*einer Spieler*in.
 - **Text**: Ein Text, der im Rahmen eines Spiels abgetippt werden muss.
 - **Runde** bzw. **Round**: Der Teilvorgang eines Spiels, in dem ein*e Spieler*in einen Text abtippt. Ein Training besitzt nur eine Runde, ein Wettkampf eine Runde pro Spieler*in.
-- **Anmeldung** bzw. **Login**: Vorgang zur Identifzierung und Authentifzierung eines bzw. einer Spieler*in. Kommt sowohl bei Anwendungsstart, als auch vor jeder Runde und am Ende eines Spiels zum Einsatz.
-- **Registrierung** bzw **Registration**: Vorgang zur Erstellung eines bzw. einer neuen Spieler*in.
+- **Anmeldung** bzw. **Login**: Vorgang zur Identifzierung und Authentifzierung eines\*einer Spieler*in. Kommt sowohl bei Anwendungsstart, als auch vor jeder Runde und am Ende eines Spiels zum Einsatz.
+- **Registrierung** bzw **Registration**: Vorgang zur Erstellung eines\*einer neuen Spieler*in.
 - **Statistik** bzw. **Stats**: Statistische Daten über die Nutzung der Anwendung, beinhaltet zwei Teilbereiche:
     - **Spielstatistiken** bzw **GameStats**: Allgemeine Statistiken zum Spiel seit lokaler Installation.
     - **Spielerstatistiken** bzw **PlayerStats**: Spieler*in-bezogene Statistiken.
@@ -126,14 +126,15 @@ Anwendung in Spielen besteht, wurde diese Bezeichnung statt der allgemeinen Beze
 #### Value Objects
 Value Objects sind einfache, unveränderliche Objekte ohne eigene Identität. Sie werden nur durch ihren Wert beschrieben und besitzen keinen Lebenszyklus.
 Im Folgenden sollen einige Value Objects der Anwendung vorgestellt werden:  
-- **Player**: Ein `Player` kapselt das Wertekonzept eines bzw. einer Spieler*in un weist die Eigenschaften `username` und `fullname` auf. Ein Player-Objekt besitzt in der Anwendung keine Identität, 
+- **Player**: Ein `Player` kapselt das Wertekonzept eines\*einer Spieler*in un weist die Eigenschaften `username` und `fullname` auf. Ein Player-Objekt besitzt in der Anwendung keine Identität, 
 zwei Player sind identisch, sofern deren Benutzernamen und vollständige Namen übereinstimmen. Ändert ein\*e Spieler\*in den eine Eigenschaft, wird in der Anwendung immer ein neues gültiges Player-Objekt erzeugt.
   Somit hat ein `Player` auch keinen Lebenszyklus.
 - **Rules**: Ein `Rules` Value Object kapselt das Wertekonzept eines Regelwerkes mit Eigenschaften wie der Schwierigkeit, der minimalen und maximalen Textlänge. Auch ein `Rule`-Objekt besitzt keinen Lebenszyklus und
-wird für jedes Spiel neu anhand der vom bzw. von der Spieler*in festgelegten Parameter erzeugt.  
+wird für jedes Spiel neu anhand der vom\*von der Spieler*in festgelegten Parameter erzeugt.  
 - **Text**: Ein `Text` Value Object kapselt das Wertekonzept eines Textes mit Eigenschaften wie dem Texttitel, dem Textinhalt und der Textlänge. Ein `Text` wird in der Anwendung nicht verändert, sondern beim
 Auslesen aus der Datenbank jedes Mal neu erzeugt. Somit besitzt auch ein `Text` keinen Lebenszyklus und lässt sich als Value Object ausmachen.
 - **StatsEntry**: Dieses Value Object kapselt die Werte eines Statistikeintrags eines Spiels. Auch dieses Value Object wird beim Auslesen aus der Datenbank jedes Mal neu erzeugt, nicht verändert und besitzt keinen Lebenszyklus.
+- **PlayerStats** und **GameStats**: Diese Value Objects kapseln jeweils die Werte der spieler*inbezogenen oder allgemeinen Statistik und besitzen keine Identität oder Lebenszeit.
   
 Die Unveränderlichkeit der behandelten Value Objects wurde auch in der Impelementierung durch finale Klassen mit finalen Feldern und überschriebenen equals() sowie hashCode() Methoden umgesetzt.
 Die entsprechenden Dateien sind hier verlinkt: [Player](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java) ,[Rules](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Rules.java) ,[Text](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java), [StatsEntry](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/StatsEntry.java)
@@ -174,7 +175,7 @@ Dabei gilt allgemein, dass jede Schicht nur von den unterliegenden Schichten abh
   
 Die Entscheidung viel auf diese Art der Schichtenarchitektur, da sie gut zur Anwendung passt.
 
-## Unit Tests
+## 6. Unit Tests
 Unit Tests testen einzelne Komponenten des Systems und stellen deren Funktionalität unabhängig von anderen Komponenten sicher. Dazu ist es wichtig, andere Teile durch Stellvertreter, sogenannte Mocks, zu ersetzen
 um eine Unabhängigkeit zu gewährleisten. Im Tippduell wurden 10 Unit-Tests mit XX Testfällen realisiert. Zum Testen wird das Testing-Framework *JUnit5* verwendet, Mocks werden mit dem Mocking-Framework *mockito* erzeugt.
 
@@ -202,7 +203,7 @@ dem Zeitpunkt seiner Ausführung, die gleiche Testumgebung.
 
 ### Code Coverage
 
-## Refactoring
+## 7. Refactoring
 
 ### Large Class & Long Method
 Ein Code Smell, nämlich eine Large Class mit Long Methods, kann in der `SettingsUI`-Klasse hierdurch identifiziert werden. Diese Klasse beinhaltet den UI-Code
