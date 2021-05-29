@@ -55,7 +55,7 @@ public class TextRepository {
                         difficulty = Difficulty.Hard;
                         break;
                 }
-                matchingTexts.add(new Text(title,text,difficulty,text.length()));
+                matchingTexts.add(new Text(title,text,text.length()));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -69,7 +69,7 @@ public class TextRepository {
         Random r = new Random();
         int indexOfRandomText = r.nextInt(matchingTexts.size());
         System.out.println(indexOfRandomText);
-        return matchingTexts.get(indexOfRandomText); //TODO für was wird difficulty im frontend gebraucht?
+        return matchingTexts.get(indexOfRandomText);
     }
 
     public static Text getTextByTitle(String title) throws ObjectNotFoundException {
@@ -103,7 +103,7 @@ public class TextRepository {
         if(text==null || difficulty == null){
             throw new ObjectNotFoundException("Kein Text mit diesem Titel gefunden!");
         }
-        return new Text(title,text,difficulty,text.length());
+        return new Text(title,text,text.length());
     }
 
     public static void deleteText(Text text) throws SQLException {

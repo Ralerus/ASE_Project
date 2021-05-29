@@ -41,8 +41,8 @@ public class Registration {
                             PlayerRepository.createPlayer(p,passwordHash);
                             registerDialog.setVisible(false);
                             registerDialog.dispose();
-                            JOptionPane.showMessageDialog(registerDialog, "Nutzer*in "+username.getText()+" erfolgreich registriert.\n",
-                                    "Nutzer*in registriert", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(registerDialog, "Spieler*in "+username.getText()+" erfolgreich registriert.\n",
+                                    "Spieler*in registriert", JOptionPane.INFORMATION_MESSAGE);
 
                             if(addToGame){
                                 GameUI.addToGame(p);
@@ -53,7 +53,7 @@ public class Registration {
                                     JOptionPane.ERROR_MESSAGE);
                         }catch (Exception ex2) {
                             ex2.printStackTrace();
-                            JOptionPane.showMessageDialog(registerDialog, "Fehler beim Anlegen des Nutzers",
+                            JOptionPane.showMessageDialog(registerDialog, "Fehler beim Anlegen des bzw. der Spieler*in",
                                     "Fehler", JOptionPane.ERROR_MESSAGE);
                         }
                     }else{

@@ -40,6 +40,9 @@
                             <mainClass>application.Application</mainClass>
                         </transformer>
                     </transformers>
+                    <artifactSet>
+                        <include>${project.basedir}/libs/sqlite-jdbc-3.34.0.jar</include>
+                    </artifactSet>
                 </configuration>
             </plugin>
             <plugin>

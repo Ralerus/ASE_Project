@@ -71,7 +71,7 @@ public class StatsUI {
         }
         if(playerStats != null) {
             userStatsPanel.setLayout(new BoxLayout(userStatsPanel, BoxLayout.PAGE_AXIS));
-            userStatsPanel.add(new JLabel("<html><h2>Spielerstatistik für " +
+            userStatsPanel.add(new JLabel("<html><h2>Spieler*instatistik für " +
                     Application.getSession().getLoggedInPlayer().getUsername()+"</h2></html>"));
             userStatsPanel.add(new JLabel("Durchgeführte Wettkämpfe: " + playerStats.getNumberOfCompetitons()));
             userStatsPanel.add(new JLabel("Durchgeführte Trainings: " + playerStats.getNumberOfTrainings()));

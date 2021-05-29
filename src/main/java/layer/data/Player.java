@@ -2,9 +2,9 @@ package layer.data;
 
 import java.util.Objects;
 
-public class Player {
-    private String username;
-    private String fullname;
+public final class Player {
+    private final String username;
+    private final String fullname;
 
     public Player(String username, String fullname) {
         this.username = username;

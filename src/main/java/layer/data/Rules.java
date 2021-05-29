@@ -1,9 +1,11 @@
 package layer.data;
 
-public class Rules {
-    private Difficulty difficulty;
-    private int maxLengthOfText;
-    private int minLengthOfText;
+import java.util.Objects;
+
+public final class Rules {
+    private final Difficulty difficulty;
+    private final int maxLengthOfText;
+    private final int minLengthOfText;
 
     public Rules(Difficulty difficulty,int minLengthOfText, int maxLengthOfText) {
         this.difficulty = difficulty;
@@ -27,15 +29,16 @@ public class Rules {
         return minLengthOfText;
     }
 
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rules rules = (Rules) o;
+        return maxLengthOfText == rules.maxLengthOfText && minLengthOfText == rules.minLengthOfText && difficulty == rules.difficulty;
     }
 
-    public void setMaxLengthOfText(int maxLengthOfText) {
-        this.maxLengthOfText = maxLengthOfText;
-    }
-
-    public void setMinLengthOfText(int minLengthOfText) {
-        this.minLengthOfText = minLengthOfText;
+    @Override
+    public int hashCode() {
+        return Objects.hash(difficulty, maxLengthOfText, minLengthOfText);
     }
 }

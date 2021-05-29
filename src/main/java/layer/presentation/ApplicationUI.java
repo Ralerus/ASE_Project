@@ -12,7 +12,7 @@ public class ApplicationUI extends JFrame implements UIListener {
             appIcon = new ImageIcon(this.getClass().getResource("icon.png")).getImage();
             setIconImage(appIcon);
         }catch(NullPointerException ex){
-            ex.printStackTrace();
+            System.err.println("Icon not found");
         }
         Login.create().withTitle("Anmeldung").atAppStart(this).withRegisterButton().build();
     }

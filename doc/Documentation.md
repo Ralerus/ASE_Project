@@ -12,6 +12,8 @@ Auch ein Trainingsbereich für Spieler ist geplant.
 
 Generell dient die geplante Anwendung dem übergeordneten Zweck die Tippgeschwindigkeit der Spieler auf kompetitive Art und Weise zu trainieren und zu verbessern.
 
+Die vorliegende Softwarelösung dient zeitgleich als Untersuchung von Praxistauglichkeit gendergerechter Sprache.
+
 ## Technologien
 Die Anwendung ist in Java entwickelt, die Benutzeroberfläche basiert auf der in der Programmierenvorlesung erlernten Java-Swing-Technologie.  
 Als Build-Management-Tool wird Maven verwendet, als Datenbank eine SQLite-Datenbank. 
@@ -102,6 +104,56 @@ Da das Login nach dem Builder-Pattern erzeugt wird, liegt keine klassische Imple
 Das kommt auch daher, da jedes Login nur maximal einen `Game`-Observer besitzen kann.
 
 ## Domain Driven Design
+### Analyse der Ubiquitous Language
+Die Ubiquitous Language bezeichnet die Sprache, mit der Regeln, Prozesse und Konzepte einer Domäne ausgedrückt werden und legt einheitliches Vokabular zwischen Domänenexperten
+und Entwicklern fest. Die vorliegende Domäne ist die Messung und der Vergleich der Tippgeschwindigkeit in Form eines Wettkampfs. Im Folgenden sollen einige wesentliche Begriffe
+der festgelegten Projektsprache vorgestellt werden. Da für die technische Umsetzung die englische Sprache verwendet wurde, ist zu jedem Begriff der korrespondierende englische
+Begriff mit angegeben. Die Begriffe werden einheitlich zur Benennung von Klasse, Methoden oder Datenbanktabellen eingesetzt.
+- **Spieler\*in** bzw. **Player**: Eine Person, die sich in der Anwendung registriert und damit die Möglichkeit besitzt diese zu nutzen. Da die wesentliche Funktionalität der 
+Anwendung in Spielen besteht, wurde diese Bezeichnung statt der allgemeinen Bezeichner eines bzw. einer Nutzer*in gewählt.
+- **Spiel** bzw. **Game**: Ein Spiel ist entweder ein Wettkampfs- oder ein Trainingsdurchlauf in der Anwendung.
+- **Wettkampf** bzw. **Competition**: Ein Spiel mit mehreren Spieler*innen.
+- **Training**: Ein Spiel mit nur einem bzw. einer Spieler*in.
+- **Text**: Ein Text, der im Rahmen eines Spiels abgetippt werden muss.
+- **Runde** bzw. **Round**: Der Teilvorgang eines Spiels, in dem ein*e Spieler*in einen Text abtippt. Ein Training besitzt nur eine Runde, ein Wettkampf eine Runde pro Spieler*in.
+- **Anmeldung** bzw. **Login**: Vorgang zur Identifzierung und Authentifzierung eines bzw. einer Spieler*in. Kommt sowohl bei Anwendungsstart, als auch vor jeder Runde und am Ende eines Spiels zum Einsatz.
+- **Registrierung** bzw **Registration**: Vorgang zur Erstellung eines bzw. einer neuen Spieler*in.
+- **Statistik** bzw. **Stats**: Statistische Daten über die Nutzung der Anwendung, beinhaltet zwei Teilbereiche:
+    - **Spielstatistiken** bzw **GameStats**: Allgemeine Statistiken zum Spiel seit lokaler Installation.
+    - **Spielerstatistiken** bzw **PlayerStats**: Spieler*in-bezogene Statistiken.
+
+### Weiter Analysen und Begründungen
+#### Value Objects
+Value Objects sind einfache, unveränderliche Objekte ohne eigene Identität. Sie werden nur durch ihren Wert beschrieben und besitzen keinen Lebenszyklus.
+Im Folgenden sollen einige Value Objects der Anwendung vorgestellt werden:  
+- **Player**: Ein `Player` kapselt das Wertekonzept eines bzw. einer Spieler*in un weist die Eigenschaften `username` und `fullname` auf. Ein Player-Objekt besitzt in der Anwendung keine Identität, 
+zwei Player sind identisch, sofern deren Benutzernamen und vollständige Namen übereinstimmen. Ändert ein\*e Spieler\*in den eine Eigenschaft, wird in der Anwendung immer ein neues gültiges Player-Objekt erzeugt.
+  Somit hat ein `Player` auch keinen Lebenszyklus.
+- **Rules**: Ein `Rules` Value Object kapselt das Wertekonzept eines Regelwerkes mit Eigenschaften wie der Schwierigkeit, der minimalen und maximalen Textlänge. Auch ein `Rule`-Objekt besitzt keinen Lebenszyklus und
+wird für jedes Spiel neu anhand der vom bzw. von der Spieler*in festgelegten Parameter erzeugt.  
+- **Text**: Ein `Text` Value Object kapselt das Wertekonzept eines Textes mit Eigenschaften wie dem Texttitel, dem Textinhalt und der Textlänge. Ein `Text` wird in der Anwendung nicht verändert, sondern beim
+Auslesen aus der Datenbank jedes Mal neu erzeugt. Somit besitzt auch ein `Text` keinen Lebenszyklus und lässt sich als Value Object ausmachen.
+  
+Die Unveränderlichkeit der behandelten Value Objects wurde auch in der Impelementierung durch finale Klassen mit finalen Feldern und überschriebenen equals() sowie hashCode() Methoden umgesetzt.
+Die entsprechenden Dateien sind hier verlinkt: [Player](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java) ,[Rules](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Rules.java) ,[Text](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java)
+  
+
+#### Entities
+Eine Entity besitzt im Gegensatz zu Value Objects ein eindeutige ID innerhalb der Domäne sowie weist einen Lebenszyklus auf, während dessen sie sich verändern kann. Die ID kann entweder ein natürlicher oder ein selbst generierter
+Surrogatsschlüssel sein.  
+Im Folgenden sollen einige Entitäten der Anwendung aufgeführt werden:  
+- **Player**: Ein `Player` besitzt als Identität den gewählten Benutzernamen, also eine natürliche ID. Außerdem weist eine Player-Entität einen Lebenszyklus auf, sie
+wird erstellt, kann sich ändern und kann gelöscht werden.
+- **Text**: Ein `Text` besitzt als natürliche ID den Texttitel und weist ebenfalls einen Lebenszyklus auf.
+- **Competition**: Eine `Competition` besitzt einen selbst generierten Surrogatsschlüssel als ID, nämlich ein inkrementeller Zähler `competitionId`.
+- **Training**: Ein `Training` besitzt ähnlich wie die `Competition` eine generierte selbst inkrementierende `trainingId` zur Identifikation.
+#### Aggregates
+Aggregate gruppieren Entities und Value Objects zu gemeinsam verwalteten Einheiten, jede Entität gehört dabei zu einem Aggregat. In jedem Aggregat übernimmt eine Entity die Rolle des Aggregat Roots, alle Zugriffe auf das Aggregat
+erfolgen über das Aggregat Root.
+#### Repositories
+Repositories kapseln allgemein betrachtet die Logik für die Persistierung und Erzeugung von Entities, Value Objects und Aggregates. Sie vermitteln somit zwischen Domäne und Datenmodell und stellen der Domäne Methoden für den
+technischen Zugriff auf den Persistenzspeicher auf Granularität von Aggregates bereit. Sie können somit als Anti-Corruption-Layer zur Persistenzschicht angesehen werden. 
+
 
 ## Architektur
 Das vorliegende Programm wurde in einer Schichtenarchitektur mit den drei Schichten *Presentation*, *Domain* und *Data* entwickelt.
