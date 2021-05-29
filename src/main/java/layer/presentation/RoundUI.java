@@ -30,8 +30,14 @@ public class RoundUI {
         textArea = new JTextArea(text,3,50);
         textArea.setEditable(false);
         textArea.setFocusable(false);
-        textArea.setBackground(new Color(238,238,238));
-        JTextArea userInput = new JTextArea(4,50);
+        textArea.setBackground(new Color(248,248,248));
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setFont(new Font("Serif", Font.PLAIN,16));
+        JTextArea userInput = new JTextArea(8,50);
+        userInput.setLineWrap(true);
+        userInput.setWrapStyleWord(true);
+        userInput.setFont(new Font("Arial", Font.PLAIN, 15));
         userInput.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -55,7 +61,7 @@ public class RoundUI {
         dialogContent.add(new JLabel("Wettkampf läuft ..."));
         dialogContent.setBorder(new EmptyBorder(8,8,8,8));
         jDialog.add(dialogContent);
-        jDialog.setSize(600,300);
+        jDialog.setSize(600,375);
         jDialog.setLocationRelativeTo(Application.getUi());
         jDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         jDialog.setVisible(true);

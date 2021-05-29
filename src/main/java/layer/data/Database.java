@@ -1,6 +1,7 @@
 package layer.data;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,7 +33,6 @@ public class Database {
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
-                System.out.println("The driver name is " + meta.getDriverName());
                 System.out.println("Connection to database established.");
             }
         } catch (SQLException e) {
@@ -41,7 +41,14 @@ public class Database {
     }
 
     public static void setup() {
+        System.out.println("---Start database setup---");
         createNewDatabase(url);
+        createTablesIfNotExist();
+        insertInitialTextsIfNotExist();
+        System.out.println("---End database setup---");
+    }
+
+    private static void createTablesIfNotExist(){
         List<String> createTables = new LinkedList<>();
         createTables.add("CREATE TABLE IF NOT EXISTS player (\n"
                 + "	username text PRIMARY KEY,\n"
@@ -84,6 +91,19 @@ public class Database {
             System.out.println("Tables created");
         } catch (SQLException e){
             System.err.println(e.getMessage());
+        }
+    }
+    private static void insertInitialTextsIfNotExist(){
+        try {
+            TextRepository.createText("Einstieg", "Dieser Text dient zum Einstieg in Tippduell", Difficulty.Easy);
+            TextRepository.createText("Geübt", "Wenn du (hoffentlich) schon länger Tipperfahrung sammeln konntest, ist dieser kurze Text\n mit mehr Zeichen und vor allem ein paar Sonderzeichen etwas für dich! Oder etwa nicht?!", Difficulty.Medium);
+            TextRepository.createText("Schwierig", "Viel Spaß mit diesem äußerst schwierigen Kurztext - naja so\n richtig komplex ist auch dieser Übungstext nicht.\n Weist auch nicht über 120 Zeichen auf " +
+                    "und enthält bis auf ein paar Sonderzeichen wie % oder $ auch nichts Unüberwindbares.\n Wenn dir schwierigere Textvorlagen einfallen, ergänze sie gerne in der Textverwaltung.\n\n Adiós!", Difficulty.Hard);
+            System.out.println("Initial texts set");
+        } catch (SQLException throwables) {
+            System.err.println("Fehler beim Anlegen der initialen Texte: "+throwables.getMessage());
+        } catch (ObjectAlreadyExistsException e) {
+
         }
 
     }
