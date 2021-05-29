@@ -33,7 +33,7 @@ public class Database {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
                 System.out.println("The driver name is " + meta.getDriverName());
-                System.out.println("A new database has been created.");
+                System.out.println("Connection to database established.");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -54,19 +54,19 @@ public class Database {
                 + "	difficulty integer NOT NULL,\n"
                 + " length integer NOT NULL \n"
                 + ");");
-        createTables.add("CREATE TABLE IF NOT EXISTS game (\n"
+        createTables.add("CREATE TABLE IF NOT EXISTS competition (\n"
                 + "	id integer PRIMARY KEY,\n"
                 + "	textTitle text NOT NULL,\n"
                 + "	date text NOT NULL,\n"
                 + " FOREIGN KEY (textTitle) REFERENCES text(title) ON UPDATE CASCADE ON DELETE SET NULL \n"
                 + ");");
-        createTables.add("CREATE TABLE IF NOT EXISTS result (\n"
-                + "	gameId integer NOT NULL,\n"
+        createTables.add("CREATE TABLE IF NOT EXISTS competitionResult (\n"
+                + "	competitionId integer NOT NULL,\n"
                 + "	username text NOT NULL,\n"
                 + "	duration real NOT NULL,\n"
-                + " FOREIGN KEY (gameId) REFERENCES game(id) ON UPDATE CASCADE ON DELETE CASCADE \n"
+                + " FOREIGN KEY (competitionId) REFERENCES competition(id) ON UPDATE CASCADE ON DELETE CASCADE \n"
                 + " FOREIGN KEY (username) REFERENCES player(username) ON UPDATE CASCADE ON DELETE CASCADE \n"
-                + " PRIMARY KEY (gameId,username) \n"
+                + " PRIMARY KEY (competitionId,username) \n"
                 + ");");
         createTables.add("CREATE TABLE IF NOT EXISTS training (\n"
                 + "	id integer PRIMARY KEY,\n"

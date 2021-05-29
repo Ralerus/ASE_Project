@@ -133,27 +133,34 @@ zwei Player sind identisch, sofern deren Benutzernamen und vollständige Namen �
 wird für jedes Spiel neu anhand der vom bzw. von der Spieler*in festgelegten Parameter erzeugt.  
 - **Text**: Ein `Text` Value Object kapselt das Wertekonzept eines Textes mit Eigenschaften wie dem Texttitel, dem Textinhalt und der Textlänge. Ein `Text` wird in der Anwendung nicht verändert, sondern beim
 Auslesen aus der Datenbank jedes Mal neu erzeugt. Somit besitzt auch ein `Text` keinen Lebenszyklus und lässt sich als Value Object ausmachen.
+- **StatsEntry**: Dieses Value Object kapselt die Werte eines Statistikeintrags eines Spiels. Auch dieses Value Object wird beim Auslesen aus der Datenbank jedes Mal neu erzeugt, nicht verändert und besitzt keinen Lebenszyklus.
   
 Die Unveränderlichkeit der behandelten Value Objects wurde auch in der Impelementierung durch finale Klassen mit finalen Feldern und überschriebenen equals() sowie hashCode() Methoden umgesetzt.
-Die entsprechenden Dateien sind hier verlinkt: [Player](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java) ,[Rules](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Rules.java) ,[Text](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java)
-  
+Die entsprechenden Dateien sind hier verlinkt: [Player](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java) ,[Rules](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Rules.java) ,[Text](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java), [StatsEntry](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/StatsEntry.java)
 
 #### Entities
 Eine Entity besitzt im Gegensatz zu Value Objects ein eindeutige ID innerhalb der Domäne sowie weist einen Lebenszyklus auf, während dessen sie sich verändern kann. Die ID kann entweder ein natürlicher oder ein selbst generierter
 Surrogatsschlüssel sein.  
-Im Folgenden sollen einige Entitäten der Anwendung aufgeführt werden:  
-- **Player**: Ein `Player` besitzt als Identität den gewählten Benutzernamen, also eine natürliche ID. Außerdem weist eine Player-Entität einen Lebenszyklus auf, sie
-wird erstellt, kann sich ändern und kann gelöscht werden.
-- **Text**: Ein `Text` besitzt als natürliche ID den Texttitel und weist ebenfalls einen Lebenszyklus auf.
+Im Folgenden sollen einige Entitäten der Anwendung aufgeführt werden:
 - **Competition**: Eine `Competition` besitzt einen selbst generierten Surrogatsschlüssel als ID, nämlich ein inkrementeller Zähler `competitionId`.
 - **Training**: Ein `Training` besitzt ähnlich wie die `Competition` eine generierte selbst inkrementierende `trainingId` zur Identifikation.
+Beide werden in der Anwendung als `Game`-Objekt erzeugt, verändern ihre Eigenschaften (wie beispielsweise das Feld `playersLeft`) und weisen damit einen Lebenszyklus auf.
+Aus Datenbankperspektive betrachtet sind `Player` und `Text` auch Entities, da sich deren Persistierung durchaus ändern und auch identifiziert werden kann. Außerdem wird die Persistierung der beiden nicht jedes Mal neu erzeugt wird. Innerhalb der Anwendung sind diese beiden Objekte allerdings klar als
+  Value Objects zu erkennen.
 #### Aggregates
 Aggregate gruppieren Entities und Value Objects zu gemeinsam verwalteten Einheiten, jede Entität gehört dabei zu einem Aggregat. In jedem Aggregat übernimmt eine Entity die Rolle des Aggregat Roots, alle Zugriffe auf das Aggregat
-erfolgen über das Aggregat Root.
+erfolgen über das Aggregat Root. Folgende Aggregate lassen sich in der Anwendung ausmachen:
+- **Player**: Dieses Aggregat beinhaltet lediglich das `Player` Value Object, Zugriffe auf das Aggregat erfolgen über den Benutzernamen der Datenbankentität des Players.
+- **Text**: Dieses Aggregat beinhaltet lediglich das `Text` Value Object, Zugriffe auf das Aggregat erfolgen über den Texttitel der Datenbankentität des Texts.
+- **Stats**: Dieses Aggregat beinhaltet die Entitäten *Competition* und *Training*, die beide als `Game` modelliert werden. Eine `Game` weist dabei einen bis mehrere *Player* sowie einen *Text* auf, der durch die *Rules* des `Game` charakterisiert wird.
+
 #### Repositories
 Repositories kapseln allgemein betrachtet die Logik für die Persistierung und Erzeugung von Entities, Value Objects und Aggregates. Sie vermitteln somit zwischen Domäne und Datenmodell und stellen der Domäne Methoden für den
-technischen Zugriff auf den Persistenzspeicher auf Granularität von Aggregates bereit. Sie können somit als Anti-Corruption-Layer zur Persistenzschicht angesehen werden. 
-
+technischen Zugriff auf den Persistenzspeicher auf Granularität von Aggregates bereit. Sie können somit als Anti-Corruption-Layer zur Persistenzschicht angesehen werden.  
+Folgende Repositories werden in der Anwendung verwendet, sie sind nach den zugehörigen Aggregates benannt:  
+- **PlayerRepository**: Dieses Repository ist für die Verwaltung und den Zugriff auf Spieler*innen im Persistenzspeicher zuständig und beinhaltet die dazu notwendigen CRUD-Methoden.
+- **TextRepository**: Dieses Repository ist für die Verwaltung und den Zugriff auf Texte im Persistenzspeicher zuständig und beinhaltet die dazu notwendigen CRUD-Methoden. 
+- **StatsRepository**: Dieses Repository ist für die Verwaltung und den Zugriff auf Spiel und Spieler*innenstatistiken zuständig und beinhaltet die dazu notwendigen CRUD-Methoden.
 
 ## Architektur
 Das vorliegende Programm wurde in einer Schichtenarchitektur mit den drei Schichten *Presentation*, *Domain* und *Data* entwickelt.
