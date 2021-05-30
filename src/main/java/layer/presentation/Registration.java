@@ -37,7 +37,7 @@ public class Registration {
                     if(passwordValue.length>5){
                         try {
                             String passwordHash = Security.getSecureHash(new String(password.getPassword()));
-                            Player p = new Player(username.getText(), fullname.getText());
+                            Player p = new Player(username.getText(), fullname.getText(), true);
                             PlayerRepository.createPlayer(p,passwordHash);
                             registerDialog.setVisible(false);
                             registerDialog.dispose();

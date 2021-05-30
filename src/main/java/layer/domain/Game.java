@@ -1,6 +1,5 @@
 package layer.domain;
 
-import application.Application;
 import layer.data.*;
 import layer.presentation.Login;
 import layer.presentation.GameUI;

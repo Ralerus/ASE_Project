@@ -4,15 +4,15 @@ Philipp Rall, TINF18B2, 5844601
 ---
 
 ## 1. Projektidee
-Meine Idee ist mit Java ein kleines, lokales Desktop-Spiel „Tippduell“ nach dem Vorbild von Typeracer zu entwickeln. D.h. das Spielziel besteht darin, einen vorgegebenen Text möglichst schnell korrekt abzutippen.
-In einem Wettkampfbereich soll hierzu zunächst die Schwierigkeit vom Spielleiter festgelegt werden, bevor ein entsprechender Text aus der Datenbank geladen wird.
-Anschließend tippt ein Spieler nach dem anderen den Text ab, der schnellste gewinnt die Runde.
-Neben dem Wettkampfbereich ist außerdem ein Bereich zur Spielerverwaltung sowie ein HighScore bzw. Statistikbereich pro Spieler angedacht, die Statistiken sollen ebenfalls in der Datenbank gespeichert werden.
-Auch ein Trainingsbereich für Spieler ist geplant.
+Meine Idee ist mit Java ein kleines, lokales Desktop-Spiel „Tippduell“ nach dem Vorbild von [Typeracer](https://play.typeracer.com/) zu entwickeln. D.h. das Spielziel besteht darin, einen vorgegebenen Text möglichst schnell korrekt abzutippen.
+In einem Wettkampfbereich soll hierzu zunächst die Schwierigkeit von der Spielleitung festgelegt werden, bevor ein entsprechender Text aus der Datenbank geladen wird.
+Anschließend tippt ein*e Spieler\*in nach dem\*der anderen den Text ab, der\*die schnellste gewinnt die Runde.
+Neben dem Wettkampfbereich ist außerdem ein Bereich zur Verwaltung von Texten und Spielern sowie ein HighScore bzw. Statistikbereich pro Spieler\*in angedacht, die Statistiken sollen ebenfalls in der Datenbank gespeichert werden.
+Auch ein Trainingsbereich für Spieler\*innen ist geplant.
 
-Generell dient die geplante Anwendung dem übergeordneten Zweck die Tippgeschwindigkeit der Spieler auf kompetitive Art und Weise zu trainieren und zu verbessern.
+Generell dient die geplante Anwendung dem übergeordneten Zweck die Tippgeschwindigkeit der Spieler*innen auf kompetitive Art und Weise zu trainieren und zu verbessern.
 
-Die vorliegende Softwarelösung dient zeitgleich als Untersuchung von Praxistauglichkeit gendergerechter Sprache.
+Die vorliegende Softwarelösung dient zeitgleich als persönliche Beschäftigung und Untersuchung von Praxistauglichkeit gendergerechter Sprache.
 
 ## 2. Technologien
 Die Anwendung ist in Java entwickelt, die Benutzeroberfläche basiert auf der in der Programmierenvorlesung erlernten Java-Swing-Technologie.  
@@ -39,7 +39,7 @@ In der vorliegenden Anwendung werden ausschließlich passgenaue Interfaces verwe
 Als Beispiel hiefür kann das `GameListener`-Interface angeführt werden, es wird nur von der Klasse `Game` implementiert und ist daher passgenau auf die benötigten Funktionen zugeschnitten.
 Somit ist dieses Prinzip erfüllt.
 #### Dependency Inversion Principle
-Das Dependency Inversion Principle verlangt, dass High-Level-Module nicht von Low-Level-Modulen, sondern beide von Abstraktionen abhängig sein sollten.
+Das Dependency Inversion Principle verlangt, dass High-Level-Module nicht von Low-Level-Modulen, sondern beide von Abstraktionen abhängig sein sollten. 
 
 ### GRASP
 GRASP steht für General Responsibilty Assignment Software Patterns und bezeichnet eine Sammlung an Basisprinzipien. Von diesen soll zwei im Folgenden behandelt werden.
@@ -122,7 +122,7 @@ Anwendung in Spielen besteht, wurde diese Bezeichnung statt der allgemeinen Beze
     - **Spielstatistiken** bzw **GameStats**: Allgemeine Statistiken zum Spiel seit lokaler Installation.
     - **Spielerstatistiken** bzw **PlayerStats**: Spieler*in-bezogene Statistiken.
 
-### Weiter Analysen und Begründungen
+### Weitere Analysen und Begründungen
 #### Value Objects
 Value Objects sind einfache, unveränderliche Objekte ohne eigene Identität. Sie werden nur durch ihren Wert beschrieben und besitzen keinen Lebenszyklus.
 Im Folgenden sollen einige Value Objects der Anwendung vorgestellt werden:  
@@ -136,11 +136,11 @@ Auslesen aus der Datenbank jedes Mal neu erzeugt. Somit besitzt auch ein `Text` 
 - **StatsEntry**: Dieses Value Object kapselt die Werte eines Statistikeintrags eines Spiels. Auch dieses Value Object wird beim Auslesen aus der Datenbank jedes Mal neu erzeugt, nicht verändert und besitzt keinen Lebenszyklus.
 - **PlayerStats** und **GameStats**: Diese Value Objects kapseln jeweils die Werte der spieler*inbezogenen oder allgemeinen Statistik und besitzen keine Identität oder Lebenszeit.
   
-Die Unveränderlichkeit der behandelten Value Objects wurde auch in der Impelementierung durch finale Klassen mit finalen Feldern und überschriebenen equals() sowie hashCode() Methoden umgesetzt.
+Die Unveränderlichkeit der behandelten Value Objects wurde auch in der Implementierung durch finale Klassen mit finalen Feldern und überschriebenen equals() sowie hashCode() Methoden umgesetzt.
 Die entsprechenden Dateien sind hier verlinkt: [Player](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java) ,[Rules](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Rules.java) ,[Text](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java), [StatsEntry](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/StatsEntry.java)
 
 #### Entities
-Eine Entity besitzt im Gegensatz zu Value Objects ein eindeutige ID innerhalb der Domäne sowie weist einen Lebenszyklus auf, während dessen sie sich verändern kann. Die ID kann entweder ein natürlicher oder ein selbst generierter
+Eine Entity besitzt im Gegensatz zu Value Objects eine eindeutige ID innerhalb der Domäne sowie weist einen Lebenszyklus auf, während dessen sie sich verändern kann. Die ID kann entweder ein natürlicher oder ein selbst generierter
 Surrogatsschlüssel sein.  
 Im Folgenden sollen einige Entitäten der Anwendung aufgeführt werden:
 - **Competition**: Eine `Competition` besitzt einen selbst generierten Surrogatsschlüssel als ID, nämlich ein inkrementeller Zähler `competitionId`.
@@ -180,7 +180,7 @@ Unit Tests testen einzelne Komponenten des Systems und stellen deren Funktionali
 um eine Unabhängigkeit zu gewährleisten. Im Tippduell wurden 10 Unit-Tests mit XX Testfällen realisiert. Zum Testen wird das Testing-Framework *JUnit5* verwendet, Mocks werden mit dem Mocking-Framework *mockito* erzeugt.
 
 ### Tests
-Als beispielhafte Tests sollen hier der Test `CheckCurrentInputCharTest` angeführt werden, da diese eine wesentliche Funktionalität des Spiels testet.
+Als beispielhafte Tests soll hier der Test `CheckCurrentInputCharTest` angeführt werden, da diese eine wesentliche Funktionalität des Spiels testet.
 #### CheckCurrentInputCharTest
 Dieser [Test](https://github.com/Ralerus/ASE_Project/blob/main/src/test/java/layer/domain/CheckCurrentInputCharTest.java) testet die Methode `checkCurrentInputChar` der Klasse `Round`, die die Funktionalität repräsentiert, einen eingegebenen Buchstaben des Nutzers auf Übereinstimmung mit dem aktuell erforderlichen Buchstaben des Textes zu überprüfen.
 Dafür wird in diesem Test eine Instanz der Klasse `Round` mit einem gemockten `Text`-Objekt erzeugt, das wie folgt erzeugt wurde:  
@@ -188,7 +188,7 @@ Dafür wird in diesem Test eine Instanz der Klasse `Round` mit einem gemockten `
 `when(text.getText()).thenReturn("Testtext");`  
 Dadurch kann eine Unabhängigkeit von der tatsächlichen Klasse `Text` erzielt und dennoch das Szenario erfolgreich getestet werden. Der Test umfasst vier Testfälle, die die Komponente bei korrekt und inkorrekt eingegebenen Char sowie bei 
 korrekt und inkorrekt eingegebener Char-Folge überprüft.  
-Da die Methode lediglich Chars als Eingabe aktzeptiert, müssen falsche Eingabetypen nicht getestet werden. Sie sind nicht möglich.
+Da die Methode lediglich Chars als Eingabe akzeptiert, müssen falsche Eingabetypen nicht getestet werden. Sie sind nicht möglich.
 
 ### A-TRIP-Regeln
 Die A-TRIP-Regeln können als Eigenschaften guter Tests angesehen werden. Im Folgenden sollen diese kurz vorgestellt und deren Einhaltung im Projekt erläutert werden.

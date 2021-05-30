@@ -41,7 +41,7 @@
                         </transformer>
                     </transformers>
                     <artifactSet>
-                        <include>${project.basedir}/libs/sqlite-jdbc-3.34.0.jar</include>
+                        <!--<include>${project.basedir}/libs/sqlite-jdbc-3.34.0.jar</include>-->
                     </artifactSet>
                 </configuration>
             </plugin>
@@ -57,7 +57,7 @@
                     </archive>
                 </configuration>
             </plugin>
-            <!--<plugin>
+            <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
                 <version>1.5.1</version>
@@ -96,7 +96,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

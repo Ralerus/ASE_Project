@@ -9,7 +9,7 @@ import layer.data.Security;
 import javax.swing.*;
 import java.sql.SQLException;
 
-public class UserManagement {
+public abstract class UserManagement {
     public static boolean isUsernameFieldClearNeeded(String usernameValue, PlayerRepository player){
         if(!usernameValue.isEmpty() && player!=null){
             int response = JOptionPane.showConfirmDialog(Application.getUi(),  "Benutzername wirklich" +
@@ -20,7 +20,7 @@ public class UserManagement {
                     JOptionPane.showMessageDialog(Application.getUi(), "Benutzername erfolgreich " +
                             "geändert. \nDu wirst nun abgemeldet, bitte melde dich\nneu an!", "Änderung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
                     Session.setLoggedInPlayer(new Player(usernameValue,
-                            Session.getLoggedInPlayer().getFullName()));
+                            Session.getLoggedInPlayer().getFullName(),false));
                     Session.logoff();
                     return true;
                 } catch (ObjectAlreadyExistsException e) {
@@ -44,7 +44,7 @@ public class UserManagement {
                                 " erfolgreich geändert", "Änderung erfolgreich",
                         JOptionPane.INFORMATION_MESSAGE);
                 Session.setLoggedInPlayer(new Player(
-                        Session.getLoggedInPlayer().getUsername(), fullnameValue));
+                        Session.getLoggedInPlayer().getUsername(), fullnameValue, false));
                 return true;
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Ändern des" +

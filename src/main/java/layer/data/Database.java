@@ -51,7 +51,8 @@ public abstract class Database {
         createTables.add("CREATE TABLE IF NOT EXISTS player (\n"
                 + "	username text PRIMARY KEY,\n"
                 + "	password text NOT NULL,\n"
-                + "	fullname text\n"
+                + "	fullname text,\n"
+                + " firstLogin integer NOT NULL "
                 + ");");
         createTables.add("CREATE TABLE IF NOT EXISTS text (\n"
                 + "	title text PRIMARY KEY,\n"

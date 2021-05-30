@@ -8,8 +8,8 @@ public final class PlayerRepository {
     private final Player player;
     private final String password;
 
-    private PlayerRepository(String username, String fullname, String password) {
-        this.player = new Player(username,fullname);
+    private PlayerRepository(String username, String fullname, String password, boolean firstLogin) {
+        this.player = new Player(username,fullname, firstLogin);
         this.password = password;
     }
 
@@ -32,6 +32,10 @@ public final class PlayerRepository {
         Database.updateEntry("UPDATE player SET fullname = ? WHERE username = ?", newFullname, this.player.getUsername());
     }
 
+    public void setFirstLogin(boolean firstLogin) throws SQLException {
+        Database.updateEntry("UPDATE player SET firstLogin = ? WHERE username = ?",(firstLogin?"1":"0"), this.player.getUsername());
+    }
+
     public boolean isPasswordCorrect(String password){
         return this.password.equals(password);
     }
@@ -41,9 +45,10 @@ public final class PlayerRepository {
     }
 
     public static PlayerRepository getPlayerRepository(String username) throws ObjectNotFoundException{
-        String sql = "SELECT username, password, fullname FROM player WHERE username = ?";
+        String sql = "SELECT username, password, fullname, firstLogin FROM player WHERE username = ?";
         String fullname=null;
         String password=null;
+        boolean firstLogin=false;
         try(Connection conn = Database.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ){
@@ -52,6 +57,7 @@ public final class PlayerRepository {
             while(rs.next()){
                 fullname = rs.getString("fullname");
                 password = rs.getString("password");
+                firstLogin = (rs.getInt("firstLogin")==1?true:false);
             }
 
         } catch (SQLException e){
@@ -62,7 +68,7 @@ public final class PlayerRepository {
             throw new ObjectNotFoundException("Spieler*in nicht gefunden.");
         }
 
-        return new PlayerRepository(username, fullname, password);
+        return new PlayerRepository(username, fullname, password, firstLogin);
     }
 
     public static PlayerRepository getPlayerRepository(Player p) throws ObjectNotFoundException{
@@ -70,11 +76,12 @@ public final class PlayerRepository {
     }
 
     public static void createPlayer(Player p, String password) throws ObjectAlreadyExistsException, SQLException {
-        String sql = "INSERT INTO player (username, password, fullname) VALUES (?,?,?)";
+        String sql = "INSERT INTO player (username, password, fullname, firstLogin) VALUES (?,?,?,?)";
         try(Connection conn = Database.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,p.getUsername());
             pstmt.setString(2,password);
             pstmt.setString(3,p.getFullName());
+            pstmt.setString(4,(p.isFirstLogin()?"1":"0"));
             pstmt.executeUpdate();
         }catch(SQLiteException ex){
             if(ex.getMessage().equals("[SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed" +
@@ -89,5 +96,4 @@ public final class PlayerRepository {
     public void deleteUser() throws SQLException {
         Database.updateEntry("DELETE FROM player WHERE username = ?",this.player.getUsername(),"");
     }
-
 }

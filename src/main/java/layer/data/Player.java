@@ -5,10 +5,12 @@ import java.util.Objects;
 public final class Player {
     private final String username;
     private final String fullName;
+    private final boolean firstLogin;
 
-    public Player(String username, String fullName) {
+    public Player(String username, String fullName, boolean firstLogin) {
         this.username = username;
         this.fullName = fullName;
+        this.firstLogin = firstLogin;
     }
 
     public String getUsername() {
@@ -17,6 +19,10 @@ public final class Player {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public boolean isFirstLogin() {
+        return firstLogin;
     }
 
     @Override
