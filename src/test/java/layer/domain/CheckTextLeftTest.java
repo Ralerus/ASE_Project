@@ -3,9 +3,10 @@ package layer.domain;
 import layer.data.Text;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CheckTextLeftTest {
     private Round round;
@@ -21,21 +22,21 @@ public class CheckTextLeftTest {
     @Test
     void forFullTextLeft(){
         String textLeft = round.getTextLeft();
-        assertTrue(textLeft.equals("Testtext"));
+        assertEquals(textLeft, "Testtext");
     }
 
     @Test
     void forCorrectInput(){
         round.checkCurrentInputChar('T');
         String textLeft = round.getTextLeft();
-        assertTrue(textLeft.equals("esttext"));
+        assertEquals(textLeft, "esttext");
     }
 
     @Test
     void forIncorrectInput(){
         round.checkCurrentInputChar(' ');
         String textLeft = round.getTextLeft();
-        assertTrue(textLeft.equals("Testtext"));
+        assertEquals(textLeft, "Testtext");
     }
 
     @Test
@@ -44,7 +45,7 @@ public class CheckTextLeftTest {
         round.checkCurrentInputChar('e');
         round.checkCurrentInputChar('s');
         String textLeft = round.getTextLeft();
-        assertTrue(textLeft.equals("ttext"));
+        assertEquals(textLeft, "ttext");
     }
 
     @Test
@@ -53,7 +54,7 @@ public class CheckTextLeftTest {
         round.checkCurrentInputChar('.');
         round.checkCurrentInputChar('$');
         String textLeft = round.getTextLeft();
-        assertTrue(textLeft.equals("Testtext"));
+        assertEquals(textLeft, "Testtext");
     }
 
     @Test
@@ -62,6 +63,6 @@ public class CheckTextLeftTest {
         round.checkCurrentInputChar('g');
         round.checkCurrentInputChar('e');
         String textLeft = round.getTextLeft();
-        assertTrue(textLeft.equals("sttext"));
+        assertEquals(textLeft, "sttext");
     }
 }

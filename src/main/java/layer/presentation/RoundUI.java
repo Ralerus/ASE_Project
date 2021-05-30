@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class RoundUI {
+public abstract class RoundUI {
     private static JDialog jDialog;
     private static JTextArea textArea;
     private static RoundListener listener;

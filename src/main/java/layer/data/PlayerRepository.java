@@ -50,14 +50,14 @@ public final class PlayerRepository {
         String password=null;
         boolean firstLogin=false;
         try(Connection conn = Database.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            ){
+            PreparedStatement pstmt = conn.prepareStatement(sql)
+        ){
             pstmt.setString(1,username);
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()){
                 fullname = rs.getString("fullname");
                 password = rs.getString("password");
-                firstLogin = (rs.getInt("firstLogin")==1?true:false);
+                firstLogin = (rs.getInt("firstLogin") == 1);
             }
 
         } catch (SQLException e){

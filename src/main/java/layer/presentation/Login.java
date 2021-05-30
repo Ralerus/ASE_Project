@@ -10,9 +10,8 @@ import layer.domain.Session;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+@SuppressWarnings("AccessStaticViaInstance")
 public final class Login {
     private String title;
     private Player p;
@@ -36,6 +35,7 @@ public final class Login {
         return new CreateableLogin();
     }
 
+    @SuppressWarnings("AccessStaticViaInstance")
     public class CreateableLogin {
         private CreateableLogin(){}
         public CreateableLogin forPlayer(Player p){
@@ -79,41 +79,32 @@ public final class Login {
         loginPanel.add(password);
         if(withRegisterButton){
             JButton newUser = new JButton("Registrieren");
-            newUser.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Registration registration = new Registration();
-                    registration.drawUI(false);
-                }
-            });
+            newUser.addActionListener(e -> Registration.drawUI(false));
             loginPanel.add(newUser);
         }
         JButton loginButton = new JButton("Anmelden");
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String usernameValue = username.getText();
-                char[] passwordValue = password.getPassword();
-                if(!usernameValue.isEmpty() && (passwordValue.length!=0)){
-                    try {
-                        String passwordHash = Security.getSecureHash(new String(passwordValue));
-                        Session.login(usernameValue, passwordHash);
-                        loginDialog.setVisible(false);
-                        loginDialog.dispose();
-                        if (isDuringGame) {
-                            gameListener.startRound();
-                        }else if(isAtAppStart){
-                            uiListener.drawUI();
-                        }
-                    } catch (ObjectNotFoundException | Session.WrongPasswordException ex) {
-                        JOptionPane.showMessageDialog(loginDialog, "Benutzername oder Passwort inkorrekt!",
-                                "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
-                        password.setText("");
+        loginButton.addActionListener(e -> {
+            String usernameValue = username.getText();
+            char[] passwordValue = password.getPassword();
+            if(!usernameValue.isEmpty() && (passwordValue.length!=0)){
+                try {
+                    String passwordHash = Security.getSecureHash(new String(passwordValue));
+                    Session.login(usernameValue, passwordHash);
+                    loginDialog.setVisible(false);
+                    loginDialog.dispose();
+                    if (isDuringGame) {
+                        gameListener.startRound();
+                    }else if(isAtAppStart){
+                        uiListener.drawUI();
                     }
-                }else{
-                    JOptionPane.showMessageDialog(loginDialog,"Bitte gebe Benutzername und Password ein!",
+                } catch (ObjectNotFoundException | Session.WrongPasswordException ex) {
+                    JOptionPane.showMessageDialog(loginDialog, "Benutzername oder Passwort inkorrekt!",
                             "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                    password.setText("");
                 }
+            }else{
+                JOptionPane.showMessageDialog(loginDialog,"Bitte gebe Benutzername und Password ein!",
+                        "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
             }
         });
         try {

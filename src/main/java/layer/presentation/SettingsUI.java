@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class SettingsUI {
+public abstract class SettingsUI {
     public static JPanel getSettingsUI() {
         JPanel settingsUI = new JPanel();
         settingsUI.setLayout(new BorderLayout());

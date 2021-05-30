@@ -13,10 +13,6 @@ public final class Rules {
         this.minLengthOfText = minLengthOfText;
     }
 
-    public Rules(){
-        this(Difficulty.Medium, 200,500);
-    }
-
     public Difficulty getDifficulty() {
         return difficulty;
     }

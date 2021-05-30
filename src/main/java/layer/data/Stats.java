@@ -3,9 +3,9 @@ package layer.data;
 import java.util.List;
 
 public abstract class Stats {
-    private int numberOfCompetitons;
-    private int numberOfTrainings;
-    private List<StatsEntry> highscore;
+    private final int numberOfCompetitons;
+    private final int numberOfTrainings;
+    private final List<StatsEntry> highscore;
 
     public Stats(int numberOfCompetitons, int numberOfTrainings, List<StatsEntry> highscore) {
         this.numberOfCompetitons = numberOfCompetitons;

@@ -8,11 +8,9 @@ import layer.domain.UserManagement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class UserManagementUI {
+public abstract class UserManagementUI {
     private static final JTextField username = new JTextField();
     private static final JTextField fullName = new JTextField();
     private static final JPasswordField password = new JPasswordField();
@@ -52,37 +50,34 @@ public class UserManagementUI {
 
     private static JButton getChangeButton(){
         JButton changeButton = new JButton("Übernehmen");
-        changeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String usernameValue = username.getText();
-                String fullnameValue = fullName.getText();
-                char[] passwordValue = password.getPassword();
-                char[] passwordRepetitionValue = password_repetition.getPassword();
+        changeButton.addActionListener(e -> {
+            String usernameValue = username.getText();
+            String fullnameValue = fullName.getText();
+            char[] passwordValue = password.getPassword();
+            char[] passwordRepetitionValue = password_repetition.getPassword();
 
-                if(!usernameValue.isEmpty() || !fullnameValue.isEmpty() || (passwordValue.length!=0) ||
-                        (passwordRepetitionValue.length!=0)){
-                    PlayerRepository player = null;
-                    try {
-                        player = PlayerRepository.getPlayerRepository(Session.getLoggedInPlayer());
-                    } catch (ObjectNotFoundException playerNotFoundException) {
-                        playerNotFoundException.printStackTrace();
-                    }
-                    if(UserManagement.isUsernameFieldClearNeeded(usernameValue,player)){
-                        username.setText("");
-                    }
-                    if(UserManagement.isFullNameChanged(fullnameValue,player)){
-                        fullName.setText("");
-                    }
-                    if(UserManagement.isPasswordFieldsClearNeeded(passwordValue,passwordRepetitionValue,player)){
-                        password.setText("");
-                        password_repetition.setText("");
-                    }
-                }else{
-                    JOptionPane.showMessageDialog(Application.getUi(), "Bitte gebe entweder einen neuen" +
-                                    " Benutzernamen, vollständigen Name \noder ein neues Passwort an!",
-                            "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+            if(!usernameValue.isEmpty() || !fullnameValue.isEmpty() || (passwordValue.length!=0) ||
+                    (passwordRepetitionValue.length!=0)){
+                PlayerRepository player = null;
+                try {
+                    player = PlayerRepository.getPlayerRepository(Session.getLoggedInPlayer());
+                } catch (ObjectNotFoundException playerNotFoundException) {
+                    playerNotFoundException.printStackTrace();
                 }
+                if(UserManagement.isUsernameFieldClearNeeded(usernameValue,player)){
+                    username.setText("");
+                }
+                if(UserManagement.isFullNameChanged(fullnameValue,player)){
+                    fullName.setText("");
+                }
+                if(UserManagement.isPasswordFieldsClearNeeded(passwordValue,passwordRepetitionValue,player)){
+                    password.setText("");
+                    password_repetition.setText("");
+                }
+            }else{
+                JOptionPane.showMessageDialog(Application.getUi(), "Bitte gebe entweder einen neuen" +
+                                " Benutzernamen, vollständigen Name \noder ein neues Passwort an!",
+                        "Änderung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
             }
         });
         return changeButton;
@@ -90,29 +85,26 @@ public class UserManagementUI {
 
     private static JButton getDeleteButton(){
         JButton deleteButton = new JButton("Nutzer*in löschen");
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int response = JOptionPane.showConfirmDialog(Application.getUi(),  "Nutzer*in wirklich" +
-                        " löschen?", "Löschbestätigung", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-                if(response==0){
+        deleteButton.addActionListener(e -> {
+            int response = JOptionPane.showConfirmDialog(Application.getUi(),  "Nutzer*in wirklich" +
+                    " löschen?", "Löschbestätigung", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+            if(response==0){
+                try {
+                    PlayerRepository player = PlayerRepository.getPlayerRepository(
+                            Session.getLoggedInPlayer());
                     try {
-                        PlayerRepository player = PlayerRepository.getPlayerRepository(
-                                Session.getLoggedInPlayer());
-                        try {
-                            player.deleteUser();
-                            JOptionPane.showMessageDialog(Application.getUi(),"Nutzer*in erfolgreich gelöscht," +
-                                            "\ndu wirst nun abgemeldet.", "Löschen erfolgreich",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                            Session.logoff();
-                        } catch (SQLException throwables) {
-                            JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Löschen des bzw." +
-                                    " der Nutzer*in", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } catch (ObjectNotFoundException playerNotFoundException) {
-                        JOptionPane.showMessageDialog(Application.getUi(), "Zu löschende*r Nutzer*in konnte " +
-                                "nicht gefunden werden.", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+                        player.deleteUser();
+                        JOptionPane.showMessageDialog(Application.getUi(),"Nutzer*in erfolgreich gelöscht," +
+                                        "\ndu wirst nun abgemeldet.", "Löschen erfolgreich",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        Session.logoff();
+                    } catch (SQLException throwables) {
+                        JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Löschen des bzw." +
+                                " der Nutzer*in", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                     }
+                } catch (ObjectNotFoundException playerNotFoundException) {
+                    JOptionPane.showMessageDialog(Application.getUi(), "Zu löschende*r Nutzer*in konnte " +
+                            "nicht gefunden werden.", "Löschen fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -121,12 +113,7 @@ public class UserManagementUI {
 
     private static JButton getLogoffButton(){
         JButton logoff = new JButton("Abmelden");
-        logoff.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Session.logoff();
-            }
-        });
+        logoff.addActionListener(e -> Session.logoff());
         return logoff;
     }
 }

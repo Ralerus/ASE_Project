@@ -1,8 +1,6 @@
 package layer.presentation;
 
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 import application.Application;
 import layer.data.*;
 
-public class Registration {
+public abstract class Registration {
 	private static JDialog registerDialog;
 
     public static void drawUI(boolean addToGame){
@@ -27,43 +25,40 @@ public class Registration {
         JPasswordField password = new JPasswordField();
         registerPanel.add(password);
         JButton registerButton = new JButton("Registrieren");
-        registerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String usernameValue = username.getText();
-                String fullnameValue = fullname.getText();
-                char[] passwordValue = password.getPassword();
-                if(!usernameValue.isEmpty() && !fullnameValue.isEmpty() && (passwordValue.length!=0)){
-                    if(passwordValue.length>5){
-                        try {
-                            String passwordHash = Security.getSecureHash(new String(password.getPassword()));
-                            Player p = new Player(username.getText(), fullname.getText(), true);
-                            PlayerRepository.createPlayer(p,passwordHash);
-                            registerDialog.setVisible(false);
-                            registerDialog.dispose();
-                            JOptionPane.showMessageDialog(registerDialog, "Spieler*in "+username.getText()+" erfolgreich registriert.\n",
-                                    "Spieler*in registriert", JOptionPane.INFORMATION_MESSAGE);
+        registerButton.addActionListener(e -> {
+            String usernameValue = username.getText();
+            String fullnameValue = fullname.getText();
+            char[] passwordValue = password.getPassword();
+            if(!usernameValue.isEmpty() && !fullnameValue.isEmpty() && (passwordValue.length!=0)){
+                if(passwordValue.length>5){
+                    try {
+                        String passwordHash = Security.getSecureHash(new String(password.getPassword()));
+                        Player p = new Player(username.getText(), fullname.getText(), true);
+                        PlayerRepository.createPlayer(p,passwordHash);
+                        registerDialog.setVisible(false);
+                        registerDialog.dispose();
+                        JOptionPane.showMessageDialog(registerDialog, "Spieler*in "+username.getText()+" erfolgreich registriert.\n",
+                                "Spieler*in registriert", JOptionPane.INFORMATION_MESSAGE);
 
-                            if(addToGame){
-                                GameUI.addToGame(p);
-                                StatsUI.refreshGameStats();
-                            }
-                        }catch(ObjectAlreadyExistsException ex1) {
-                            JOptionPane.showMessageDialog(registerDialog, ex1.getMessage(), "Fehler",
-                                    JOptionPane.ERROR_MESSAGE);
-                        }catch (Exception ex2) {
-                            ex2.printStackTrace();
-                            JOptionPane.showMessageDialog(registerDialog, "Fehler beim Anlegen des bzw. der Spieler*in",
-                                    "Fehler", JOptionPane.ERROR_MESSAGE);
+                        if(addToGame){
+                            GameUI.addToGame(p);
+                            StatsUI.refreshGameStats();
                         }
-                    }else{
-                        JOptionPane.showMessageDialog(registerDialog, "Das Password muss mindestens 6 Zeichen" +
-                                " aufweisen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    }catch(ObjectAlreadyExistsException ex1) {
+                        JOptionPane.showMessageDialog(registerDialog, ex1.getMessage(), "Fehler",
+                                JOptionPane.ERROR_MESSAGE);
+                    }catch (Exception ex2) {
+                        ex2.printStackTrace();
+                        JOptionPane.showMessageDialog(registerDialog, "Fehler beim Anlegen des bzw. der Spieler*in",
+                                "Fehler", JOptionPane.ERROR_MESSAGE);
                     }
                 }else{
-                    JOptionPane.showMessageDialog(registerDialog, "Bitte fülle alle Felder aus!", "Fehler",
-                            JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(registerDialog, "Das Password muss mindestens 6 Zeichen" +
+                            " aufweisen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
+            }else{
+                JOptionPane.showMessageDialog(registerDialog, "Bitte fülle alle Felder aus!", "Fehler",
+                        JOptionPane.ERROR_MESSAGE);
             }
         });
         registerPanel.add(registerButton);

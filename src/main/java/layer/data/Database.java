@@ -101,7 +101,7 @@ public abstract class Database {
             System.out.println("Initial texts set");
         } catch (SQLException throwables) {
             System.err.println("Fehler beim Anlegen der initialen Texte: "+throwables.getMessage());
-        } catch (ObjectAlreadyExistsException e) {
+        } catch (ObjectAlreadyExistsException ignored) {
 
         }
 

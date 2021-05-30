@@ -18,7 +18,7 @@ class StatsFormattingTest {
 
     @Test
     void checkSpeedRounding() {
-        assertTrue(result.getSpeed()==4.87);
+        assertEquals(result.getSpeed(), 4.87);
     }
     @Test
     void checkDateFormatting() {

@@ -1,7 +1,6 @@
 package layer.presentation;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +13,8 @@ import layer.domain.Session;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-public class GameUI{
+public abstract class GameUI{
 	private static List<Player> players;
 	private static Game lastGame;
 	private static JPanel playersList;
@@ -34,28 +31,25 @@ public class GameUI{
 		competitionPanel.add(setUpAddUserPanel(), BorderLayout.EAST);
 
 		JButton startButton = new JButton("Start");
-		startButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(!players.isEmpty()){
-					Rules rules = new Rules(difficulty,minLength,maxLength);
-					Game game;
-					try {
-						game = new Game(players,rules,true);
-						lastGame = game;
-						game.start();
-						players.add(Session.getLoggedInPlayer());
-						refreshPlayersList();
-					} catch (ObjectNotFoundException ex) {
-						JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler",
-								JOptionPane.ERROR_MESSAGE);
-					}
-				}else{
-					JOptionPane.showMessageDialog(Application.getUi(), "Bitte füge zuerst Spieler hinzu," +
-							" bevor du ein Spiel startest!", "Keine Spieler", JOptionPane.ERROR_MESSAGE);
+		startButton.addActionListener(e -> {
+			if(!players.isEmpty()){
+				Rules rules = new Rules(difficulty,minLength,maxLength);
+				Game game;
+				try {
+					game = new Game(players,rules,true);
+					lastGame = game;
+					game.start();
+					players.add(Session.getLoggedInPlayer());
+					refreshPlayersList();
+				} catch (ObjectNotFoundException ex) {
+					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler",
+							JOptionPane.ERROR_MESSAGE);
 				}
-
+			}else{
+				JOptionPane.showMessageDialog(Application.getUi(), "Bitte füge zuerst Spieler hinzu," +
+						" bevor du ein Spiel startest!", "Keine Spieler", JOptionPane.ERROR_MESSAGE);
 			}
+
 		});
 		competitionPanel.add(startButton, BorderLayout.SOUTH);
 		competitionPanel.setBorder(new EmptyBorder(5,5,2,5));
@@ -69,21 +63,18 @@ public class GameUI{
 		trainingPanel.add(setUpConfigurationPanel(), BorderLayout.WEST);
 
 		JButton startButton = new JButton("Start");
-		startButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Rules rules = new Rules(difficulty,minLength,maxLength);
-				List<Player> singleplayer = new ArrayList<>();
-				singleplayer.add(Session.getLoggedInPlayer());
-				Game game;
-				try {
-					game = new Game(singleplayer,rules,false);
-					lastGame = game;
-					game.start();
-				} catch (ObjectNotFoundException ex) {
-					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler",
-							JOptionPane.ERROR_MESSAGE);
-				}
+		startButton.addActionListener(e -> {
+			Rules rules = new Rules(difficulty,minLength,maxLength);
+			List<Player> singleplayer = new ArrayList<>();
+			singleplayer.add(Session.getLoggedInPlayer());
+			Game game;
+			try {
+				game = new Game(singleplayer,rules,false);
+				lastGame = game;
+				game.start();
+			} catch (ObjectNotFoundException ex) {
+				JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Fehler",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		trainingPanel.add(startButton, BorderLayout.SOUTH);
@@ -114,12 +105,9 @@ public class GameUI{
 		resultsPanelWithButton.add(resultsPanel);
 
 		JButton playAgain = new JButton("Nochmal");
-		playAgain.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				jDialog.dispose();
-				lastGame.playAgain();
-			}
+		playAgain.addActionListener(e -> {
+			jDialog.dispose();
+			lastGame.playAgain();
 		});
 		resultsPanelWithButton.add(playAgain);
 		resultsPanelWithButton.setBorder(new EmptyBorder(5,5,2,5));
@@ -155,16 +143,13 @@ public class GameUI{
 		difficultyRadiosPanel.add(radioMedium);
 		difficultyRadiosPanel.add(radioHard);
 
-		ActionListener selectedRadio = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(difficultyRadios.getSelection().equals(radioEasy.getModel())){
-					difficulty = Difficulty.Easy;
-				}else if(difficultyRadios.getSelection().equals(radioMedium.getModel())){
-					difficulty = Difficulty.Medium;
-				}else if(difficultyRadios.getSelection().equals(radioHard.getModel())) {
-					difficulty = Difficulty.Hard;
-				}
+		ActionListener selectedRadio = e -> {
+			if(difficultyRadios.getSelection().equals(radioEasy.getModel())){
+				difficulty = Difficulty.Easy;
+			}else if(difficultyRadios.getSelection().equals(radioMedium.getModel())){
+				difficulty = Difficulty.Medium;
+			}else if(difficultyRadios.getSelection().equals(radioHard.getModel())) {
+				difficulty = Difficulty.Hard;
 			}
 		};
 		difficulty = Difficulty.Easy;
@@ -181,12 +166,7 @@ public class GameUI{
 		textLengthSliderMax.setPaintTicks(true);
 		textLengthSliderMax.setPaintLabels(true);
 		configurationOptions.add(textLengthSliderMax);
-		textLengthSliderMax.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				maxLength = textLengthSliderMax.getValue();
-			}
-		});
+		textLengthSliderMax.addChangeListener(e -> maxLength = textLengthSliderMax.getValue());
 		maxLength = textLengthSliderMax.getValue();
 		configurationOptions.add(new JLabel("Textlänge minimal:"));
 		JSlider textLengthSliderMin = new JSlider(JSlider.HORIZONTAL, 0, 500, 0);
@@ -195,12 +175,7 @@ public class GameUI{
 		textLengthSliderMin.setPaintTicks(true);
 		textLengthSliderMin.setPaintLabels(true);
 		configurationOptions.add(textLengthSliderMin);
-		textLengthSliderMin.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				minLength = textLengthSliderMin.getValue();
-			}
-		});
+		textLengthSliderMin.addChangeListener(e -> minLength = textLengthSliderMin.getValue());
 		minLength = textLengthSliderMin.getValue();
 		configurationPanel.add(configurationOptions, BorderLayout.CENTER);
 
@@ -222,34 +197,26 @@ public class GameUI{
 		JButton addUser = new JButton("+");
 		playersList = new JPanel();
 		playersList.setLayout(new GridLayout(12,1));
-		addUser.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					Player p = PlayerRepository.getPlayerRepository(username.getText()).getPlayer();
-					if(!players.contains(p)) {
-						players.add(p);
-						refreshPlayersList();
-					}else{
-						JOptionPane.showMessageDialog(Application.getUi(), "Du hast diese*n Spieler*in bereits" +
-								" hinzugefügt.", "Fehler", JOptionPane.ERROR_MESSAGE);
-					}
-					username.setText("");
-				}catch (ObjectNotFoundException ex){
-					JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Spieler*in nicht gefunden"
-							, JOptionPane.ERROR_MESSAGE);
-					username.setText("");
+		addUser.addActionListener(e -> {
+			try {
+				Player p = PlayerRepository.getPlayerRepository(username.getText()).getPlayer();
+				if(!players.contains(p)) {
+					players.add(p);
+					refreshPlayersList();
+				}else{
+					JOptionPane.showMessageDialog(Application.getUi(), "Du hast diese*n Spieler*in bereits" +
+							" hinzugefügt.", "Fehler", JOptionPane.ERROR_MESSAGE);
 				}
+				username.setText("");
+			}catch (ObjectNotFoundException ex){
+				JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(), "Spieler*in nicht gefunden"
+						, JOptionPane.ERROR_MESSAGE);
+				username.setText("");
 			}
 		});
 		addUserInputField.add(addUser);
 		JButton newUser = new JButton("Neue*n Spieler*in anlegen");
-		newUser.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Registration.drawUI(true);
-			}
-		});
+		newUser.addActionListener(e -> Registration.drawUI(true));
 		addUserPanel.add(addUserInputField);
 		addUserPanel.add(newUser);
 		players.add(Session.getLoggedInPlayer());
@@ -268,15 +235,12 @@ public class GameUI{
 			user.add(new JLabel(p.getUsername()));
 			JButton removePlayer = new JButton("Entfernen");
 			removePlayer.setActionCommand(p.getUsername());
-			removePlayer.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					try {
-						players.remove(PlayerRepository.getPlayerRepository(removePlayer.getActionCommand()).getPlayer());
-						refreshPlayersList();
-					} catch (ObjectNotFoundException playerNotFoundException) {
-						playerNotFoundException.printStackTrace();
-					}
+			removePlayer.addActionListener(e -> {
+				try {
+					players.remove(PlayerRepository.getPlayerRepository(removePlayer.getActionCommand()).getPlayer());
+					refreshPlayersList();
+				} catch (ObjectNotFoundException playerNotFoundException) {
+					playerNotFoundException.printStackTrace();
 				}
 			});
 			user.add(removePlayer);

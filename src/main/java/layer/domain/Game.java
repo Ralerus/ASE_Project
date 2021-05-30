@@ -10,13 +10,13 @@ import java.time.Instant;
 import java.util.*;
 
 public class Game implements GameListener {
-    private Text text;
-    private Map<Player, Double> results;
-    private List<Player> playersLeft;
-    private List<Player> allPlayers;
-    private Player originallyLoggedInPlayer;
+    private final Text text;
+    private final Map<Player, Double> results;
+    private final List<Player> playersLeft;
+    private final List<Player> allPlayers;
+    private final Player originallyLoggedInPlayer;
     private Round currentRound;
-    private boolean isCompetition;
+    private final boolean isCompetition;
 
     public Game(List<Player> playersLeft, Rules rules, boolean isCompetition) throws ObjectNotFoundException {
         this.text = TextRepository.getRandomTextBasedOn(rules);

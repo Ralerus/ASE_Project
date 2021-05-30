@@ -14,7 +14,7 @@ public abstract class TextRepository {
     public static void createText(String title, String text, Difficulty difficulty) throws SQLException, ObjectAlreadyExistsException {
         String sql = "INSERT INTO text(title, text, difficulty, length) VALUES (?,?,?,?)";
         try(Connection conn = Database.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql);){
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,title);
             pstmt.setString(2,text);
             pstmt.setInt(3,difficulty.ordinal());
@@ -33,7 +33,7 @@ public abstract class TextRepository {
     public static Text getRandomTextBasedOn(Rules rules) throws ObjectNotFoundException{
         String sql = "SELECT title, text, difficulty FROM text WHERE difficulty = ? AND length >= ? AND length <= ?";
         String text = null;
-        String title = null;
+        String title;
         Difficulty difficulty = null;
         List<Text> matchingTexts = new LinkedList<>();
         try(Connection conn = Database.connect();
@@ -70,7 +70,6 @@ public abstract class TextRepository {
 
         Random r = new Random();
         int indexOfRandomText = r.nextInt(matchingTexts.size());
-        System.out.println(indexOfRandomText);
         return matchingTexts.get(indexOfRandomText);
     }
 

@@ -5,11 +5,9 @@ import layer.data.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class TextManagementUI {
+public abstract class TextManagementUI {
     private static final JTextField title = new JTextField();
     private static final JTextArea text = new JTextArea();
     private static final JRadioButton radioEasy = new JRadioButton("Einfach");
@@ -61,29 +59,26 @@ public class TextManagementUI {
 
     private static JButton getSearchButton(){
         JButton searchButton = new JButton("Suchen");
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String searchValue = searchField.getText();
-                if(!searchValue.isEmpty()){
-                    try {
-                        Text text = TextRepository.getTextByTitle(searchValue);
-                        searchResults.removeAll();
-                        searchResults.add(new JLabel(searchValue));
-                        searchResults.add(TextManagementUI.getSearchButton(text));
-                        searchResults.add(TextManagementUI.getDeleteButton(text));
-                        searchResults.revalidate();
-                        searchResults.repaint();
-                        searchField.setText("");
-                    } catch (ObjectNotFoundException textNotFoundException) {
-                        JOptionPane.showMessageDialog(Application.getUi(), textNotFoundException.getMessage(),
-                                "Fehler", JOptionPane.ERROR_MESSAGE);
-                        searchField.setText("");
-                    }
-                }else{
-                    JOptionPane.showMessageDialog(Application.getUi(), "Bitte gebe einen Titel zur Suche ein!",
+        searchButton.addActionListener(e -> {
+            String searchValue = searchField.getText();
+            if(!searchValue.isEmpty()){
+                try {
+                    Text text = TextRepository.getTextByTitle(searchValue);
+                    searchResults.removeAll();
+                    searchResults.add(new JLabel(searchValue));
+                    searchResults.add(TextManagementUI.getSearchButton(text));
+                    searchResults.add(TextManagementUI.getDeleteButton(text));
+                    searchResults.revalidate();
+                    searchResults.repaint();
+                    searchField.setText("");
+                } catch (ObjectNotFoundException textNotFoundException) {
+                    JOptionPane.showMessageDialog(Application.getUi(), textNotFoundException.getMessage(),
                             "Fehler", JOptionPane.ERROR_MESSAGE);
+                    searchField.setText("");
                 }
+            }else{
+                JOptionPane.showMessageDialog(Application.getUi(), "Bitte gebe einen Titel zur Suche ein!",
+                        "Fehler", JOptionPane.ERROR_MESSAGE);
             }
         });
         return searchButton;
@@ -91,37 +86,29 @@ public class TextManagementUI {
 
     private static JButton getSearchButton(Text text){
         JButton showButton = new JButton("Anzeigen");
-        showButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(Application.getUi(),text.getText(),text.getTitle(),
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        showButton.addActionListener(e -> JOptionPane.showMessageDialog(Application.getUi(),text.getText(),text.getTitle(),
+                JOptionPane.INFORMATION_MESSAGE));
         return showButton;
     }
 
     private static JButton getDeleteButton(Text text){
         JButton deleteButton = new JButton("Löschen");
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int response = JOptionPane.showConfirmDialog(Application.getUi(),  "Text "+
-                                text.getTitle()+" wirklich löschen?", "Löschbestätigung",
-                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if(response==0){
-                    try {
-                        TextRepository.deleteText(text);
-                        JOptionPane.showMessageDialog(Application.getUi(),"Text "+
-                                text.getTitle()+" erfolgreich gelöscht!","Löschen" +
-                                " erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-                        searchResults.removeAll();
-                        searchResults.revalidate();
-                        searchResults.repaint();
-                    } catch (SQLException throwables) {
-                        JOptionPane.showMessageDialog(Application.getUi(),"Fehler beim Löschen" +
-                                " des Textes","Fehler",JOptionPane.ERROR_MESSAGE);
-                    }
+        deleteButton.addActionListener(e -> {
+            int response = JOptionPane.showConfirmDialog(Application.getUi(),  "Text "+
+                            text.getTitle()+" wirklich löschen?", "Löschbestätigung",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if(response==0){
+                try {
+                    TextRepository.deleteText(text);
+                    JOptionPane.showMessageDialog(Application.getUi(),"Text "+
+                            text.getTitle()+" erfolgreich gelöscht!","Löschen" +
+                            " erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                    searchResults.removeAll();
+                    searchResults.revalidate();
+                    searchResults.repaint();
+                } catch (SQLException throwables) {
+                    JOptionPane.showMessageDialog(Application.getUi(),"Fehler beim Löschen" +
+                            " des Textes","Fehler",JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -169,43 +156,41 @@ public class TextManagementUI {
         return difficultyInput;
     }
 
+    @SuppressWarnings("ConstantConditions")
     private static JButton getAddButton(){
         JButton addButton = new JButton("Hinzufügen");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String titleValue = title.getText();
-                String textValue = text.getText();
+        addButton.addActionListener(e -> {
+            String titleValue = title.getText();
+            String textValue = text.getText();
 
-                if(!titleValue.isEmpty() && !textValue.isEmpty()){
-                    Difficulty difficulty = Difficulty.Easy;
-                    if(radioEasy.isSelected()){
-                        difficulty = Difficulty.Easy;
-                    }else if(radioMedium.isSelected()){
-                        difficulty = Difficulty.Medium;
-                    }else if(radioHard.isSelected()){
-                        difficulty = Difficulty.Hard;
-                    }
-                    try {
-                        TextRepository.createText(titleValue, textValue, difficulty);
-                        JOptionPane.showMessageDialog(Application.getUi(),title.getText()+" erfolgreich " +
-                                "hinzugefügt.", "Text erfolgreich hinzugefügt", JOptionPane.INFORMATION_MESSAGE);
-                        title.setText("");
-                        text.setText("");
-                        radioEasy.setSelected(false);
-                        radioMedium.setSelected(false);
-                        radioHard.setSelected(false);
-                    }catch(ObjectAlreadyExistsException ex){
-                        JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(),
-                                "Fehler", JOptionPane.ERROR_MESSAGE);
-                    }catch (SQLException throwables) {
-                        JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Hinzufügen des Textes",
-                                "Fehler", JOptionPane.ERROR_MESSAGE);
-                    }
-                }else{
-                    JOptionPane.showMessageDialog(Application.getUi(), "Bitte fülle alle Felder aus!",
+            if(!titleValue.isEmpty() && !textValue.isEmpty()){
+                Difficulty difficulty = Difficulty.Easy;
+                if(radioEasy.isSelected()){
+                    difficulty = Difficulty.Easy;
+                }else if(radioMedium.isSelected()){
+                    difficulty = Difficulty.Medium;
+                }else if(radioHard.isSelected()){
+                    difficulty = Difficulty.Hard;
+                }
+                try {
+                    TextRepository.createText(titleValue, textValue, difficulty);
+                    JOptionPane.showMessageDialog(Application.getUi(),title.getText()+" erfolgreich " +
+                            "hinzugefügt.", "Text erfolgreich hinzugefügt", JOptionPane.INFORMATION_MESSAGE);
+                    title.setText("");
+                    text.setText("");
+                    radioEasy.setSelected(false);
+                    radioMedium.setSelected(false);
+                    radioHard.setSelected(false);
+                }catch(ObjectAlreadyExistsException ex){
+                    JOptionPane.showMessageDialog(Application.getUi(), ex.getMessage(),
+                            "Fehler", JOptionPane.ERROR_MESSAGE);
+                }catch (SQLException throwables) {
+                    JOptionPane.showMessageDialog(Application.getUi(), "Fehler beim Hinzufügen des Textes",
                             "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
+            }else{
+                JOptionPane.showMessageDialog(Application.getUi(), "Bitte fülle alle Felder aus!",
+                        "Fehler", JOptionPane.ERROR_MESSAGE);
             }
         });
         return addButton;

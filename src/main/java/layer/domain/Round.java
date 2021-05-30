@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Round implements RoundListener{
-    private List<Character> textLeft;
+    private final List<Character> textLeft;
     private Instant startTime;
     private GameListener listener;
 

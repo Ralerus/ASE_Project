@@ -49,10 +49,8 @@ public class ApplicationUI extends JFrame implements UIListener {
             if(result==1){
                 try {
                     PlayerRepository.getPlayerRepository(Session.getLoggedInPlayer().getUsername()).setFirstLogin(false);
-                } catch (SQLException throwables) {
+                } catch (SQLException | ObjectNotFoundException throwables) {
                     throwables.printStackTrace();
-                } catch (ObjectNotFoundException e) {
-                    e.printStackTrace();
                 }
             }
         }

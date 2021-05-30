@@ -1,6 +1,5 @@
 package layer.presentation;
 
-import application.Application;
 import layer.data.*;
 import layer.domain.Session;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class StatsUI {
+public abstract class StatsUI {
     private final static JPanel userStatsPanel = new JPanel();
     private final static JPanel userHistoryPanel = new JPanel();
     private final static JPanel userHighscorePanel = new JPanel();
