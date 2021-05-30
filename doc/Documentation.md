@@ -238,6 +238,7 @@ Folgende Probleme konnten dabei behoben werden:
 - Entfernung von Logik-Inversionen, aus `!(a==b)` wird `(a!=b)`
 - Reduzierung der Anzahl globaler Variablen, Umwandlung zu lokalen Variablen, wenn sinnvoller (z.B. `rule` in [`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) oder `endTime` in [`Round`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Round.java))
 - Objektvergleiche mit != wurden durch equals ersetzt
+- Anteil der Final-Attribute konnte erhöht werden  
 - Kombination von unnötig verschachtelten If-Statements wie in [`UserManagement`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/UserManagement.java)
 
 Siehe zu den Ergebnissen des Refactorings [diesen Commit](https://github.com/Ralerus/ASE_Project/commit/5f8d4a7b00027583498ee65b54b59de8ff0e9b1b).
