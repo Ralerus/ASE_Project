@@ -22,43 +22,46 @@ Als Build-Management-Tool wird Maven verwendet, als Datenbank eine SQLite-Datenb
 ### SOLID
 #### Single Responsibility Principle
 Dieses Programmierprinzip sagt aus, dass jede Klasse nur eine Zuständigkeit, eine klar definierte Aufgabe besitzen soll.
-Das ermöglicht niedrige Komplexität und Kopplung. So besitzt die Klasse `Session` lediglich die Zuständigkeit der Anmeldelogik, die durch die beiden Methoden
-`login()` und `logoff` sowie das Attribut `loggedInPlayer` ausgedrückt wird. Ein weiteres Beispiel für die Einhaltung des Prinzips findet sich in den `Repository`-Klassen, von Game, Player, Stats oder Text. Diese haben jeweils nur die Aufgabe
+Das ermöglicht niedrige Komplexität und Kopplung. So besitzt die Klasse [`Session`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Session.java) lediglich die Zuständigkeit der Anmeldelogik, die durch die beiden Methoden
+`login()` und `logoff` sowie das Attribut `loggedInPlayer` ausgedrückt wird. Ein weiteres Beispiel für die Einhaltung des Prinzips findet sich in den [`Repository`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/PlayerRepository.java) -Klassen, von Game, Player, Stats oder Text. Diese haben jeweils nur die Aufgabe
 die Datenbankzugriffe für ein konkretes Repository-Objekt abzubilden.
 #### Open Closed Principle
 Das Open Closed Prinzip beschreibt, dass Klassen generell offen für Erweiterungen und geschlossen für Änderungen sein sollten.
 Durch Abstraktionen kann die Erweiterbarkeit gefördert werden, sodass bei Erweiterungen der bestehende Code nicht geändert werden muss.
+---
+---
 #### Liskov Substitution Principle
 Das Liskov Substitution Principle besagt, dass Objekte eines abgeleiteten Typs als Ersatz für Instanzen ihres Basistyps funktionieren müssen ohne die Korrektheit des Programms zu ändern.
 Durch Einsatz des Prinzips können Invarianzen eingehalten werden.
-In Tippduell erben die Klassen `GameStats` und `PlayerStats` von der Klasse `Stats`. Zur Einhaltung des Liskov Substitution Principles müssen `Stats`-Objekte ohne Probleme durch Objekte der abgeleiteten Klassen ersetzt werden können.
-Dies ist möglich, da die Klasse `Stats` zu keinem Zeitpunkt instanziiert wird, sie ist abstrakt. Eine weitere Vererbung findet in der Anwendung keine Anwendung, daher kann dieses Prinzip nicht aufgezeigt werden.
+In Tippduell erben die Klassen [`GameStats`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/GameStats.java) und [`PlayerStats`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/PlayerStats.java) von der Klasse [`Stats`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Stats.java). Zur Einhaltung des Liskov Substitution Principles müssen [`Stats`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Stats.java) -Objekte ohne Probleme durch Objekte der abgeleiteten Klassen ersetzt werden können.
+Dies ist möglich, da die Klasse [`Stats`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Stats.java) zu keinem Zeitpunkt instanziiert wird, sie ist abstrakt. Eine weitere Vererbung findet in der Anwendung keine Anwendung, daher kann dieses Prinzip nicht aufgezeigt werden.
 #### Interface Segregation Principle
 Dieses Programmierprinzip sagt aus, dass Anwender nicht von den Funktionen abhängig sein sollten, die sie nicht nutzen, und lässt sich durch passgenaue Interfaces realisieren.
 In der vorliegenden Anwendung werden ausschließlich passgenaue Interfaces verwendet, da diese jeweils nur von einer Klasse implementiert werden und lediglich im Rahmen des *Listener-Patterns* zum Einsatz kommen.
-Als Beispiel hiefür kann das `GameListener`-Interface angeführt werden, es wird nur von der Klasse `Game` implementiert und ist daher passgenau auf die benötigten Funktionen zugeschnitten.
+Als Beispiel hiefür kann das [`GameListener`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/GameListener.java) -Interface angeführt werden, es wird nur von der Klasse [`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) implementiert und ist daher passgenau auf die benötigten Funktionen zugeschnitten.
 Somit ist dieses Prinzip erfüllt.
 #### Dependency Inversion Principle
-Das Dependency Inversion Principle verlangt, dass High-Level-Module nicht von Low-Level-Modulen, sondern beide von Abstraktionen abhängig sein sollten. 
+Das Dependency Inversion Principle verlangt, dass High-Level-Module nicht von Low-Level-Modulen, sondern beide von Abstraktionen abhängig sein sollten. Dies wird im Tippduell erreicht, da beispielsweise die Klassen PlayerStats und GameStats von der abstrakten Klasse Stats abhängen.
 
+---
 ### GRASP
 GRASP steht für General Responsibilty Assignment Software Patterns und bezeichnet eine Sammlung an Basisprinzipien. Von diesen soll zwei im Folgenden behandelt werden.
 #### Low Coupling
 Low Coupling verlangt eine geringe bzw. lose Kopplung zwischen Objekten, d.h. diese weisen nur geringe Beziehungen auf. Dadurch liegen nur geringere Abhängigkeiten vor, der Code wird verständlicher und einfach wiederverwendbar.
-Ein Beispiel für `Low Coupling` ist die Klasse `Round`, die lediglich eine Beziehung zu einem `GameListener` aufweist, um diesen über das Ende der Runde zu benachrichtigen, sowie eine Beziehung zu ihrer Benutzeroberfläche 
-durch den Aufruf der statischen Methoden von `RoundUI` aufweist und zu `Text`. Diese Beziehung ist notwendig, um die Runde mit einem Text darzustellen.
+Ein Beispiel für `Low Coupling` ist die Klasse [`Round`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Round.java), die lediglich eine Beziehung zu einem `GameListener` aufweist, um diesen über das Ende der Runde zu benachrichtigen, sowie eine Beziehung zu ihrer Benutzeroberfläche 
+durch den Aufruf der statischen Methoden von [`RoundUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/RoundUI.java) aufweist und zu `Text`. Diese Beziehung ist notwendig, um die Runde mit einem Text darzustellen.
 #### High Cohesion
 Kohäsion ist allgemein ein Maß für den Zusammenhalt einer Klasse und beschreibt die semantische Nähe der Elemente einer Klasse. High Cohesion erfordert somit, eine hohe semantische Nähe aller Klassenelemente.
-Eine hohe Kohäsion lässt sich vor allem in den UI-Klassen wiederfinden, da grundsätzlich für jeden Bestandteil der Benutzeroberfläche eine eigene Klasse existiert. So ist beispielsweise die Klasse `RoundUI` nur für die Darstellung der Benutzeroberfläche einer Runde zuständig und besitzt dafür die beiden 
+Eine hohe Kohäsion lässt sich vor allem in den UI-Klassen wiederfinden, da grundsätzlich für jeden Bestandteil der Benutzeroberfläche eine eigene Klasse existiert. So ist beispielsweise die Klasse [`RoundUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/RoundUI.java) nur für die Darstellung der Benutzeroberfläche einer Runde zuständig und besitzt dafür die beiden 
 Methoden `displayRoundFor` und `closeRound`. Ein anderes Beispiel stellt die Klasse `Registration` dar, die nur eine Methode `drawUI` aufweist, die die Benutzeroberfläche zu Registrierung zeichnet.
-Aber auch in Klassen wie `Rules` oder `Player` zeigt sich eine hohe Kohäsion. 
+Aber auch in Klassen wie [`Rules`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Rules.java) oder [`Player`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java) zeigt sich eine hohe Kohäsion. 
 
 ### DRY
 DRY ist eine Abkürzung für *Don't Repeat Yourself!* und versucht jegliche unnötige Duplikation zu vermeiden.  
-Eine Anwendung des Prinzips ist in der Darstellung der Anmeldebenutzeroberfläche in der Klasse `Login` zu finden. Diese muss an drei verschiedenen Stellen im Programm leicht verändert dargestellt werden (Programmstart, Rundenstart je Spieler, Spielende).
+Eine Anwendung des Prinzips ist in der Darstellung der Anmeldebenutzeroberfläche in der Klasse [`Login`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/Login.java) zu finden. Diese muss an drei verschiedenen Stellen im Programm leicht verändert dargestellt werden (Programmstart, Rundenstart je Spieler, Spielende).
 Statt den Code dreimal zu wiederholen, wurde auf das Builder-Pattern gesetzt. D.h. es werden zunächst die Parameter der benötigten Darstellung gesammelt und es wird dann einmal in der `build`-Methode die Oberfläche erzeugt.  
 
-Ein weiteres Beispiel ist die Klasse `Game` bzw. auch das `GameUI`. Ein spiegelt grundsätzlich sowohl einen Wettkampf als auch ein Trainingsspiel wider und wird hierfür ebenfalls sinnvoll wiederverwendet.
+Ein weiteres Beispiel ist die Klasse [`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) bzw. auch das [`GameUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/GameUI.java). Ein spiegelt grundsätzlich sowohl einen Wettkampf als auch ein Trainingsspiel wider und wird hierfür ebenfalls sinnvoll wiederverwendet.
 Durch das Attribut `isCompetition` kann eine Unterscheidung vorgenommen werden, es muss kein Code dupliziert werden.
 
 ## 4. Entwurfsmuster
@@ -77,7 +80,7 @@ von `Login`-Objekten bzw. Login-UIs eingesetzt. Diese werden in drei verschieden
 - Anmeldung in `Game` für nächsten Spieler: `Login.create().withTitle("Anmeldung des nächsten Spielers").forPlayer(nextPlayer).duringGame(this).build();`
 - Anmeldung in `Game` für Spielleiter: `Login.create().withTitle("Anmeldung des Spielleiters für Ergebnisse").forPlayer(originallyLoggedInPlayer).build();`
 
-Durch das Builder-Pattern besteht nun auch die Möglichkeit einfach den Titel des Login-Dialogs anzupassen, so wird für den/die Nutzer*in klarer, wofür der aktuelle Dialog dient.
+Durch das Builder-Pattern besteht nun auch die Möglichkeit einfach den Titel des Login-Dialogs anzupassen, so wird für den\*die Spieler*in klarer, wofür der aktuelle Dialog dient.
 Durch das eingesetzte Builder-Pattern ist nun auch gewährleistet, dass immer ein Listener gesetzt wird, sofern dieser benötigt wird. Dies geschieht in einem Methodenaufruf (z.B. `duringGame(this)`) und nicht mehr in zwei, wie zuvor.
 Da in diesem Beispiel lediglich einen konkreten Erbauer gibt, kann auf weitere Interfaces verzichtet werden. Zudem gibt die `build`-Methode kein Objekt zurück, sondern zeichnet das entsprechende UI. Deshalb wird auch für das letztendliche Produkt
 kein Interface benötigt.
@@ -96,12 +99,12 @@ Einsatz des Builder-Patterns nicht, da diese lediglich zwei verschiedene Ausprä
 Es handelt sich hierbei um ein Verhaltensmuster, also einem Pattern zur Kommunikation zwischen Objekten und der Steuerung des Kontrollflusses einer Anwendung zur Laufzeit.
 Das Listener-Pattern ermöglicht eine automatische Reaktionen auf Zustandsänderungen und wird in der vorliegenden Anwendung für die Kommunikation zwischen Benutzeroberfläche und Applikationslogik eingesetzt.
 
-Ein Interface wie beispielsweise `GameListener` gibt verschiedene Methoden vor, wie beispielsweise `startRoundFor(Player p)`, die die `Game`-Klasse implementiert.
-Die Klasse `Login` bekommt über die `duringGame(GameListener g)`-Methode dann eine Game-Instanz als privaten Member gesetzt, über den das `Login` bei Bedarf die erwähnte Methode aufrufen kann.
-Die Klasse `Game` ist somit ein Observer, die Klasse `Login` ein Observable, das den Observer über die `startRoundFor(Player p)`-Methode benachrichtigen kann. 
+Ein Interface wie beispielsweise [`GameListener`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/GameListener.java) gibt verschiedene Methoden vor, wie beispielsweise `startRoundFor(Player p)`, die die [`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) -Klasse implementiert.
+Die Klasse [`Login`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/Login.java) bekommt über die `duringGame(GameListener g)`-Methode dann eine `Game`-Instanz als privaten Member gesetzt, über den das [`Login`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/Login.java) bei Bedarf die erwähnte Methode aufrufen kann.
+Die Klasse [`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) ist somit ein Observer, die Klasse `Login` ein Observable, das den Observer über die `startRoundFor(Player p)`-Methode benachrichtigen kann. 
 Hierfür muss sich eine Instanz der Game-Klasse auf dem `Login` während des Buildprozesses registrieren.
 Da das Login nach dem Builder-Pattern erzeugt wird, liegt keine klassische Implementierung des Listener-Patterns vor, so gibt es z.B. keine Methode `addListener`.
-Das kommt auch daher, da jedes Login nur maximal einen `Game`-Observer besitzen kann.
+Das kommt auch daher, da jedes Login nur maximal einen [`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) -Observer besitzen kann.
 
 ## 5. Domain Driven Design
 ### Analyse der Ubiquitous Language
@@ -126,13 +129,13 @@ Anwendung in Spielen besteht, wurde diese Bezeichnung statt der allgemeinen Beze
 #### Value Objects
 Value Objects sind einfache, unveränderliche Objekte ohne eigene Identität. Sie werden nur durch ihren Wert beschrieben und besitzen keinen Lebenszyklus.
 Im Folgenden sollen einige Value Objects der Anwendung vorgestellt werden:  
-- **Player**: Ein `Player` kapselt das Wertekonzept eines\*einer Spieler*in un weist die Eigenschaften `username` und `fullname` auf. Ein Player-Objekt besitzt in der Anwendung keine Identität, 
+- **Player**: Ein [`Player`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java) kapselt das Wertekonzept eines\*einer Spieler*in un weist die Eigenschaften `username` und `fullname` auf. Ein Player-Objekt besitzt in der Anwendung keine Identität, 
 zwei Player sind identisch, sofern deren Benutzernamen und vollständige Namen übereinstimmen. Ändert ein\*e Spieler\*in den eine Eigenschaft, wird in der Anwendung immer ein neues gültiges Player-Objekt erzeugt.
-  Somit hat ein `Player` auch keinen Lebenszyklus.
-- **Rules**: Ein `Rules` Value Object kapselt das Wertekonzept eines Regelwerkes mit Eigenschaften wie der Schwierigkeit, der minimalen und maximalen Textlänge. Auch ein `Rule`-Objekt besitzt keinen Lebenszyklus und
+  Somit hat ein [`Player`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java) auch keinen Lebenszyklus.
+- **Rules**: Ein [`Rules`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Rules.java) Value Object kapselt das Wertekonzept eines Regelwerkes mit Eigenschaften wie der Schwierigkeit, der minimalen und maximalen Textlänge. Auch ein `Rule`-Objekt besitzt keinen Lebenszyklus und
 wird für jedes Spiel neu anhand der vom\*von der Spieler*in festgelegten Parameter erzeugt.  
-- **Text**: Ein `Text` Value Object kapselt das Wertekonzept eines Textes mit Eigenschaften wie dem Texttitel, dem Textinhalt und der Textlänge. Ein `Text` wird in der Anwendung nicht verändert, sondern beim
-Auslesen aus der Datenbank jedes Mal neu erzeugt. Somit besitzt auch ein `Text` keinen Lebenszyklus und lässt sich als Value Object ausmachen.
+- **Text**: Ein [`Text`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java) Value Object kapselt das Wertekonzept eines Textes mit Eigenschaften wie dem Texttitel, dem Textinhalt und der Textlänge. Ein [`Text`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java) wird in der Anwendung nicht verändert, sondern beim
+Auslesen aus der Datenbank jedes Mal neu erzeugt. Somit besitzt auch ein [`Text`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java) keinen Lebenszyklus und lässt sich als Value Object ausmachen.
 - **StatsEntry**: Dieses Value Object kapselt die Werte eines Statistikeintrags eines Spiels. Auch dieses Value Object wird beim Auslesen aus der Datenbank jedes Mal neu erzeugt, nicht verändert und besitzt keinen Lebenszyklus.
 - **PlayerStats** und **GameStats**: Diese Value Objects kapseln jeweils die Werte der spieler*inbezogenen oder allgemeinen Statistik und besitzen keine Identität oder Lebenszeit.
   
@@ -145,15 +148,15 @@ Surrogatsschlüssel sein.
 Im Folgenden sollen einige Entitäten der Anwendung aufgeführt werden:
 - **Competition**: Eine `Competition` besitzt einen selbst generierten Surrogatsschlüssel als ID, nämlich ein inkrementeller Zähler `competitionId`.
 - **Training**: Ein `Training` besitzt ähnlich wie die `Competition` eine generierte selbst inkrementierende `trainingId` zur Identifikation.
-Beide werden in der Anwendung als `Game`-Objekt erzeugt, verändern ihre Eigenschaften (wie beispielsweise das Feld `playersLeft`) und weisen damit einen Lebenszyklus auf.
-Aus Datenbankperspektive betrachtet sind `Player` und `Text` auch Entities, da sich deren Persistierung durchaus ändern und auch identifiziert werden kann. Außerdem wird die Persistierung der beiden nicht jedes Mal neu erzeugt wird. Innerhalb der Anwendung sind diese beiden Objekte allerdings klar als
+Beide werden in der Anwendung als [`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) -Objekt erzeugt, verändern ihre Eigenschaften (wie beispielsweise das Feld `playersLeft`) und weisen damit einen Lebenszyklus auf.
+Aus Datenbankperspektive betrachtet sind [`Player`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java) und [`Text`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java) auch Entities, da sich deren Persistierung durchaus ändern und auch identifiziert werden kann. Außerdem wird die Persistierung der beiden nicht jedes Mal neu erzeugt wird. Innerhalb der Anwendung sind diese beiden Objekte allerdings klar als
   Value Objects zu erkennen.
 #### Aggregates
 Aggregate gruppieren Entities und Value Objects zu gemeinsam verwalteten Einheiten, jede Entität gehört dabei zu einem Aggregat. In jedem Aggregat übernimmt eine Entity die Rolle des Aggregat Roots, alle Zugriffe auf das Aggregat
 erfolgen über das Aggregat Root. Folgende Aggregate lassen sich in der Anwendung ausmachen:
-- **Player**: Dieses Aggregat beinhaltet lediglich das `Player` Value Object, Zugriffe auf das Aggregat erfolgen über den Benutzernamen der Datenbankentität des Players.
-- **Text**: Dieses Aggregat beinhaltet lediglich das `Text` Value Object, Zugriffe auf das Aggregat erfolgen über den Texttitel der Datenbankentität des Texts.
-- **Stats**: Dieses Aggregat beinhaltet die Entitäten *Competition* und *Training*, die beide als `Game` modelliert werden. Eine `Game` weist dabei einen bis mehrere *Player* sowie einen *Text* auf, der durch die *Rules* des `Game` charakterisiert wird.
+- **Player**: Dieses Aggregat beinhaltet lediglich das [`Player`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java) Value Object, Zugriffe auf das Aggregat erfolgen über den Benutzernamen der Datenbankentität des Players.
+- **Text**: Dieses Aggregat beinhaltet lediglich das [`Text`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java) Value Object, Zugriffe auf das Aggregat erfolgen über den Texttitel der Datenbankentität des Texts.
+- **Stats**: Dieses Aggregat beinhaltet die Entitäten *Competition* und *Training*, die beide als [[`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java)](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) modelliert werden. Ein [`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) weist dabei einen bis mehrere *Player* sowie einen *Text* auf, der durch die *Rules* des [`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) charakterisiert wird.
 
 #### Repositories
 Repositories kapseln allgemein betrachtet die Logik für die Persistierung und Erzeugung von Entities, Value Objects und Aggregates. Sie vermitteln somit zwischen Domäne und Datenmodell und stellen der Domäne Methoden für den
@@ -166,27 +169,27 @@ Folgende Repositories werden in der Anwendung verwendet, sie sind nach den zugeh
 ## Architektur
 Das vorliegende Programm wurde in einer Schichtenarchitektur mit den drei Schichten *Presentation*, *Domain* und *Data* entwickelt.
 Jede Schicht deckt dabei einen unterschiedlichen Aufgabenbereich ab:
-- **Presentation**: Klassen zur Darstellung der Benutzeroberfläche, z.B. `GameUI`, `SettingsUI` oder `RoundUI`.
-- **Domain**: Klassen für die eigentliche Spiellogik, steuern Spielfluss maßgeblich, z.B. `Game` oder `Round`.
-- **Data**: Klassen für grundlegende Objekte der Anwendung, z.B. `Player`, `Text` oder `Stats` mit den dazugehörigen Repositories. Die Repositories wie z.B. das `PlayerRepository` beinhalten
+- **Presentation**: Klassen zur Darstellung der Benutzeroberfläche, z.B. [`GameUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/GameUI.java), [`SettingsUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/SettingsUI.java) oder [`RoundUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/RoundUI.java).
+- **Domain**: Klassen für die eigentliche Spiellogik, steuern Spielfluss maßgeblich, z.B. [`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) oder [`Round`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Round.java).
+- **Data**: Klassen für grundlegende Objekte der Anwendung, z.B. [`Player`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java), [`Text`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java) oder [`Stats`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Stats.java) mit den dazugehörigen Repositories. Die Repositories wie z.B. das [`PlayerRepository`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/PlayerRepository.java) beinhalten
   Code zum Verwalten der dazugehörigen Datenbankobjekte. In dieser Schicht werden alle Datenbankzugriffe realisiert, diese können dadurch für die obigen Schichten durch Methodenaufrufe auf den Repositories abstrahiert werden.
 Dabei gilt allgemein, dass jede Schicht nur von den unterliegenden Schichten abhängt und somit unabhängig von den überliegenden Schichten ist. Konkret bedeutet das, dass 
   beispielsweise die *Data*-Schicht unabhängig von den anderen beiden Schichten ist, die oberen beiden Schichten aber Methoden der *Data*-Schicht verwenden.
   
-Die Entscheidung viel auf diese Art der Schichtenarchitektur, da sie gut zur Anwendung passt.
+Die Entscheidung viel auf diese Art der Schichtenarchitektur, da die Anwendung die drei klassischen Schichten *Datenbank*, *Datenverarbeitung* und *Präsentation* besitzt und diese somit ideal durch eine Schichtenarchitektur abgebildet werden können.
 
 ## 6. Unit Tests
 Unit Tests testen einzelne Komponenten des Systems und stellen deren Funktionalität unabhängig von anderen Komponenten sicher. Dazu ist es wichtig, andere Teile durch Stellvertreter, sogenannte Mocks, zu ersetzen
-um eine Unabhängigkeit zu gewährleisten. Im Tippduell wurden 10 Unit-Tests mit XX Testfällen realisiert. Zum Testen wird das Testing-Framework *JUnit5* verwendet, Mocks werden mit dem Mocking-Framework *mockito* erzeugt.
+um eine Unabhängigkeit zu gewährleisten. Im Tippduell wurden 21 Testfällen realisiert. Zum Testen wird das Testing-Framework *JUnit5* verwendet, Mocks werden mit dem Mocking-Framework *mockito* erzeugt.
 
 ### Tests
 Als beispielhafte Tests soll hier der Test `CheckCurrentInputCharTest` angeführt werden, da diese eine wesentliche Funktionalität des Spiels testet.
 #### CheckCurrentInputCharTest
-Dieser [Test](https://github.com/Ralerus/ASE_Project/blob/main/src/test/java/layer/domain/CheckCurrentInputCharTest.java) testet die Methode `checkCurrentInputChar` der Klasse `Round`, die die Funktionalität repräsentiert, einen eingegebenen Buchstaben des Nutzers auf Übereinstimmung mit dem aktuell erforderlichen Buchstaben des Textes zu überprüfen.
-Dafür wird in diesem Test eine Instanz der Klasse `Round` mit einem gemockten `Text`-Objekt erzeugt, das wie folgt erzeugt wurde:  
+Dieser [Test](https://github.com/Ralerus/ASE_Project/blob/main/src/test/java/layer/domain/CheckCurrentInputCharTest.java) testet die Methode `checkCurrentInputChar` der Klasse [`Round`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Round.java), die die Funktionalität repräsentiert, einen eingegebenen Buchstaben des Nutzers auf Übereinstimmung mit dem aktuell erforderlichen Buchstaben des Textes zu überprüfen.
+Dafür wird in diesem Test eine Instanz der Klasse [`Round`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Round.java) mit einem gemockten [`Text`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java) -Objekt erzeugt, das wie folgt erzeugt wurde:  
 `Text text = mock(Text.class);`  
 `when(text.getText()).thenReturn("Testtext");`  
-Dadurch kann eine Unabhängigkeit von der tatsächlichen Klasse `Text` erzielt und dennoch das Szenario erfolgreich getestet werden. Der Test umfasst vier Testfälle, die die Komponente bei korrekt und inkorrekt eingegebenen Char sowie bei 
+Dadurch kann eine Unabhängigkeit von der tatsächlichen Klasse [`Text`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java) erzielt und dennoch das Szenario erfolgreich getestet werden. Der Test umfasst vier Testfälle, die die Komponente bei korrekt und inkorrekt eingegebenen Char sowie bei 
 korrekt und inkorrekt eingegebener Char-Folge überprüft.  
 Da die Methode lediglich Chars als Eingabe akzeptiert, müssen falsche Eingabetypen nicht getestet werden. Sie sind nicht möglich.
 
@@ -202,22 +205,26 @@ dem Zeitpunkt seiner Ausführung, die gleiche Testumgebung.
 - **Professional**: Tests unterliegen denselben Qualitätsstandards wie Produktivcode.
 
 ### Code Coverage
+Dieses Projekt weist keine besonders hohe Code Coverage auf, da die innere Komplexität der vorhanden Klassen nicht sehr hoch ist und somit kein hohes Testbedürfnis bzw. wenig Möglichkeiten für sinnvolle Tests bestehen. Zudem existieren
+viele Klassen, die lediglich Daten kapseln oder ein Objekt der realen Welt modellieren und keine Logik aufweisen (z.B. [`Player`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Player.java), [`Stats`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Stats.java) oder [`Text`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/Text.java)).
+Außerdem ist sehr viel Swing-UI-Code vorhanden, der sich nur schwer testen lässt.  
+Insgesamt sind 30% aller Klassen (inklusive UI-Klassen) und 9% der Codezeilen durch Unittests abgedeckt.
 
 ## 7. Refactoring
 
 ### Large Class & Long Method
-Ein Code Smell, nämlich eine Large Class mit Long Methods, kann in der `SettingsUI`-Klasse hierdurch identifiziert werden. Diese Klasse beinhaltet den UI-Code
+Ein Code Smell, nämlich eine Large Class mit Long Methods, kann in der [`SettingsUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/SettingsUI.java) -Klasse hierdurch identifiziert werden. Diese Klasse beinhaltet den UI-Code
 für die Nutzerverwaltung und Textverwaltung mit jeweils einer langen Methode für die beiden Bereiche. Allein durch diese Beschreibung wird klar, dass die Klasse nicht dem Single Responsiblitiy Prinzip folgt.
 Deshalb soll in drei Schritten ein Refactoring durchgeführt werden, der Erfolg des Refactorings der Long Methods wird durch die Codezeilen pro Methode gemessen.
-1. Zunächst muss die Klasse `SettingsUI` in zwei Klassen `UserManagementUI` und `TextManagementUI` aufgeteilt werden. Diese Aufteilung ist
+1. Zunächst muss die Klasse [`SettingsUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/SettingsUI.java) in zwei Klassen [`UserManagementUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/UserManagementUI.java) und [`TextManagementUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/TextManagementUI.java) aufgeteilt werden. Diese Aufteilung ist
    in [diesem Commit](https://github.com/Ralerus/ASE_Project/commit/e33955c28d18d9d8b755d1edd9c3099472b45b3e) zu sehen. So kann sichergestellt werden, dass jede Klasse nur eine Aufgabe innehat.
-2. Anschließend kann das Long Method-Problem mittels Extract-Method-Refactoring angegangen werden und in `UserManagementUI` die lange Methoden `getUserManagementUI` in kleinere Methoden
+2. Anschließend kann das Long Method-Problem mittels Extract-Method-Refactoring angegangen werden und in [`UserManagementUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/UserManagementUI.java) die lange Methoden `getUserManagementUI` in kleinere Methoden
    aufgeteilt werden, sodass jede Methode nur eine Aufgabe erfüllt. Dieser Zwischenstand ist in [diesem Commit](https://github.com/Ralerus/ASE_Project/commit/34447a0c0f96d04d599d24a7e31f3b98d9e2949b) sichtbar. 
    So konnte die `getUserManagementUI` Methode mit 149 Zeilen Code in neun Methoden mit jeweils maximal 38 Zeilen Code aufgeteilt werden. Das steigert die Lesbarkeit und Wartbarkeit erheblich.
-   Ein ähnlicher Effekt konnte in der `TextManagementUI`-Klasse erzielt werden, dort ließ sich die lange Methode mit ursprünglich 151 Codezeilen in elf kleine Methoden mit maximal 36 Codezeilen aufgeteilt werden.
+   Ein ähnlicher Effekt konnte in der [`TextManagementUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/TextManagementUI.java) -Klasse erzielt werden, dort ließ sich die lange Methode mit ursprünglich 151 Codezeilen in elf kleine Methoden mit maximal 36 Codezeilen aufgeteilt werden.
    Siehe hierzu [diesen Commit](https://github.com/Ralerus/ASE_Project/commit/92613710b839de591c9b3e2e2ebebea8128c62a8).
 3. Allerdings ist das Ergebnis im Bereich des User-Managements noch nicht zufriedenstellend, es fällt auf, dass Methoden wie `changeUsernameIfNotEmpty` eigentlich kein UI-Code, sondern Domain-Code sind. 
-   Deshalb sollen diese Methoden in einer neuen Klasse `UserManagement` in der domain-Schicht zusammengefasst werden. Außerdem ist eine Umbenennung sinnvoll, da diese nach dem Refactoring lediglich einen Wahrheitswert zurückliefern,
+   Deshalb sollen diese Methoden in einer neuen Klasse [`UserManagement`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/UserManagement.java) in der domain-Schicht zusammengefasst werden. Außerdem ist eine Umbenennung sinnvoll, da diese nach dem Refactoring lediglich einen Wahrheitswert zurückliefern,
    ob die Änderung erfolgreich war bzw. ob die Eingabefelder im UI geleert werden sollen. Die Methoden heißen deshalb z.B. `isUsernameChaned`. Siehe hierzu [diesen Commit](https://github.com/Ralerus/ASE_Project/commit/06659658d79ade7ebb4075a389f87117968bc6fe).
 
 ### Code Style
@@ -229,9 +236,9 @@ Ziel des Refactorings ist es, alle Issues zu lösen, um einen guten Code-Style u
 Folgende Probleme konnten dabei behoben werden:
 - Entfernung bzw. Ersetzung ungenutzer Imports oder unnötiger Import-Alls (*)
 - Entfernung von Logik-Inversionen, aus `!(a==b)` wird `(a!=b)`
-- Reduzierung der Anzahl globaler Variablen, Umwandlung zu lokalen Variablen, wenn sinnvoller (z.B. `rule` in `Game` oder `endTime` in `Round`)
+- Reduzierung der Anzahl globaler Variablen, Umwandlung zu lokalen Variablen, wenn sinnvoller (z.B. `rule` in [`Game`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Game.java) oder `endTime` in [`Round`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/Round.java))
 - Objektvergleiche mit != wurden durch equals ersetzt
-- Kombination von unnötig verschachtelten If-Statements wie in `UserManagement`
+- Kombination von unnötig verschachtelten If-Statements wie in [`UserManagement`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/domain/UserManagement.java)
 
 Siehe zu den Ergebnissen des Refactorings [diesen Commit](https://github.com/Ralerus/ASE_Project/commit/5f8d4a7b00027583498ee65b54b59de8ff0e9b1b).
 Es konnten alle Codacy-Issues gelöst werden, wie folgender Ausschnitt des Codacy-Dashboards zeigt:  
@@ -245,7 +252,7 @@ Als drittes angewandtes Refactoring soll hier die Beseitigung von duplicated Cod
 der Codeteil zur Formattierung der Datenbankinhalte und Erzeugung eines `HistoryEntry`-Objektes dreimal in verschiedenen Methoden in nahezu gleicher Ausführung vor.  
 Dem konnte durch die Einführung einer neuen statischen `getFormattedStatsEntry`-Methode entgegengewirkt werden. Somit wurde das *Extract Method*-Refactoring angewandt. Zudem wurde die Methode `getHighscoreList` erweitert zu `getHighscoreListFor` und
 kann dadurch die Highscoreliste für das gesamte Spiel oder eine*n einzelnen Spieler*in liefern, was ebenfalls den duplicated Code reduziert.  
-Des weiteren wurde im Rahmen dieses Refactorings die Klasse `HistoryEntry` zu `StatsEntry` umbenannt, weil diese faktisch nicht nur Einträge der Historie, sondern auch Einträge des Highscores widerspiegelt und die
+Des weiteren wurde im Rahmen dieses Refactorings die Klasse `HistoryEntry` zu [`StatsEntry`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/data/StatsEntry.java) umbenannt, weil diese faktisch nicht nur Einträge der Historie, sondern auch Einträge des Highscores widerspiegelt und die
 Benennung somit nicht mehr der Verwendung entsprach.
 
 Die Ergebnisse des Refactorings sind [hier](https://github.com/Ralerus/ASE_Project/blob/e0c297a479fa2b75e06ce38bf5837d49d0fcbc83/src/main/java/layer/data/StatsRepository.java) ersichtlich.
