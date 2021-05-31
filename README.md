@@ -23,9 +23,10 @@ sh init.sh
 ```bash
 sh start.sh
 ```
+Die Linux Installation wurde mit [Ubuntu 21.04](https://ubuntu.com/download/desktop) getestet.
 ### Windows
 Als Alternative zu Linux kann die Anwendung auch auf Windows ausgeführt werden. Dazu sind folgende Schritte notwendig:
 #### 1. Windows-Executable herunterladen & entpacken
-Dazu muss [diese ZIP-komprimierte Ordner](executable/Tippduell.zip) auf das lokale Windows-Betriebssystem heruntergeladen und entpackt werden.
+Dazu muss [dieser ZIP-komprimierter Ordner](executable/Tippduell.zip) auf das lokale Windows-Betriebssystem heruntergeladen und entpackt werden.
 #### 2. Tippduell starten
-Im Ordner `tippduell` die ausführbare Datei `Tippduell.exe` starten.
+Danach kann im Ordner `tippduell` die ausführbare Datei `Tippduell.exe` gestartet werden.
