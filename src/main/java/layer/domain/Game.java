@@ -15,7 +15,6 @@ public class Game implements GameListener {
     private final List<Player> playersLeft;
     private final List<Player> allPlayers;
     private final Player originallyLoggedInPlayer;
-    private Round currentRound;
     private final boolean isCompetition;
 
     public Game(List<Player> playersLeft, Rules rules, boolean isCompetition) throws ObjectNotFoundException {
@@ -24,7 +23,6 @@ public class Game implements GameListener {
         this.results = new HashMap<>();
         this.playersLeft = playersLeft;
         this.allPlayers = new ArrayList<>(playersLeft);
-        this.currentRound = null;
         this.isCompetition = isCompetition;
     }
 
@@ -41,7 +39,7 @@ public class Game implements GameListener {
 
     @Override
     public void startRound() {
-        this.currentRound = new Round(this.text);
+        Round currentRound = new Round(this.text);
         currentRound.setListener(this);
         currentRound.startRound();
     }
@@ -52,7 +50,12 @@ public class Game implements GameListener {
         this.gotoNextPlayer();
     }
 
-    private void gotoNextPlayer() {
+    @Override
+    public void goOn() {
+        this.startRound();
+    }
+
+    public void gotoNextPlayer() {
         if(playersLeft.isEmpty()){
             Login.create().withTitle("Anmeldung des Spielleiters für Ergebnisse").forPlayer(originallyLoggedInPlayer).build();
             this.writeGameToStats();

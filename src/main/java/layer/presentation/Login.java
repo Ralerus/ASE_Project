@@ -15,16 +15,12 @@ import java.awt.*;
 public final class Login {
     private String title;
     private Player p;
-    private boolean isDuringGame;
-    private boolean isAtAppStart;
     private boolean withRegisterButton;
-    private static GameListener gameListener;
-    private static UIListener uiListener;
+    private static LoginListener loginListener;
 
     private Login(){
-        this.isDuringGame = false;
-        this.isAtAppStart = false;
         this.withRegisterButton = false;
+        this.loginListener = null;
     }
 
     public static Login create() {
@@ -47,13 +43,11 @@ public final class Login {
             return this;
         }
         public CreateableLogin duringGame(GameListener gameListener){
-            Login.this.isDuringGame=true;
-            Login.this.gameListener = gameListener;
+            Login.this.loginListener = gameListener;
             return this;
         }
-        public CreateableLogin atAppStart(UIListener uiListener){
-            Login.this.isAtAppStart =true;
-            Login.this.uiListener = uiListener;
+        public CreateableLogin atAppStart(LoginListener loginListener){
+            Login.this.loginListener = loginListener;
             return this;
         }
         public void build(){
@@ -92,10 +86,8 @@ public final class Login {
                     Session.login(usernameValue, passwordHash);
                     loginDialog.setVisible(false);
                     loginDialog.dispose();
-                    if (isDuringGame) {
-                        gameListener.startRound();
-                    }else if(isAtAppStart){
-                        uiListener.drawUI();
+                    if(loginListener!=null){
+                        loginListener.goOn();
                     }
                 } catch (ObjectNotFoundException | Session.WrongPasswordException ex) {
                     JOptionPane.showMessageDialog(loginDialog, "Benutzername oder Passwort inkorrekt!",

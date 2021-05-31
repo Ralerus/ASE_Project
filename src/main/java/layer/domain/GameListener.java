@@ -1,6 +1,8 @@
 package layer.domain;
 
-public interface GameListener {
+import layer.presentation.LoginListener;
+
+public interface GameListener extends LoginListener {
 	void startRound();
 	void endRound(double duration);
 }

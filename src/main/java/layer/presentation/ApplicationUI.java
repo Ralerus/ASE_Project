@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
-public class ApplicationUI extends JFrame implements UIListener {
+public class ApplicationUI extends JFrame implements LoginListener {
     private static Image appIcon;
     public ApplicationUI(){
         try {
@@ -22,7 +22,7 @@ public class ApplicationUI extends JFrame implements UIListener {
     }
 
     @Override
-    public void drawUI() {
+    public void goOn() {
         this.setTitle("Tippduell - "+ Session.getLoggedInPlayer().getUsername()+" angemeldet");
         JTabbedPane tabbedpane = new JTabbedPane();
 

@@ -91,7 +91,8 @@ public abstract class GameUI{
 		int counter = 1;
 		for(Player p: results.keySet()){
 			if(counter == 1){
-				JOptionPane.showMessageDialog(Application.getUi(),p.getUsername()+" hat gewonnen!",
+				JOptionPane.showMessageDialog(Application.getUi(),p.getUsername()+" hat gewonnen!\nHerzlichen " +
+								"Glückwunsch "+p.getFullName()+"!",
 						"Gewinner ermittelt", JOptionPane.INFORMATION_MESSAGE);
 			}
 			System.out.println("Player "+p.getUsername()+" has "+results.get(p)+" seconds.");
