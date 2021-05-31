@@ -19,7 +19,7 @@ public abstract class UserManagementUI {
     public static JPanel getUI(){
         JPanel userManagement = new JPanel();
         userManagement.setLayout(new BorderLayout());
-        userManagement.add(new JLabel("<html><h2>Nutzerverwaltung</h2></html>"), BorderLayout.NORTH);
+        userManagement.add(new JLabel("<html><h2>Verwaltung der Anmeldedaten</h2></html>"), BorderLayout.NORTH);
         userManagement.add(UserManagementUI.getInputFields(), BorderLayout.CENTER);
         userManagement.add(UserManagementUI.getButtons(), BorderLayout.SOUTH);
         return userManagement;

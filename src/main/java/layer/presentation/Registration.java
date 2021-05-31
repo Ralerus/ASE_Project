@@ -69,7 +69,7 @@ public abstract class Registration {
         }catch(NullPointerException ex){
             ex.printStackTrace();
         }
-        registerDialog.setSize(300,190);
+        registerDialog.setSize(350,190);
         registerDialog.setLocationRelativeTo(Application.getUi());
         registerDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         registerDialog.setVisible(true);

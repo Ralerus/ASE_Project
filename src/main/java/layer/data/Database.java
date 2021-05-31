@@ -5,7 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Database {
-    private static final String url = "jdbc:sqlite:../../src/main/resources/tippduell.db";//"jdbc:sqlite:src/main/resources/tippduell.db";//"jdbc:sqlite:resources/tippduell.db"; //TODO select correct path
+    //private static final String url = "jdbc:sqlite:../../src/main/resources/tippduell.db";
+    private static final String url = "jdbc:sqlite:src/main/resources/tippduell.db";
+    //private static final String url = "jdbc:sqlite:resources/tippduell.db";
+ //TODO select correct path
     public static Connection connect(){
         Connection conn = null;
         try{
