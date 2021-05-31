@@ -195,7 +195,7 @@ Folgende Repositories werden in der Anwendung verwendet, sie sind nach den zugeh
 
 [Hier](https://github.com/Ralerus/ASE_Project/tree/main/src/main/java/layer/data) finden sich sämtliche Repositories der Anwendung.
 
-## Architektur
+## 6. Architektur
 Das vorliegende Programm wurde in einer Schichtenarchitektur mit den drei Schichten *Presentation*, *Domain* und *Data* entwickelt.
 Jede Schicht deckt dabei einen unterschiedlichen Aufgabenbereich ab:
 - **Presentation**: Klassen zur Darstellung der Benutzeroberfläche, z.B. [`GameUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/GameUI.java), [`SettingsUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/SettingsUI.java) oder [`RoundUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/RoundUI.java).
@@ -207,7 +207,7 @@ Dabei gilt allgemein, dass jede Schicht nur von den unterliegenden Schichten abh
   
 Die Entscheidung viel auf diese Art der Schichtenarchitektur, da die Anwendung die drei klassischen Schichten *Datenbank*, *Datenverarbeitung* und *Präsentation* besitzt und diese somit ideal durch eine Schichtenarchitektur abgebildet werden können.
 
-## 6. Unit Tests
+## 7. Unit Tests
 Unit Tests testen einzelne Komponenten des Systems und stellen deren Funktionalität unabhängig von anderen Komponenten sicher. Dazu ist es wichtig, andere Teile durch Stellvertreter, sogenannte Mocks, zu ersetzen
 um eine Unabhängigkeit zu gewährleisten. Im Tippduell wurden 21 Testfällen realisiert. Zum Testen wird das Testing-Framework *JUnit5* verwendet, Mocks werden mit dem Mocking-Framework *mockito* erzeugt.
 
@@ -244,7 +244,7 @@ Dieses Projekt weist keine besonders hohe Code Coverage auf, wofür in diesem Ab
 - Es ist sehr viel Swing-UI-Code vorhanden, der sich nur schwer testen lässt.
 Insgesamt sind 30% aller Klassen (inklusive UI-Klassen) und 9% der Codezeilen durch Unittests abgedeckt.
 
-## 7. Refactoring
+## 8. Refactoring
 ### Large Class & Long Method
 Ein Code Smell, nämlich eine Large Class mit Long Methods, kann in der [`SettingsUI`](https://github.com/Ralerus/ASE_Project/blob/main/src/main/java/layer/presentation/SettingsUI.java) -Klasse hierdurch identifiziert werden. Diese Klasse beinhaltet den UI-Code
 für die Nutzerverwaltung und Textverwaltung mit jeweils einer langen Methode für die beiden Bereiche. Allein durch diese Beschreibung wird klar, dass die Klasse nicht dem Single Responsiblitiy Prinzip folgt.
