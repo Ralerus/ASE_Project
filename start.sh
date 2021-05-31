@@ -1,3 +1,4 @@
 mvn clean package;
-cd target;
-java -cp Tippduell-1.0 application.Application;
+cd target/classes;
+cp ~/.m2/repository/org/xerial/sqlite-jdbc/3.34.0/sqlite-jdbc-3.34.0.jar .
+java -classpath ".:sqlite-jdbc-3.34.0.jar" application.Application
