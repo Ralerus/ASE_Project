@@ -23,6 +23,7 @@ sh init.sh
 ```bash
 sh start.sh
 ```
+Die Linux Installation wurde mit [Ubuntu 21.04](https://ubuntu.com/download/desktop) getestet.
 ### Windows
 Als Alternative zu Linux kann die Anwendung auch auf Windows ausgeführt werden. Dazu sind folgende Schritte notwendig:
 #### 1. Windows-Executable herunterladen & entpacken
