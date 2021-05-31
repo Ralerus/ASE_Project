@@ -39,7 +39,7 @@ public class ApplicationUI extends JFrame implements LoginListener {
         this.setVisible(true);
 
         if(Session.getLoggedInPlayer().isFirstLogin()){
-            int result = JOptionPane.showConfirmDialog(Application.getUi(), "Herzlich willkommen bei Tippduell!\n" +
+            int result = JOptionPane.showConfirmDialog(Application.getUi(), "Herzlich willkommen bei Tippduell, "+Session.getLoggedInPlayer().getFullName()+"!\n" +
                     "Dieses Pop-Up erklärt dir, wie ein Spiel funktioniert. Dann kannst du auch schon loslegen.\n\n" +
                     "1. Wähle die Spielkonfiguration und füge für Wettkämpfe andere Spieler*innen hinzu, Trainings bestreitest du alleine.\n" +
                     "2. Nach Rundenstart erscheint ein Text, den du möglichst fehlerfrei abtippen musst. Tippfehler müssen nicht korrigiert werden.\n" +

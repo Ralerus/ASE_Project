@@ -2,7 +2,6 @@ package layer.presentation;
 
 import application.Application;
 import layer.data.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;

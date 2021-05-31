@@ -1,6 +1,9 @@
 package layer.presentation;
 
-import layer.data.*;
+import layer.data.PlayerStats;
+import layer.data.StatsRepository;
+import layer.data.StatsEntry;
+import layer.data.GameStats;
 import layer.domain.Session;
 
 import javax.swing.*;

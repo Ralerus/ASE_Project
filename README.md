@@ -7,16 +7,20 @@ Die vollständige Dokumentation findet sich [hier](doc/Documentation.md).
 ### Linux
 Zur Installation auf Linux müssen folgende Schritte durchlaufen werden:
 #### 1. Projekt clonen
-```
+```bash
 git clone https://github.com/Ralerus/ASE_Project.git
 ```
-#### 2. SQLite, JRE & Maven installieren
+Hierfür muss git installiert sein, ist dies noch nicht erfolgt:
+```bash
+sudo apt install git
 ```
+#### 2. SQLite, JRE & Maven installieren
+```bash
 cd ~/ASE_Project
 sh init.sh
 ```
 #### 3. Applikation testen, compilieren und starten
-```
+```bash
 sh start.sh
 ```
 ### Windows
