@@ -3,6 +3,7 @@ package layer.data;
 import java.sql.*;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.LinkedList;
@@ -142,7 +143,7 @@ public abstract class StatsRepository {
         double roundedValue = Math.round(speed*100.0)/100.0;
         Instant dateInstant = Instant.parse(date);
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).
-                withLocale(Locale.GERMANY).withZone(ZoneId.systemDefault());
+                withLocale(Locale.GERMANY).withZone(ZoneOffset.ofHours(2));
         String formattedDate = formatter.format(dateInstant);
         return new StatsEntry(username,roundedValue, textTitle,formattedDate);
     }
